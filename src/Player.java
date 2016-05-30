@@ -17,7 +17,9 @@ final int ASSAULT_RIFLE_DMG= 15; final Rectangle ASSAULT_RIFLE_RANGE = new Recta
 final int CHAINGUN_DMG= 20; final Rectangle CHAINGUN_RANGE = new Rectangle(x,y,10,55555);
 final int POTATO_GUN_DMG=1; final Rectangle POTATO_RANGE = new Rectangle(x,y,10,55555);
 final int MANGATGUN_DMG =9999; final Rectangle MANGAT_RANGE = new Rectangle(0,0,55555,55555);
-final int PLASMA_RIFLE_DMG = 25; final Rectangle PLASMA_RANGE = new Rectangle(x,y,20,55555);
+final int PLASMA_RIFLE_DMG = 25; final Rectangle PLASMA_SIZE = new Rectangle(x,y,12,12);
+final int FLAME_THROWER_DMG = 15; final Polygon FLAME_RANGE = new Polygon( new int[]{x,x+50,x-50}, new int[]{y,y+50,y-50},3 ); final int BURN_DOT = 10;
+final int ROCKET_DMG = 100; final Rectangle MISSLE_SIZE = new Rectangle(x,y,12,12);
 
 
 final int START_HP=100;
