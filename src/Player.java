@@ -8,18 +8,9 @@ private int y;
 private int hp;
 private double direction;
 final double START_DIRECTION= 0; 
-int [] weapons= new int[10];
+Weapon [] weapons= new Weapon[10];
 
-final int BOOT_DAMAGE=34; final Rectangle BOOT_RANGE = new Rectangle(x,y,30,30);
-final int PISTOL_DAMAGE=10; final Rectangle PISTOL_RANGE = new Rectangle(x,y,10,55555);
-final int SHOTGUN_DAMAGE= 50; final Polygon SHOTGUN_RANGE = new Polygon( new int[]{x,x+50,x-50}, new int[]{y,y+50,y-50},3 ); final int SUPER_SHOTGUN_DMG = 140;
-final int ASSAULT_RIFLE_DMG= 15; final Rectangle ASSAULT_RIFLE_RANGE = new Rectangle(x,y,10,55555);
-final int CHAINGUN_DMG= 20; final Rectangle CHAINGUN_RANGE = new Rectangle(x,y,10,55555);
-final int POTATO_GUN_DMG=1; final Rectangle POTATO_RANGE = new Rectangle(x,y,10,55555);
-final int MANGATGUN_DMG =9999; final Rectangle MANGAT_RANGE = new Rectangle(0,0,55555,55555);
-final int PLASMA_RIFLE_DMG = 25; final Rectangle PLASMA_SIZE = new Rectangle(x,y,12,12);
-final int FLAME_THROWER_DMG = 15; final Polygon FLAME_RANGE = new Polygon( new int[]{x,x+50,x-50}, new int[]{y,y+50,y-50},3 ); final int BURN_DOT = 10;
-final int ROCKET_DMG = 100; final Rectangle MISSLE_SIZE = new Rectangle(x,y,12,12);
+
 
 
 final int START_HP=100;
@@ -33,21 +24,10 @@ Player(int sx, int sy){
 
 void shoot(int i){
 	
-	range(i);
-	dmg(i);
+
 	
-}
-Rectangle range(int i){
-	AffineTransform transform = new AffineTransform();
-	transform.rotate(direction);
-return BOOT_RANGE;
 }
 
-int dmg(int i){
-	
-	return 100; 
-			
-}
 
 int getX(){
 	return x;
@@ -71,7 +51,7 @@ void addHP(int increment){
 	hp+=increment;
 }
 void addWeapon(int type, int ammo){
-	weapons[type]=ammo;
+
 }
 void turnLeft(){
 	if (direction==0)
