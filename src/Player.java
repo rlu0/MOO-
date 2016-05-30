@@ -14,20 +14,20 @@ Player(int sx, int sy){
 
 }
 
-void getX(){
-	
+int getX(){
+	return x;
 }
 void setX(int nx){
 	x=nx;
 }
-void getY(){
-	
+int getY(){
+	return y;
 }
 void setY(int ny){
 	y=ny;
 }
-void getHP(){
-	
+int getHP(){
+	return hp;
 }
 void setHP(int nHP){
 	hp=nHP;
