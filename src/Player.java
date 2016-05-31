@@ -2,9 +2,13 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
+import javafx.scene.shape.Circle;
+
 public class Player{
 private double x;
 private double y;
+private double RADIUS = 2.5;;
+Circle c = new Circle( x,y,RADIUS);
 private int hp;
 private double direction;
 final double START_DIRECTION= 0; 
