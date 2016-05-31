@@ -15,7 +15,7 @@ Weapon [] weapons= new Weapon[10];
 
 final int START_HP=100;
 
-Player(int sx, int sy){
+Player(double sx, double sy){
 	hp=START_HP;
 	x=sx;
 	y=sy;
