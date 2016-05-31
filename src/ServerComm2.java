@@ -22,6 +22,8 @@ class ServerComm2
 	static ArrayList<ConnectionHandler> clientList = new ArrayList();
 
 	static boolean[] clientsRunning = new boolean[8];
+	
+	int mapNum = 0;
 
 	public static void main(String[] args)
 	{
@@ -101,7 +103,7 @@ class ServerComm2
 		private boolean running;
 		String name;
 		ArrayList<ConnectionHandler> clientList = new ArrayList();
-
+		
 		/*
 		 * ConnectionHandler Constructor
 		 * 
@@ -132,24 +134,27 @@ class ServerComm2
 
 			// Get a message from the client
 			String data = "";
-
-			// Get a message from the client
-			try
+			while (clientList == null)
 			{
-				name = input.readLine();
+				try
+				{
+					Thread.sleep(100);
+				}
+				catch (InterruptedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			catch (IOException e1)
-			{
-				e1.printStackTrace();
-			}
+			output.println(clientList.indexOf(client)+mapNum+clientList.size());
 			while (running)
 			{ // loop unit a message is received
 				try
 				{
 					if (input.ready())
 					{ // check for an incoming message
-						data = input.readLine(); // get a message from the client
-						System.out.println("msg from client: " + data);
+						data = input.readLine();
+						
 						if (data.toLowerCase().equals("quit"))
 						{
 							running = false;
@@ -165,15 +170,15 @@ class ServerComm2
 							}
 						}
 
-						for (ConnectionHandler Ch : clientList)
-						{
-
-							output = new PrintWriter(Ch.getClient()
-									.getOutputStream());
-							output.println(data);
-							output.flush();
-
-						}
+//						for (ConnectionHandler Ch : clientList)
+//						{
+//
+//							output = new PrintWriter(Ch.getClient()
+//									.getOutputStream());
+//							output.println(data);
+//							output.flush();
+//
+//						}
 					}
 				}
 				catch (IOException e)
@@ -209,7 +214,9 @@ class ServerComm2
 		void setPlayerList(ArrayList<ConnectionHandler> in)
 		{
 			this.clientList = in;
+			output.println("01 " + clientList.indexOf(client) + clientList.size());
 		}
+		
 
 	} // end of inner class
 } // end of ChatProgramServer class
