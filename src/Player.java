@@ -3,8 +3,8 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 public class Player{
-private int x;
-private int y;
+private double x;
+private double y;
 private int hp;
 private double direction;
 final double START_DIRECTION= 0; 
@@ -29,13 +29,13 @@ void shoot(int i){
 }
 
 
-int getX(){
+double getX(){
 	return x;
 }
 void setX(int nx){
 	x=nx;
 }
-int getY(){
+double getY(){
 	return y;
 }
 void setY(int ny){

@@ -9,10 +9,10 @@ public class Weapon {
 	 int ammo;
 	
 	
-;
-	
 
 	
+
+		
 	Weapon( int type, int ammo){
 		this.type=type;
 		this.ammo=ammo;
@@ -20,8 +20,9 @@ public class Weapon {
 	}
 
 	void fire (){
-		if (type==1);
+		
 	}
+	
 	Rectangle range(int i){
 	
 	return null;
@@ -29,7 +30,9 @@ public class Weapon {
 
 	int dmg(int i){
 		
-		return 100; 
+		return 1;
 				
 	}
+	
+	
 }
