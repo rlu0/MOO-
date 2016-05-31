@@ -154,6 +154,7 @@ class ServerComm2
 					if (input.ready())
 					{ // check for an incoming message
 						data = input.readLine();
+						System.out.println(data);
 						
 						if (data.toLowerCase().equals("quit"))
 						{

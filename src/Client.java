@@ -295,11 +295,10 @@ public class Client
 			// e.printStackTrace();
 		}
 
-		output.println(data);
-		output.flush();
-
-		new Thread(new gameWindow());
-
+		System.out.println("Yo mamma1");
+		(new Thread(new gameWindow())).run();
+		System.out.println("Yo mamma2");
+		
 		while (running)
 		{
 			try
@@ -330,6 +329,7 @@ public class Client
 		@Override
 		public void run()
 		{
+			System.out.println("Yo mamma");
 			JFrame window = new JFrame("MOOD");
 			window.setSize(450, 450);
 			window.repaint();
@@ -378,62 +378,5 @@ public class Client
 			g.drawOval((int)(currentX-2.5),(int)(currentY-2.5),(int)(currentX+2.5), (int)(currentY+2.5));
 			
 		}
-	}
-
-	// ************ Inner class to represent AI object
-	class Enemy implements Runnable
-	{
-		private int x, y;
-		private Image picture;
-		private boolean alive = true;
-
-		public Enemy(int startX, int startY, Image pic)
-		{ // constructor
-
-			// set starting coords
-			this.x = startX;
-			this.y = startY;
-			this.picture = pic;
-
-		}
-
-		public void run()
-		{ // Run
-			while (alive)
-			{
-				this.x += (int) (Math.random() * 6 - 3);
-				this.y += (int) (Math.random() * 6 - 3);
-
-				try
-				{
-					Thread.sleep(30);
-				}
-				catch (Exception exc)
-				{
-				}
-
-			}
-		}
-
-		public int getX()
-		{
-			return this.x;
-		}
-
-		public int getY()
-		{
-			return this.y;
-		}
-
-		public Image getImage()
-		{
-			return this.picture;
-		}
-
-		public void kill()
-		{
-			this.alive = false;
-		}
-
 	}
 }
