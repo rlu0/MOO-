@@ -8,7 +8,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-public class Client {
+public class Client
+{
 	JButton sendButton, clearButton;
 	JTextField typeField;
 	static JTextArea msgArea;
@@ -22,14 +23,31 @@ public class Client {
 	BufferedReader input; // reader for network stream
 	PrintWriter output; // printwriter for network output
 	boolean running = true; // thread status via boolean
+	
+	// Various maps will be designed and put into here
+	int [][] mapNeg1 = {};
+	int [][] map0 = {};
+	int [][] map1 = {};
+	int [][] map2 = {};
+	int [][] map3 = {};
+	int [][] map4 = {};
+	int [][] map5 = {};
+	int [][] map6 = {};
+	int [][] map7 = {};
+	int [][] map8 = {};
+	int [][] map9 = {};
+	int [][][] allMaps = {map0, map1, map2, map3, map4, map5, map6, map7, map8,map9,mapNeg1};
+	int [][] currentMap;
+	int playerNum;
+	int numPlayers;
 
 	/**
 	 * Main
 	 * 
-	 * @param args
-	 *            parameters from command line
+	 * @param args parameters from command line
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		// JFrame login = new JFrame("Login Page");
 		// JTextField username;
 		// JTextField password;
@@ -37,21 +55,30 @@ public class Client {
 		// logMeIn.addActionListener(new ButtonListener());
 
 		Client client = new Client(); // start the client
-		try {
+		try
+		{
 			client.go(); // begin the connection
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			msgArea.append("\n Connection to Server Failed!");
 			// e.printStackTrace();
-			try {
+			try
+			{
 				Thread.sleep(3000);
-			} catch (InterruptedException ex) {
+			}
+			catch (InterruptedException ex)
+			{
 				// e.printStackTrace();
 
 			}
 			msgArea.append("\n Exiting program!");
-			try {
+			try
+			{
 				Thread.sleep(2000);
-			} catch (InterruptedException ex) {
+			}
+			catch (InterruptedException ex)
+			{
 				// e.printStackTrace();
 
 			}
@@ -59,8 +86,10 @@ public class Client {
 		}
 	}
 
-	public void go() {
-		try {
+	public void go()
+	{
+		try
+		{
 			mySocket = new Socket(ip, 5000);
 			// attempt socket connection (local address). This will wait until a
 			// connection is made
@@ -72,19 +101,27 @@ public class Client {
 			output = new PrintWriter(mySocket.getOutputStream());
 			// assign printwriter to network stream
 
-		} catch (IOException e) { // connection error occured
+		}
+		catch (IOException e)
+		{ // connection error occured
 			msgArea.append("\n Connection to Server Failed!");
 			// e.printStackTrace();
-			try {
+			try
+			{
 				Thread.sleep(500);
-			} catch (InterruptedException ex) {
+			}
+			catch (InterruptedException ex)
+			{
 				// e.printStackTrace();
 
 			}
 			msgArea.append("\n Exiting program!");
-			try {
+			try
+			{
 				Thread.sleep(2000);
-			} catch (InterruptedException ex) {
+			}
+			catch (InterruptedException ex)
+			{
 				// e.printStackTrace();
 
 			}
@@ -95,12 +132,25 @@ public class Client {
 		output.println(data);
 		output.flush();
 
-		try {
-			if (input.ready()) {
+		// Establishes the world and a location based on the playerAssignment
+		try
+		{
+			if (input.ready())
+			{
+				// Message formatted: playerNum mapNum numEnemies
 				String message = input.readLine();
-
+				
+				playerNum = Integer.parseInt(message.substring(0,message.indexOf(" ")));
+				message = message.substring(message.indexOf(" ")+1);
+				int mapNum = Integer.parseInt(message.substring(0,message.indexOf(" ")));
+				message = message.substring(message.indexOf(" ")+1);
+				currentMap = allMaps[mapNum];
+				numPlayers = Integer.parseInt(message) + 1;
+				
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			msgArea.append("\n" + "Failed to receive msg from the server!");
 			running = false;
 			// e.printStackTrace();
@@ -108,16 +158,22 @@ public class Client {
 
 		output.println(data);
 		output.flush();
-		while (running) {
-			try {
-				if (input.ready()) {
+		while (running)
+		{
+			try
+			{
+				if (input.ready())
+				{
 					String message = input.readLine();
 					msgArea.append("\n" + message);
-					if (message.toLowerCase().equals("quit")) {
+					if (message.toLowerCase().equals("quit"))
+					{
 						running = false;
 					}
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				msgArea.append("\n" + "Failed to receive msg from the server!");
 				running = false;
 				// e.printStackTrace();
@@ -127,12 +183,14 @@ public class Client {
 	}
 
 	// ************ Inner class to represent AI object
-	class Enemy implements Runnable {
+	class Enemy implements Runnable
+	{
 		private int x, y;
 		private Image picture;
 		private boolean alive = true;
 
-		public Enemy(int startX, int startY, Image pic) { // constructor
+		public Enemy(int startX, int startY, Image pic)
+		{ // constructor
 
 			// set starting coords
 			this.x = startX;
@@ -141,32 +199,41 @@ public class Client {
 
 		}
 
-		public void run() { // Run
-			while (alive) {
+		public void run()
+		{ // Run
+			while (alive)
+			{
 				this.x += (int) (Math.random() * 6 - 3);
 				this.y += (int) (Math.random() * 6 - 3);
 
-				try {
+				try
+				{
 					Thread.sleep(30);
-				} catch (Exception exc) {
+				}
+				catch (Exception exc)
+				{
 				}
 
 			}
 		}
 
-		public int getX() {
+		public int getX()
+		{
 			return this.x;
 		}
 
-		public int getY() {
+		public int getY()
+		{
 			return this.y;
 		}
 
-		public Image getImage() {
+		public Image getImage()
+		{
 			return this.picture;
 		}
 
-		public void kill() {
+		public void kill()
+		{
 			this.alive = false;
 		}
 
