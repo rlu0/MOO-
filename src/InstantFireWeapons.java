@@ -91,7 +91,7 @@ public class InstantFireWeapons extends Weapon {
 			Polygon range = rotate(triangle(), x, y, direction);
 		}
 		
-		if ()
+		//if ()
 
 		return false;
 
