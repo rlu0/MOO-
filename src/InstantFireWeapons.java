@@ -35,16 +35,6 @@ public class InstantFireWeapons extends Weapon {
 	int[] dmgArray = { BOOT_DMG, PISTOL_DMG, SHOTGUN_DMG, SUPER_SHOTGUN_DMG, ASSAULT_RIFLE_DMG, CHAINGUN_DMG,
 			FLAME_THROWER_DMG, MANGATGUN_DMG };
 
-	public static Rectangle rotate(Rectangle base, double angle, double x, double y) {
-		if (base == null) {
-			return null;
-		}
-		// Rotates around a point
-		AffineTransform rotate = AffineTransform.getRotateInstance(angle, x, y);
-
-		Rectangle result = (Rectangle) rotate.createTransformedShape(base);
-		return result;
-	}
 
 	public static Polygon rotate(Polygon base, double angle, double x, double y) {
 		if (base == null) {
@@ -62,7 +52,7 @@ public class InstantFireWeapons extends Weapon {
 
 	}
 
-	public boolean intersects(Rectangle a, Circle b)
+	public boolean intersects(Polygon a, Circle b)
 	{
 		 Area areaA = new Area(a);
 		   areaA.intersect(new Area((Shape) b));
@@ -74,9 +64,6 @@ public class InstantFireWeapons extends Weapon {
 		return dmgArray[type];
 	}
 
-	Rectangle rekt() {
-		return ASSAULT_RIFLE_RANGE;
-	}
 
 	Polygon triangle() {
 
