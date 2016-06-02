@@ -70,7 +70,9 @@ public class Client
 	{
 		try
 		{
-			Scanner inFile = new Scanner(new File("gridMap1.txt"));
+			File f = new File("gridMap1.txt");
+			Scanner inFile = new Scanner(f);
+
 			for (int j = 0; j < 45; j++)
 				for (int i = 0; i < 45; i++)
 				{
@@ -79,7 +81,7 @@ public class Client
 		}
 		catch (Exception e)
 		{
-			System.out.println("Now die");
+			e.printStackTrace();
 		}
 
 		Client client = new Client(); // start the client
