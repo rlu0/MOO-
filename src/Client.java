@@ -18,7 +18,7 @@ public class Client
 	String username = "";
 	JScrollPane sp;
 	String data = "Ready to begin";
-	String ip = "10.242.168.169";
+	String ip = "25.129.44.21";
 	Player you;
 	boolean newMap = true;
 
@@ -70,19 +70,27 @@ public class Client
 	{
 		try
 		{
-			File f = new File("gridMap1.txt");
+			File f = new File("gridMap1");
 			Scanner inFile = new Scanner(f);
-
-			for (int j = 0; j < 45; j++)
+			int j = 0;
+			while (inFile.hasNext())
+			{
 				for (int i = 0; i < 45; i++)
 				{
-					map0[j][i] = inFile.nextInt();
+					int currentInt = inFile.nextInt();
+					map0[j][i] = currentInt;
+					System.out.print(map0[j][i]);
 				}
+				j++;
+				System.out.println("");
+			}
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		
+		allMaps[0] = map0;
 
 		Client client = new Client(); // start the client
 		try
@@ -177,6 +185,7 @@ public class Client
 				int mapNum = Integer.parseInt(message.substring(0,
 						message.indexOf(" ")));
 				message = message.substring(message.indexOf(" ") + 1);
+				allMaps[0] = map0;
 				currentMap = allMaps[mapNum];
 				numPlayers = Integer.parseInt(message) + 1;
 
@@ -301,7 +310,7 @@ public class Client
 			JPanel bananarama = new GameDisp();
 			window.add(bananarama);
 			window.setVisible(true);
-			window.setSize(450, 450);
+			window.setSize(470, 470);
 			window.repaint();
 			while (running)
 			{
@@ -330,7 +339,12 @@ public class Client
 		public void paintComponent(Graphics g)
 		{
 			int y = 0;
-
+			
+			//Apparently re-initializing is necessary since multithreading and all
+			allMaps[0] = map0;
+			
+			currentMap = allMaps[0];
+			
 			for (int j = 0; j < currentMap.length; j++)
 			{
 				int x = 0;
@@ -339,11 +353,18 @@ public class Client
 					if (currentMap[j][i] == 1)
 					{
 						g.setColor(Color.RED);
-						g.drawRect(x, y, x + 5, y + 5);
+						g.drawRect(x, y, x + 10, y + 10);
 					}
-					x += 5;
+					else
+					{
+						g.setColor(Color.BLUE);
+						g.drawRect(x, y, x + 10, y + 10);
+					}
+					System.out.println("(" + x+","+y+")");
+					x += 10;
 				}
-				y += 5;
+				y += 10;
+				x = 0;
 			}
 			if (newMap == true)
 			{
@@ -351,10 +372,10 @@ public class Client
 				double playy = 0;
 				while (currentMap[(int) (playy)][(int) (playx)] != 0)
 				{
-					playx = Math.random() * 450;
-					playy = (Math.random() * 450);
+					playx = Math.random() * 45;
+					playy = (Math.random() * 45);
 				}
-				you = new Player(playx, playy);
+				you = new Player(playx*10, playy*10);
 			}
 			double currentX = you.getX();
 			double currentY = you.getY();
