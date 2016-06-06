@@ -18,7 +18,7 @@ public class Client
 	String username = "";
 	JScrollPane sp;
 	String data = "Ready to begin";
-	String ip = "25.129.44.21";
+	String ip = "10.242.174.32";
 	Player you;
 	boolean newMap = true;
 
@@ -75,9 +75,13 @@ public class Client
 			int j = 0;
 			while (inFile.hasNext())
 			{
-				for (int i = 0; i < 45; i++)
+				
+				String currentLine = inFile.nextLine();
+				String [] split = currentLine.split(" ");
+				
+				for (int i = 0; i < split.length; i++)
 				{
-					int currentInt = inFile.nextInt();
+					int currentInt = Integer.valueOf(split[i]);
 					map0[j][i] = currentInt;
 					System.out.print(map0[j][i]);
 				}
@@ -311,6 +315,7 @@ public class Client
 			window.add(bananarama);
 			window.setVisible(true);
 			window.setSize(470, 470);
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.repaint();
 			while (running)
 			{
@@ -338,13 +343,19 @@ public class Client
 
 		public void paintComponent(Graphics g)
 		{
-			int y = 0;
+			
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			
+
 			
 			//Apparently re-initializing is necessary since multithreading and all
 			allMaps[0] = map0;
 			
 			currentMap = allMaps[0];
 			
+			///*
+			int y = 0;
 			for (int j = 0; j < currentMap.length; j++)
 			{
 				int x = 0;
@@ -353,19 +364,18 @@ public class Client
 					if (currentMap[j][i] == 1)
 					{
 						g.setColor(Color.RED);
-						g.drawRect(x, y, x + 10, y + 10);
+						g.fillRect(x, y, x + 5, y + 5);
 					}
 					else
 					{
 						g.setColor(Color.BLUE);
-						g.drawRect(x, y, x + 10, y + 10);
+						g.fillRect(x, y, x + 9, y + 9);
 					}
-					System.out.println("(" + x+","+y+")");
+					//System.out.println("(" + x+","+y+")");
 					x += 10;
 				}
 				y += 10;
-				x = 0;
-			}
+			}//*/
 			if (newMap == true)
 			{
 				double playx = 0;

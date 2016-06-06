@@ -4,11 +4,10 @@ import java.awt.geom.AffineTransform;
 
 import javafx.scene.shape.Circle;
 
-public class Player{
+public class Player extends Thing {
 private double x;
 private double y;
-private double RADIUS = 2.5;;
-Circle c = new Circle( x,y,RADIUS);
+private double RADIUS = 2.5;
 private int hp;
 private double direction;
 final double START_DIRECTION= 0; 
@@ -19,7 +18,8 @@ Weapon [] weapons= new Weapon[10];
 
 final int START_HP=100;
 
-Player(double sx, double sy){
+Player(double sx, double sy, Hitbox hit){
+	super(, hit);
 	hp=START_HP;
 	x=sx;
 	y=sy;
