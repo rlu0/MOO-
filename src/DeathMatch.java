@@ -10,7 +10,7 @@ getVictim(victim);
 	}
 	
 	void recieveKiller( int pos){
-		addScore(pos)++;
+		addScore(1,pos);
 		
 	}
 	
@@ -18,28 +18,17 @@ getVictim(victim);
 		addDeath(pos);
 	}
 	
+	boolean checkWinner(){
+		for( int s: getScore())
+		{
+			if(s>=WIN_SCORE){
+				return true;}
+		}
+		return false;
+	}
 	
 	DeathMatch(Player[] players){
-		setPlayers(players);
-		boolean game= true;
-	
-		while (game){
-			//Check if game is over
-			for( int s: getScore())
-			{
-				if(s>=WIN_SCORE){
-					game=false;
-					break;				
-				}
-			}
-			
-			
-			
-			
-			
-			
-			
-			
+		startup(players.length,players);					
 		}
 		
 		

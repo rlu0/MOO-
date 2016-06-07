@@ -10,6 +10,7 @@ private double y;
 private double RADIUS = 2.5;
 private int hp;
 private double direction;
+private int id;
 final double START_DIRECTION= 0; 
 Weapon [] weapons= new Weapon[10];
 
@@ -24,6 +25,7 @@ Player(double sx, double sy, Hitbox hit){
 	x=sx;
 	y=sy;
 	direction = START_DIRECTION;
+	
 }
 
 void shoot(int i){

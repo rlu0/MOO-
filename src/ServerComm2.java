@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 class ServerComm2
 {
@@ -20,7 +21,7 @@ class ServerComm2
 	static boolean running = true; // controls if the server is accepting
 									// clients
 	static ArrayList<ConnectionHandler> clientList = new ArrayList();
-
+	Player[] players;
 	static boolean[] clientsRunning = new boolean[8];
 	
 	int mapNum = 0;
@@ -147,14 +148,40 @@ class ServerComm2
 				}
 			}
 			output.println(clientList.indexOf(client)+mapNum+clientList.size());
+			
+				
 			while (running)
 			{ // loop unit a message is received
 				try
 				{
+					// Blah blah blah something about selecting game modes and starting
+						DeathMatch dm= new DeathMatch(clientsRunning)
+					
+					
+					
 					if (input.ready())
 					{ // check for an incoming message
 						data = input.readLine();
 						System.out.println(data);
+						//Data code book
+						// 0 is position update ( 0,PID,X,Y)
+						// 1 is a shot fired ( 1,PID,TYPE,X,Y,Direction)
+						// 2 is a kill ( 2,PID,VID)
+						StringTokenizer st = new StringTokenizer(data,",");
+						while(st.hasMoreTokens()){
+							if (st.nextToken().equals("0")){
+								
+							}
+							else if (st.nextToken().equals("1"))
+							{
+								
+							}
+							else
+							{
+								
+							}
+						}
+						
 						
 						if (data.toLowerCase().equals("quit"))
 						{
@@ -171,15 +198,7 @@ class ServerComm2
 							}
 						}
 
-//						for (ConnectionHandler Ch : clientList)
-//						{
-//
-//							output = new PrintWriter(Ch.getClient()
-//									.getOutputStream());
-//							output.println(data);
-//							output.flush();
-//
-//						}
+
 					}
 				}
 				catch (IOException e)
