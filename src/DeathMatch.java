@@ -4,6 +4,21 @@ import java.awt.event.KeyListener;
 public class DeathMatch extends gameMode{
 	private static final int WIN_SCORE =30;
 	
+void  kill(int killer, int victim){
+recieveKiller(killer);
+getVictim(victim);
+	}
+	
+	void recieveKiller( int pos){
+		addScore(pos)++;
+		
+	}
+	
+	void getVictim(int pos){
+		addDeath(pos);
+	}
+	
+	
 	DeathMatch(Player[] players){
 		setPlayers(players);
 		boolean game= true;
@@ -17,6 +32,10 @@ public class DeathMatch extends gameMode{
 					break;				
 				}
 			}
+			
+			
+			
+			
 			
 			
 			
