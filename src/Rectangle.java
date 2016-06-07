@@ -2,35 +2,38 @@
 public class Rectangle extends Hitbox {
 	
 	private int materialID;
-	private double x;
-	private double y;
+	private double x1;
+	private double y1;
+	private double x2;
+	private double y2;
 	private double width;
 	private double height;
 	private double angle;
 	
-	Rectangle (int materialID, double x, double y, double width, double height, double angle){
-		super(materialID);
-		this.x = x;
-		this.y = y;
+	Rectangle (int materialID, double x1, double y1, double width, double height, double angle){
+		this.x1 = x1;
+		this.y1 = y1;
 		this.width = width;
 		this.height = height;
 		this.angle = angle;
+		this.setX2(x1 + width);
+		this.setY2(y1 + height);
 	}
 
-	double getX() {
-		return x;
+	double getX1() {
+		return x1;
 	}
 
-	void setX(double x) {
-		this.x = x;
+	void setX1(double x) {
+		this.x1 = x1;
 	}
 
-	double getY() {
-		return y;
+	double getY1() {
+		return y1;
 	}
 
-	void setY(double y) {
-		this.y = y;
+	void setY1(double y) {
+		this.y1 = y1;
 	}
 
 	double getWidth() {
@@ -63,6 +66,22 @@ public class Rectangle extends Hitbox {
 
 	private void setMaterialID(int materialID) {
 		this.materialID = materialID;
+	}
+
+	double getX2() {
+		return x2;
+	}
+
+	void setX2(double x2) {
+		this.x2 = x2;
+	}
+
+	double getY2() {
+		return y2;
+	}
+
+	void setY2(double y2) {
+		this.y2 = y2;
 	}
 
 }

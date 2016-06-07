@@ -1,10 +1,8 @@
 
 public class Hitbox {
 
-	int materialID;
 
-	Hitbox(int materialID) {
-		this.materialID = materialID;
+	Hitbox() {
 	}
 
 	boolean isIntersect(Hitbox a, Hitbox b) {
@@ -96,8 +94,8 @@ public class Hitbox {
 	
 	private boolean RRIntersect(Rectangle a, Rectangle b){
 		
-		if ((a.getX()+a.getWidth()<b.getX() || b.getX()+b.getWidth()<a.getX()
-				|| a.getY()+a.getHeight()<b.getY() || b.getY()+b.getHeight()<a.getY())){
+		if ((a.getX2()<b.getX1() || b.getX2()<a.getX1()
+				|| a.getY2()<b.getY1() || b.getY2()<a.getY1())){
 			return true;
 		}
 		
@@ -106,18 +104,18 @@ public class Hitbox {
 	}
 	private boolean RCIntersect(Rectangle a, Circle b){
 		
-		if ((b.getX()>a.getX() && b.getX()<a.getX()+a.getWidth() && 
-			(b.getY()+b.getR()>a.getY() || b.getY()-b.getR()<a.getY()+a.getHeight())) ||
-			(b.getY()>a.getY() && b.getY()<a.getY()+a.getHeight() &&
-			(b.getX()-b.getR()<a.getX()+a.getWidth() || b.getX()+b.getR()>a.getX()))
+		if ((b.getX()>a.getX1() && b.getX()<a.getX2() && 
+			(b.getY()+b.getR()>a.getY1() || b.getY()-b.getR()<a.getY2())) ||
+			(b.getY()>a.getY1() && b.getY()<a.getY2()&&
+			(b.getX()-b.getR()<a.getX2() || b.getX()+b.getR()>a.getX1()))
 			){
 			return true;
 		}
 		
-		if (Math.sqrt(Math.pow(a.getX()-b.getX(), 2) + Math.pow(a.getY()-b.getY(), 2))<b.getR() ||
-			Math.sqrt(Math.pow(a.getX()+a.getWidth()-b.getX(), 2) + Math.pow(a.getY()-b.getY(), 2))<b.getR() ||
-			Math.sqrt(Math.pow(a.getX()+a.getWidth()-b.getX(), 2) + Math.pow(a.getY()+a.getHeight()-b.getY(), 2))<b.getR() ||
-			Math.sqrt(Math.pow(a.getX()-b.getX(), 2) + Math.pow(a.getY()+a.getHeight()-b.getY(), 2))<b.getR()){
+		if (Math.sqrt(Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2))<b.getR() ||
+			Math.sqrt(Math.pow(a.getX2()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2))<b.getR() ||
+			Math.sqrt(Math.pow(a.getX2()-b.getX(), 2) + Math.pow(a.getY2()-b.getY(), 2))<b.getR() ||
+			Math.sqrt(Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY2()-b.getY(), 2))<b.getR()){
 			return true;
 		}
 		
@@ -125,7 +123,46 @@ public class Hitbox {
 		
 	}
 	private boolean RLIntersect(Rectangle a, Line b){
-		return false;
+		
+		double lineA = b.getY2() - b.getY1();
+		double lineB = b.getX2() - b.getX1();
+		double lineC = lineA * b.getX1() + lineB * b.getY1();
+		
+		double upA = 0;
+		double upB = a.getX2()-a.getX1();
+		double upC = upB * a.getY1();
+		
+		double det = lineA*upB - upA*lineB;
+		if(det == 0){
+			//Lines are parallel
+		}else{
+			double x = (upB*lineC - lineB*upC)/det;
+			double y = (lineA*upC - upA*lineC)/det;
+			if (x>a.getX1() && x<a.getX2()){
+				
+			}
+		}
+		
+		double downA = 0;
+		double downB = a.getX2()-a.getX1();
+		double downC = upB * a.getY2();
+		
+		det = lineA*upB - upA*lineB;
+		if(det == 0){
+			//Lines are parallel
+		}else{
+			double x = (downB*lineC - lineB*downC)/det;
+			double y = (lineA*downC - downA*lineC)/det;
+			if (x>a.getX1() && x<a.getX2()){
+				
+			}
+		}
+		
+		
+		
+		if (){
+			
+		}
 		
 	}
 	private boolean CCIntersect(Circle a, Circle b){
