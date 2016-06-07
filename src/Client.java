@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -61,6 +62,12 @@ public class Client
 	static boolean dSent1 = true;
 	static boolean dSent2 = true;
 
+	// List of things:
+	ArrayList<Player> players = new ArrayList<Player>();
+	ArrayList<Wall> walls = new ArrayList<Wall>();
+	
+	
+	
 	/**
 	 * Main
 	 * 
