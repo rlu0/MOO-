@@ -122,14 +122,22 @@ public class Hitbox {
 		return false;
 		
 	}
-	private boolean RLIntersect(Rectangle a, Line b){
+	boolean RLIntersect(Rectangle a, Line b){
+		
+		double [] intersectsX = new double [4];
+		double [] intersectsY = new double [4];
+		
+		for (int i=0; i<4; i++){
+			intersectsX[i] = Double.MAX_VALUE;
+			intersectsY[i] = Double.MAX_VALUE;
+		}
 		
 		double lineA = b.getY2() - b.getY1();
-		double lineB = b.getX2() - b.getX1();
+		double lineB = b.getX1() - b.getX2();
 		double lineC = lineA * b.getX1() + lineB * b.getY1();
 		
 		double upA = 0;
-		double upB = a.getX2()-a.getX1();
+		double upB = a.getX1()-a.getX2();
 		double upC = upB * a.getY1();
 		
 		double det = lineA*upB - upA*lineB;
@@ -139,13 +147,14 @@ public class Hitbox {
 			double x = (upB*lineC - lineB*upC)/det;
 			double y = (lineA*upC - upA*lineC)/det;
 			if (x>a.getX1() && x<a.getX2()){
-				
+				intersectsX[0] = x;
+				intersectsY[0] = y;
 			}
 		}
 		
 		double downA = 0;
-		double downB = a.getX2()-a.getX1();
-		double downC = upB * a.getY2();
+		double downB = a.getX1()-a.getX2();
+		double downC = downB * a.getY2();
 		
 		det = lineA*upB - upA*lineB;
 		if(det == 0){
@@ -154,17 +163,66 @@ public class Hitbox {
 			double x = (downB*lineC - lineB*downC)/det;
 			double y = (lineA*downC - downA*lineC)/det;
 			if (x>a.getX1() && x<a.getX2()){
-				
+				intersectsX[1] = x;
+				intersectsY[1] = y;
 			}
 		}
 		
+		double leftA = a.getY2()-a.getY1();
+		double leftB = 0;
+		double leftC = leftA * a.getX1();
 		
-		
-		if (){
-			
+		det = lineA*leftB - leftA*lineB;
+		if(det == 0){
+			//Lines are parallel
+		}else{
+			double x = (leftB*lineC - lineB*leftC)/det;
+			double y = (lineA*leftC - leftA*lineC)/det;
+			if (y>a.getY1() && y<a.getY2()){
+				intersectsX[2] = x;
+				intersectsY[2] = y;
+			}
 		}
 		
+		double rightA = a.getY2()-a.getY1();
+		double rightB = 0;
+		double rightC = leftA * a.getX2();
+		
+		det = rightA*leftB - rightA*lineB;
+		if(det == 0){
+			//Lines are parallel
+		}else{
+			double x = (rightB*lineC - lineB*rightC)/det;
+			double y = (lineA*rightC - rightA*lineC)/det;
+			if (y>a.getY1() && y<a.getY2()){
+				intersectsX[3] = x;
+				intersectsY[3] = y;
+			}
+		}
+		
+		double minDist = Double.MAX_VALUE;
+		double minDistIndex = 0;
+		
+		for (int i=0; i<4; i++){
+			if (intersectsX[i] == Double.MAX_VALUE || intersectsY[i] == Double.MAX_VALUE){
+				break;
+			}
+			double currentDist = Math.sqrt(Math.pow(intersectsX[i]-b.getX1(), 2) + Math.pow(intersectsY[i]-b.getY1(), 2));
+			if (currentDist < minDist){
+				minDist = currentDist;
+				minDistIndex = i;
+			}
+		}
+		
+		if (minDist != Double.MAX_VALUE){
+			return true;
+		}
+		
+		
+		
 	}
+	
+	
 	private boolean CCIntersect(Circle a, Circle b){
 		if (Math.sqrt(Math.pow(b.getX()-a.getX(), 2) + Math.pow(b.getY()-a.getY(), 2)) < a.getR() + b.getR()){
 			return true;
