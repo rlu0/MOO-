@@ -5,7 +5,7 @@ public class Hitbox {
 	Hitbox() {
 	}
 
-	boolean isIntersect(Hitbox a, Hitbox b) {
+	/*boolean isIntersect(Hitbox a, Hitbox b) {
 		if (a instanceof Rectangle) {
 			if (b instanceof Rectangle) {
 				return RRIntersect((Rectangle)a,(Rectangle)b);
@@ -42,7 +42,7 @@ public class Hitbox {
 
 		return false;
 
-	}
+	}*/
 	
 	/*boolean isPolygonsIntersecting(Rectangle a, Rectangle b)
 	{
@@ -92,7 +92,7 @@ public class Hitbox {
 	    return true;
 	}*/
 	
-	private boolean RRIntersect(Rectangle a, Rectangle b){
+	boolean RRIntersect(Rectangle a, Rectangle b){
 		
 		if ((a.getX2()<b.getX1() || b.getX2()<a.getX1()
 				|| a.getY2()<b.getY1() || b.getY2()<a.getY1())){
@@ -122,7 +122,11 @@ public class Hitbox {
 		return false;
 		
 	}
-	boolean RLIntersect(Rectangle a, Line b){
+	double[] RLIntersect(Rectangle a, Line b){
+		
+		double [] intersectFinal = new double[2];
+		intersectFinal[0] = Double.MAX_VALUE;
+		intersectFinal[1] = Double.MAX_VALUE;
 		
 		double [] intersectsX = new double [4];
 		double [] intersectsY = new double [4];
@@ -201,7 +205,7 @@ public class Hitbox {
 		}
 		
 		double minDist = Double.MAX_VALUE;
-		double minDistIndex = 0;
+		int minDistIndex = 0;
 		
 		for (int i=0; i<4; i++){
 			if (intersectsX[i] == Double.MAX_VALUE || intersectsY[i] == Double.MAX_VALUE){
@@ -214,20 +218,27 @@ public class Hitbox {
 			}
 		}
 		
-		if (minDist != Double.MAX_VALUE){
-			return true;
+		if (minDist != Double.MAX_VALUE && minDist != Double.MAX_VALUE){
+			intersectFinal[0] = intersectsX[minDistIndex];
+			intersectFinal[1] = intersectsY[minDistIndex];
 		}
 		
-		
+		return intersectFinal;
 		
 	}
 	
 	
-	private boolean CCIntersect(Circle a, Circle b){
+	double[] CCIntersect(Circle a, Circle b){
+		
+		double [] intersectFinal = new double[2];
+		intersectFinal[0] = Double.MAX_VALUE; // X coordinate
+		intersectFinal[1] = Double.MAX_VALUE; // Y coordinate
+		
 		if (Math.sqrt(Math.pow(b.getX()-a.getX(), 2) + Math.pow(b.getY()-a.getY(), 2)) < a.getR() + b.getR()){
-			return true;
+			intersectFinal[0] = (a.getX()*b.getR()+b.getX()*a.getR())/2;
+			intersectFinal[0] = (a.getY()*b.getR()+b.getY()*a.getR())/2;
 		}
-		return false;
+		return intersectFinal;
 		
 	}
 	private boolean CLIntersect(Circle a, Line b){
