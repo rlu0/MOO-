@@ -27,6 +27,8 @@ getVictim(victim);
 		return false;
 	}
 	
+	DeathMatch(){
+	}
 	DeathMatch(Player[] players){
 		startup(players.length,players);					
 		}

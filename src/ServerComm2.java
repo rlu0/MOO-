@@ -23,8 +23,9 @@ class ServerComm2
 	static ArrayList<ConnectionHandler> clientList = new ArrayList();
 	Player[] players;
 	static boolean[] clientsRunning = new boolean[8];
-	
+	int gameType;
 	int mapNum = 0;
+	int currentMap[][];
 
 	public static void main(String[] args)
 	{
@@ -36,7 +37,11 @@ class ServerComm2
 		Scanner keyboard = new Scanner(System.in);
 		System.out.println("Please Enter the port to watch:");
 		int port = keyboard.nextInt();
-
+		//Game Mode Key
+		//1 = deathmatch
+		//2 = ???
+		System.out.println("Please enter the gametype:");
+		gameType= keyboard.nextInt();
 		Socket client = null;// hold the client connection
 
 		try
@@ -95,15 +100,62 @@ class ServerComm2
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// ***** Inner class - thread for client connection
 	class ConnectionHandler implements Runnable
 	{
+		
 		private PrintWriter output; // assign printwriter to network stream
 		private BufferedReader input; // Stream for network input
 		private Socket client; // keeps track of the client socket
 		private boolean running;
 		String name;
 		ArrayList<ConnectionHandler> clientList = new ArrayList();
+		
+		
+		
+		
+		
+		void updateLocations(String msg){
+			for (ConnectionHandler cc: clientList ){
+				output.println(msg);
+				output.flush();
+			}
+		}
+		void giveID(){
+			int i=0;
+			for (ConnectionHandler cc: clientList)
+			{
+				output.println(i);
+				output.flush();
+				i++;
+			}
+		}
+		
+		
+		
+		
+		
 		
 		/*
 		 * ConnectionHandler Constructor
@@ -149,14 +201,33 @@ class ServerComm2
 			}
 			output.println(clientList.indexOf(client)+mapNum+clientList.size());
 			
-				
+			
 			while (running)
-			{ // loop unit a message is received
+			{ // loop until a server is closed
 				try
 				{
 					// Blah blah blah something about selecting game modes and starting
-						DeathMatch dm= new DeathMatch(clientsRunning)
+				
+					//create the players
+					players = new Player[clientList.size()];
+					int ff= 0;
+					for (ConnectionHandler c: clientList)
+					{ 
+						Hitbox h= new Hitbox();
+						
+						double x,y;
+						do{
+							 x =Math.random();
+							 y =Math.random();
+							
+							
+					}while(currentMap[(int)x][(int)y] !=0);
+						
+						players[ff]= new Player(x,y,h);
 					
+						updateLocations(x+" "+y+" "+ff);
+					}
+				
 					
 					
 					if (input.ready())
