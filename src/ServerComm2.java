@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-class ServerComm2
-{
+class ServerComm2 {
 
 	ServerSocket serverSock;// server socket for connection
 	static boolean running = true; // controls if the server is accepting
@@ -26,53 +25,45 @@ class ServerComm2
 	int gameType;
 	int mapNum = 0;
 	int currentMap[][];
+	double playerPositions[][] = new double[8][2];
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		new ServerComm2().go(); // start the server
 	}
 
-	public void go()
-	{
+	public void go() {
 		Scanner keyboard = new Scanner(System.in);
 		System.out.println("Please Enter the port to watch:");
 		int port = keyboard.nextInt();
-		//Game Mode Key
-		//1 = deathmatch
-		//2 = ???
+		// Game Mode Key
+		// 1 = deathmatch
+		// 2 = ???
 		System.out.println("Please enter the gametype:");
-		gameType= keyboard.nextInt();
+		gameType = keyboard.nextInt();
 		Socket client = null;// hold the client connection
 
-		try
-		{
+		try {
 			serverSock = new ServerSocket(port);
 			// serverSock.setSoTimeout(50000); //5 second timeout
 
-			while (running)
-			{
+			while (running) {
 				Boolean isSpace = false;
 				int index = 0;
-				for (int i = 0; i < clientsRunning.length; i++)
-				{
-					if (clientsRunning[i] == false)
-					{
+				for (int i = 0; i < clientsRunning.length; i++) {
+					if (clientsRunning[i] == false) {
 						isSpace = true;
 						index = i;
 					}
 				}
-				if (isSpace == true)
-				{
+				if (isSpace == true) {
 					clientsRunning[index] = true;
 					client = serverSock.accept();
 					System.out.println("Client connected");
 
-					ConnectionHandler clientHandler = new ConnectionHandler(
-							client);
+					ConnectionHandler clientHandler = new ConnectionHandler(client);
 
 					clientList.add(clientHandler);
-					for (int i = 0; i < clientList.size(); i++)
-					{
+					for (int i = 0; i < clientList.size(); i++) {
 						ConnectionHandler yo = clientList.get(i);
 						if (yo != null)
 							yo.setPlayerList(clientList);
@@ -83,97 +74,81 @@ class ServerComm2
 				}
 
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// System.out.println("Error accepting connection");
 			// close all and quit
-			try
-			{
+			try {
 				client.close();
-			}
-			catch (Exception e1)
-			{
+			} catch (Exception e1) {
 				System.out.println("Failed to close socket");
 			}
 			System.exit(-1);
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// ***** Inner class - thread for client connection
-	class ConnectionHandler implements Runnable
-	{
-		
+	class ConnectionHandler implements Runnable {
+
 		private PrintWriter output; // assign printwriter to network stream
 		private BufferedReader input; // Stream for network input
 		private Socket client; // keeps track of the client socket
 		private boolean running;
 		String name;
 		ArrayList<ConnectionHandler> clientList = new ArrayList();
-		
-		
-		
-		
-		
-		void updateLocations(String msg){
-			for (ConnectionHandler cc: clientList ){
-				output.println(msg);
-				output.flush();
+
+		void updateLocations() {
+			int i = 0;
+			for (ConnectionHandler c : clientList) {
+				for (ConnectionHandler cc : clientList) {
+					try {
+						output= new PrintWriter(client.getOutputStream());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						System.out.println("Ray's computer is satan incarnate");
+					}
+					output.println(playerPositions[i][0] + " " + playerPositions[i][1] + " " + i);
+					output.flush();
+					i++;
+				}
+				i = 0;
+
 			}
 		}
-		void giveID(){
-			int i=0;
-			for (ConnectionHandler cc: clientList)
-			{
+
+		void playerUpdate(double x, double y, int i) {
+			
+			playerPositions[i][0]=x;
+			playerPositions[i][1]=y;
+
+		}
+
+		void giveID() {
+			int i = 0;
+			for (ConnectionHandler cc : clientList) {
+				try {
+					output= new PrintWriter(client.getOutputStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Ray's computer is satan incarnate");
+				}
 				output.println(i);
 				output.flush();
 				i++;
 			}
 		}
-		
-		
-		
-		
-		
-		
+
 		/*
 		 * ConnectionHandler Constructor
 		 * 
 		 * @param the socket belonging to this client connection
 		 */
-		ConnectionHandler(Socket s)
-		{
+		ConnectionHandler(Socket s) {
 			this.client = s; // constructor assigns client to this
-			try
-			{ // assign all connections to client
+			try { // assign all connections to client
 				this.output = new PrintWriter(client.getOutputStream());
-				InputStreamReader stream = new InputStreamReader(
-						client.getInputStream());
+				InputStreamReader stream = new InputStreamReader(client.getInputStream());
 				this.input = new BufferedReader(stream);
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			running = true;
@@ -182,98 +157,76 @@ class ServerComm2
 		/*
 		 * run executed on start of thread
 		 */
-		public void run()
-		{
+		public void run() {
 
 			// Get a message from the client
 			String data = "";
-			while (clientList == null)
-			{
-				try
-				{
+			while (clientList == null) {
+				try {
 					Thread.sleep(100);
-				}
-				catch (InterruptedException e)
-				{
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			output.println(clientList.indexOf(client)+mapNum+clientList.size());
-			
-			
-			while (running)
-			{ // loop until a server is closed
-				try
-				{
-					// Blah blah blah something about selecting game modes and starting
-				
-					//create the players
+			output.println(clientList.indexOf(client) + mapNum + clientList.size());
+
+			while (running) { // loop until a server is closed
+				try {
+					// Blah blah blah something about selecting game modes and
+					// starting
+
+					// create the players
 					players = new Player[clientList.size()];
-					int ff= 0;
-					for (ConnectionHandler c: clientList)
-					{ 
-						Hitbox h= new Hitbox();
-						
-						double x,y;
-						do{
-							 x =Math.random();
-							 y =Math.random();
-							
-							
-					}while(currentMap[(int)x][(int)y] !=0);
-						
-						players[ff]= new Player(x,y,h);
-					
-						updateLocations(x+" "+y+" "+ff);
+					int ff = 0;
+					for (ConnectionHandler c : clientList) {
+						Hitbox h = new Hitbox();
+
+						double x, y;
+						do {
+							x = Math.random();
+							y = Math.random();
+
+						} while (currentMap[(int) x][(int) y] != 0);
+
+						players[ff] = new Player(x, y, h);
+
+						updateLocations();
+
 					}
-				
-					
-					
-					if (input.ready())
-					{ // check for an incoming message
+
+					if (input.ready()) { // check for an incoming message
 						data = input.readLine();
 						System.out.println(data);
-						//Data code book
+						// Data code book
 						// 0 is position update ( 0,PID,X,Y)
 						// 1 is a shot fired ( 1,PID,TYPE,X,Y,Direction)
 						// 2 is a kill ( 2,PID,VID)
-						StringTokenizer st = new StringTokenizer(data,",");
-						while(st.hasMoreTokens()){
-							if (st.nextToken().equals("0")){
-								
-							}
-							else if (st.nextToken().equals("1"))
-							{
-								
-							}
-							else
-							{
-								
+						StringTokenizer st = new StringTokenizer(data, ",");
+						while (st.hasMoreTokens()) {
+							if (st.nextToken().equals("0")) {
+
+								updateLocations();
+							} else if (st.nextToken().equals("1")) {
+
+							} else {
+
 							}
 						}
-						
-						
-						if (data.toLowerCase().equals("quit"))
-						{
+
+						if (data.toLowerCase().equals("quit")) {
 							running = false;
 							boolean done = false;
-							for (int i = 0; i < clientsRunning.length
-									&& done == false; i++)
-							{
-								if (clientsRunning[i] = true)
-								{
+							for (int i = 0; i < clientsRunning.length && done == false; i++) {
+								if (clientsRunning[i] = true) {
 									clientsRunning[i] = false;
 									done = true;
 								}
 							}
 						}
 
-
 					}
-				}
-				catch (IOException e)
-				{
+				} catch (IOException e) {
 					System.out.println("Failed to receive msg from the client");
 					e.printStackTrace();
 				}
@@ -284,30 +237,24 @@ class ServerComm2
 			output.flush();
 
 			// close the socket
-			try
-			{
+			try {
 				input.close();
 				output.close();
 				client.close();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				System.out.println("Failed to close socket");
 			}
 		} // end of run()
 
-		Socket getClient()
-		{
+		Socket getClient() {
 			return client;
 
 		}
 
-		void setPlayerList(ArrayList<ConnectionHandler> in)
-		{
+		void setPlayerList(ArrayList<ConnectionHandler> in) {
 			this.clientList = in;
 			output.println("01 " + clientList.indexOf(client) + clientList.size());
 		}
-		
 
 	} // end of inner class
 } // end of ChatProgramServer class
