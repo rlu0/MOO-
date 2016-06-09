@@ -102,22 +102,67 @@ public class Hitbox {
 		return false;
 		
 	}
-	private boolean RCIntersect(Rectangle a, Circle b){
+	double [] RCIntersect(Rectangle a, Circle b){
 		
-		if ((b.getX()>a.getX1() && b.getX()<a.getX2() && 
-			(b.getY()+b.getR()>a.getY1() || b.getY()-b.getR()<a.getY2())) ||
-			(b.getY()>a.getY1() && b.getY()<a.getY2()&&
-			(b.getX()-b.getR()<a.getX2() || b.getX()+b.getR()>a.getX1()))
-			){
-			return true;
+		double [] coord = new double [2];
+		
+		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()>a.getY1()-b.getR() && b.getY()<a.getY1()){
+			coord[0] = b.getX();
+			coord[1] = a.getY1();
+		}
+		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()>a.getY2() && b.getY()<a.getY2()+b.getR()){
+			
+		}
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2() && b.getX()<a.getX2()+b.getR()){
+	
+		}
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2() && b.getX()<a.getX2()+b.getR()){
+	
 		}
 		
-		if (Math.sqrt(Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2))<b.getR() ||
-			Math.sqrt(Math.pow(a.getX2()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2))<b.getR() ||
-			Math.sqrt(Math.pow(a.getX2()-b.getX(), 2) + Math.pow(a.getY2()-b.getY(), 2))<b.getR() ||
-			Math.sqrt(Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY2()-b.getY(), 2))<b.getR()){
-			return true;
+		
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()-b.getR() < a.getX2() && 
+			b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()+b.getR() > a.getX1() &&
+			b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()-b.getR() > a.getY1() &&
+			b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()+b.getR() < a.getY2()){
+			coord[0] = a.getX2();
+			coord[1] = b.getY();
 		}
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()+b.getR() > a.getX1()){
+			coord[0] = a.getX1();
+			coord[1] = b.getY();
+		}
+		
+		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()-b.getR() > a.getY1()){
+			coord[0] = b.getX();
+			coord[1] = a.getY1();
+		}
+		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()+b.getR() < a.getY2()){
+			coord[0] = b.getX();
+			coord[1] = a.getY2();
+		}
+		
+		if (Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2)<b.getR()*b.getR()){
+			coord[0] = a.getX1();
+			coord[1] = a.getY1();
+			return coord;
+		}
+		if (Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY2()-b.getY(), 2)<b.getR()*b.getR()){
+			coord[0] = a.getX1();
+			coord[1] = a.getY2();
+			return coord;
+		}
+		if (Math.pow(a.getX2()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2)<b.getR()*b.getR()){
+			coord[0] = a.getX2();
+			coord[1] = a.getY1();
+			return coord;
+		}
+		if (Math.pow(a.getX2()-b.getX(), 2) + Math.pow(a.getY2()-b.getY(), 2)<b.getR()*b.getR()){
+			coord[0] = a.getX2();
+			coord[1] = a.getY2();
+			return coord;
+		}
+		
 		
 		return false;
 		
