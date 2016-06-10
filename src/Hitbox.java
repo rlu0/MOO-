@@ -186,10 +186,13 @@ public class Hitbox {
 			intersectsY[i] = Double.MAX_VALUE;
 		}
 		
+		// Line equation
 		double lineA = b.getY2() - b.getY1();
 		double lineB = b.getX1() - b.getX2();
 		double lineC = lineA * b.getX1() + lineB * b.getY1();
 		
+		
+		//Upper rectangle line
 		double upA = 0;
 		double upB = a.getX1()-a.getX2();
 		double upC = upB * a.getY1();
@@ -206,6 +209,8 @@ public class Hitbox {
 			}
 		}
 		
+		
+		//Down rectangle line
 		double downA = 0;
 		double downB = a.getX1()-a.getX2();
 		double downC = downB * a.getY2();
@@ -222,6 +227,8 @@ public class Hitbox {
 			}
 		}
 		
+		
+		//Left rectangle line
 		double leftA = a.getY2()-a.getY1();
 		double leftB = 0;
 		double leftC = leftA * a.getX1();
@@ -238,6 +245,8 @@ public class Hitbox {
 			}
 		}
 		
+		
+		//right rectangle line
 		double rightA = a.getY2()-a.getY1();
 		double rightB = 0;
 		double rightC = leftA * a.getX2();
@@ -254,14 +263,16 @@ public class Hitbox {
 			}
 		}
 		
-		double minDist = Double.MAX_VALUE;
+		
+		// Find closest intersection point
+		double minDist = Double.MAX_VALUE; // Distance not square rooted
 		int minDistIndex = 0;
 		
 		for (int i=0; i<4; i++){
 			if (intersectsX[i] == Double.MAX_VALUE || intersectsY[i] == Double.MAX_VALUE){
 				break;
 			}
-			double currentDist = Math.sqrt(Math.pow(intersectsX[i]-b.getX1(), 2) + Math.pow(intersectsY[i]-b.getY1(), 2));
+			double currentDist = Math.pow(intersectsX[i]-b.getX1(), 2) + Math.pow(intersectsY[i]-b.getY1(), 2);
 			if (currentDist < minDist){
 				minDist = currentDist;
 				minDistIndex = i;
