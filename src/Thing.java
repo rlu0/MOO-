@@ -1,11 +1,9 @@
 public class Thing {
-	Hitbox hit;
 	
 	int materialId;
 	
-	Thing(int materialId, Hitbox hit){
+	Thing(int materialId){
 		this.materialId = materialId;
-		this.hit = hit;
 	}
 	
 	/*Material ID index

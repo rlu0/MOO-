@@ -1,5 +1,5 @@
 
-public class Rectangle extends Hitbox {
+public class RectangleHit extends Hitbox {
 	
 	private int materialID;
 	private double x1;
@@ -10,12 +10,11 @@ public class Rectangle extends Hitbox {
 	private double height;
 	private double angle;
 	
-	Rectangle (int materialID, double x1, double y1, double width, double height, double angle){
-		this.x1 = x1;
-		this.y1 = y1;
-		this.width = width;
-		this.height = height;
-		this.angle = angle;
+	RectangleHit (double x1, double y1, double width, double height){
+		this.setX1(x1);
+		this.setX2(x2);
+		this.setWidth(width);
+		this.setHeight(height);
 		this.setX2(x1 + width);
 		this.setY2(y1 + height);
 	}

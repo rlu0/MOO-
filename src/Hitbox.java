@@ -92,7 +92,7 @@ public class Hitbox {
 	    return true;
 	}*/
 	
-	boolean RRIntersect(Rectangle a, Rectangle b){
+	boolean RRIntersect(RectangleHit a, RectangleHit b){
 		
 		if ((a.getX2()<b.getX1() || b.getX2()<a.getX1()
 				|| a.getY2()<b.getY1() || b.getY2()<a.getY1())){
@@ -102,7 +102,7 @@ public class Hitbox {
 		return false;
 		
 	}
-	double [] RCIntersect(Rectangle a, Circle b){
+	double [] RCIntersect(RectangleHit a, CircleHit b){
 		
 		double [] coord = new double [2];
 		
@@ -172,7 +172,7 @@ public class Hitbox {
 		
 		return coord;
 	}
-	double[] RLIntersect(Rectangle a, Line b){
+	double[] RLIntersect(RectangleHit a, Line b){
 		
 		double [] intersectFinal = new double[2];
 		intersectFinal[0] = Double.MAX_VALUE;
@@ -289,7 +289,7 @@ public class Hitbox {
 	}
 	
 	
-	double[] CCIntersect(Circle a, Circle b){
+	double[] CCIntersect(CircleHit a, CircleHit b){
 		
 		double [] intersectFinal = new double[2];
 		intersectFinal[0] = Double.MAX_VALUE; // X coordinate
@@ -302,7 +302,7 @@ public class Hitbox {
 		return intersectFinal;
 		
 	}
-	private boolean CLIntersect(Circle a, Line b){
+	private boolean CLIntersect(CircleHit a, Line b){
 		return false;
 		
 	}

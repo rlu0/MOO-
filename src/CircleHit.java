@@ -1,12 +1,12 @@
 
-public class Circle extends Hitbox{
+public class CircleHit extends Hitbox{
 
 	private double x;
 	private double y;
 	private double r;
 	
-	Circle(int materialID) {
-		super(materialID);
+	CircleHit(double x, double y, double r) {
+		super();
 		this.x = x;
 		this.y = y;
 		this.r = r;
