@@ -109,19 +109,26 @@ public class Hitbox {
 		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()>a.getY1()-b.getR() && b.getY()<a.getY1()){
 			coord[0] = b.getX();
 			coord[1] = a.getY1();
+			return coord;
 		}
 		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()>a.getY2() && b.getY()<a.getY2()+b.getR()){
-			
+			coord[0] = b.getX();
+			coord[1] = a.getY2();
+			return coord;
 		}
 		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2() && b.getX()<a.getX2()+b.getR()){
-	
+			coord[0] = a.getX2();
+			coord[1] = b.getY();
+			return coord;
 		}
-		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2() && b.getX()<a.getX2()+b.getR()){
-	
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2()-b.getR() && b.getX()<a.getX1()){
+			coord[0] = a.getX1();
+			coord[1] = b.getY();
+			return coord;
 		}
 		
 		
-		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()-b.getR() < a.getX2() && 
+		/*if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()-b.getR() < a.getX2() && 
 			b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()+b.getR() > a.getX1() &&
 			b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()-b.getR() > a.getY1() &&
 			b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()+b.getR() < a.getY2()){
@@ -140,7 +147,7 @@ public class Hitbox {
 		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()+b.getR() < a.getY2()){
 			coord[0] = b.getX();
 			coord[1] = a.getY2();
-		}
+		}*/
 		
 		if (Math.pow(a.getX1()-b.getX(), 2) + Math.pow(a.getY1()-b.getY(), 2)<b.getR()*b.getR()){
 			coord[0] = a.getX1();
@@ -163,9 +170,7 @@ public class Hitbox {
 			return coord;
 		}
 		
-		
-		return false;
-		
+		return coord;
 	}
 	double[] RLIntersect(Rectangle a, Line b){
 		
