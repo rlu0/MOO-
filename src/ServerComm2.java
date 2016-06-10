@@ -194,23 +194,28 @@ class ServerComm2 {
 						updateLocations();
 
 					}
-
+					DeathMatch dm=new DeathMatch(players);
 					if (input.ready()) { // check for an incoming message
 						data = input.readLine();
 						System.out.println(data);
 						// Data code book
 						// 0 is position update ( 0,PID,X,Y)
 						// 1 is a shot fired ( 1,PID,TYPE,X,Y,Direction)
-						// 2 is a kill ( 2,PID,VID)
+						// 2 is a kill ( 2,VID,KID)
 						StringTokenizer st = new StringTokenizer(data, ",");
 						while (st.hasMoreTokens()) {
 							if (st.nextToken().equals("0")) {
-
+								playerUpdate(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Integer.parseInt(st.nextToken()));
 								updateLocations();
 							} else if (st.nextToken().equals("1")) {
 
 							} else {
-
+								int ded= Integer.parseInt(st.nextToken());
+								playerUpdate(-1,-1,ded);
+								dm.addDeath(ded);
+								dm.addScore(1, Integer.parseInt(st.nextToken()));
+								if (dm.checkWinner())
+									running=false;
 							}
 						}
 

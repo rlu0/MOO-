@@ -38,4 +38,4 @@ getVictim(victim);
 	}
 	
 	
-}
+
