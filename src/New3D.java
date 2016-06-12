@@ -188,7 +188,7 @@ public class New3D
 			window.requestFocus();
 			if (laPressed == true)
 			{
-				//System.out.println("ye");
+				// System.out.println("ye");
 				if (direction + 0.05 < 2 * Math.PI)
 				{
 					direction += 0.05;
@@ -200,7 +200,7 @@ public class New3D
 			}
 			if (raPressed == true)
 			{
-				//System.out.println("ye");
+				// System.out.println("ye");
 				if (direction - 0.05 > 0)
 				{
 					direction -= 0.05;
@@ -272,11 +272,11 @@ public class New3D
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
 				{
 					xVal = walkrate
-							* (Math.cos(2*Math.PI - direction));
+							* (Math.cos(2 * Math.PI - direction));
 					if (playerx + xVal > 0)
 					{
 						yVal = walkrate
-								* (Math.sin(2*Math.PI - direction));
+								* (Math.sin(2 * Math.PI - direction));
 						if (playery + yVal < sizey / 10)
 						{
 							if (map[(int) (playery + yVal)][(int) (playerx
@@ -377,11 +377,11 @@ public class New3D
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
 				{
 					xVal = walkrate
-							* (Math.cos(2*Math.PI - direction));
+							* (Math.cos(2 * Math.PI - direction));
 					if (playerx - xVal > 0)
 					{
 						yVal = walkrate
-								* (Math.sin(2*Math.PI - direction));
+								* (Math.sin(2 * Math.PI - direction));
 						if (playery + yVal < sizey / 10)
 						{
 							if (map[(int) (playery - yVal)][(int) (playerx
@@ -491,11 +491,11 @@ public class New3D
 				}
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(2*Math.PI - direction));
+					xVal = walkrate * (Math.cos(2 * Math.PI - direction));
 					if (playerx - xVal > 0)
 					{
 						yVal = walkrate
-								* (Math.sin(2*Math.PI - direction));
+								* (Math.sin(2 * Math.PI - direction));
 						if (playery - yVal > 0)
 						{
 							if (map[(int) (playery - yVal)][(int) (playerx
@@ -609,11 +609,11 @@ public class New3D
 				}
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(2*Math.PI - direction));
+					xVal = walkrate * (Math.cos(2 * Math.PI - direction));
 					if (playerx - xVal < sizex / 10)
 					{
 						yVal = walkrate
-								* (Math.sin(2*Math.PI - direction));
+								* (Math.sin(2 * Math.PI - direction));
 						if (playery + yVal > 0)
 						{
 							if (map[(int) (playery + yVal)][(int) (playerx
@@ -746,7 +746,7 @@ public class New3D
 					// uber = 3;
 					tempx = playerx + i * 0.1;
 					tempy = playery
-							+ (Math.tan(2*Math.PI - angle) * i * 0.1);
+							+ (Math.tan(2 * Math.PI - angle) * i * 0.1);
 				}
 				else if (angle == 0)
 				{
@@ -803,7 +803,8 @@ public class New3D
 						{
 							tempy = playery + i * 0.1;
 							tempx = playerx
-									+ ((i * 0.1) / Math.tan(2*Math.PI - angle));
+									+ ((i * 0.1)
+											/ Math.tan(2 * Math.PI - angle));
 						}
 						else if (angle == 0)
 						{
@@ -881,9 +882,18 @@ public class New3D
 
 				double distA = distance(newPt);
 				int col = (int) (distA);
-				Color color = new Color((int) (Math.random() * 256),
-						(int) (Math.random() * 256),
-						(int) (Math.random() * 256));
+				Color color;
+				if (distA < 1)
+				{
+					color = new Color(255, 0, 0);
+				}
+				else
+				{
+					color = new Color((int) (255 / distA), 0, 0);
+				}
+				// color = new Color((int) (Math.random() * 256),
+				// (int) (Math.random() * 256),
+				// (int) (Math.random() * 256));
 				g.setColor(color);
 				g.drawLine(sizex / 2 - i,
 						(int) ((sizey / 2.0) - 225.0 / distA), sizex / 2
@@ -901,9 +911,18 @@ public class New3D
 				// distA = distance(newPt);
 				distA = distance(newPt);
 
-				color = new Color((int) (Math.random() * 256),
-						(int) (Math.random() * 256),
-						(int) (Math.random() * 256));
+				if (distA < 1)
+				{
+					color = new Color(255, 0, 0);
+				}
+				else
+				{
+					color = new Color((int) (255 / distA), 0, 0);
+				}
+
+				// color = new Color((int) (Math.random() * 256),
+				// (int) (Math.random() * 256),
+				// (int) (Math.random() * 256));
 				g.setColor(color);
 				g.drawLine(sizex / 2 + i,
 						(int) ((sizey / 2.0) - 225.0 / distA), sizex / 2
