@@ -21,15 +21,25 @@ public class Vector {
 	
 	void calcLengthAngle(){
 		length = Math.sqrt(x*x + y*y);
-		setAngle( Math.tan(y/x));
+		double newAngle;
+		if (x==0){
+			newAngle = 0;
+		}
+		else {
+			newAngle = Math.tan(y/x);
+		}
+		if(y > 0){
+			newAngle += Math.PI;
+		}
+		setAngle(newAngle);
 	}
 	
 	void calcComponents(){
-		this.x = Math.cos(angle) * length;
-		this.y = Math.sin(angle) * length;
-		if (angle > Math.PI){
-			y *= -1;
+		x = Math.cos(angle) * length;
+		y = Math.sin(angle) * length;
+		if (angle >= Math.PI){
 			x *= -1;
+			y *= -1;
 		}
 	}
 	
@@ -54,13 +64,15 @@ public class Vector {
 		while (this.angle < 0){
 			this.angle += Math.PI*2;
 		}
-		while (this.angle > Math.PI*2){
+		while (this.angle >= Math.PI*2){
 			this.angle -= Math.PI*2;
 		}
 	}
 	
-	Vector add(Vector a, Vector b){
-		return new Vector(a.x+b.x, a.y+b.y, true);
+	void add(Vector a){
+		setX(getX() + a.x);
+		setY(getY() + a.y);
+		calcLengthAngle();
 	}
 	
 

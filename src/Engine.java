@@ -14,9 +14,12 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	Player [] players;
 	Wall [] walls;
 	
-	double forwardAccel = 0.005;
-	double sidewaysAccel = 0.003;
-	double backwardAccel = 0.003;
+	double forwardAccel = 0.001;
+	double sidewaysAccel = 0.001;
+	double backwardAccel = 0.001;
+	double quadDrag = 0;
+	double linearDrag = 0.03d;
+	double constDrag = 0.0001;
 	
 	int drawScale = 25;
 	
@@ -31,6 +34,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		// Init GAME VARS
 		players = new Player [1];
 		players[0] = new Player(4, 4, new CircleHit(5,5,0.5));
+		players[0].direction = (Math.PI/2);
 		walls = new Wall [4];
 		walls[0] = new Wall(0, 0, 10, 1);
 		walls[1] = new Wall(9, 1, 1, 8);
@@ -44,7 +48,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		
 		
 		// Init listeners
-		addKeyListener(this);
+		this.addKeyListener(this);
 		
 	}
 	
@@ -103,25 +107,41 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				Vector moveForce = new Vector (0,0,true);
 				
 				if (players[i].isMoveForward){
-					moveForce = moveForce.add(moveForce, new Vector(forwardAccel,players[i].direction,false));
+					moveForce.add(new Vector(-forwardAccel,players[i].direction,false));
 				}
 				if (players[i].isMoveBack){
-					moveForce = moveForce.add(moveForce, new Vector(backwardAccel,players[i].direction + Math.PI,false));
+					moveForce.add(new Vector(backwardAccel,players[i].direction,false));
 				}
 				if (players[i].isMoveRight){
-					moveForce = moveForce.add(moveForce, new Vector(sidewaysAccel,players[i].direction - (Math.PI/2),false));
+					moveForce.add(new Vector(sidewaysAccel,players[i].direction - (Math.PI/2),false));
 				}
 				if (players[i].isMoveLeft){
-					moveForce = moveForce.add(moveForce, new Vector(sidewaysAccel,players[i].direction + (Math.PI/2),false));
+					moveForce.add(new Vector(-sidewaysAccel,players[i].direction + (Math.PI/2),false));
 				}
 				
-				// add movement vector to acceleration
-				players[i].acceleration = players[i].acceleration.add(players[i].acceleration,moveForce);
+				// set movement vector to acceleration
+				players[i].acceleration = moveForce;
 				
 				// add acceleration to velocity
 				players[i].acceleration.calcLengthAngle();
-				players[i].velocity = players[i].velocity.add(players[i].velocity, players[i].acceleration);
+				players[i].velocity.add(players[i].acceleration);
+
+
+				
+				// add drag to velocity
+				//double playerSpeed = players[i].velocity.length;
+				//players[i].velocity.length -= playerSpeed*playerSpeed*quadDrag;
+				//players[i].velocity.length -= playerSpeed*linearDrag;
+				//players[i].velocity.length = Math.max(playerSpeed-constDrag, 0);
+				//players[i].velocity.calcComponents();
+				players[i].velocity.x -= players[i].velocity.x * linearDrag;
+				players[i].velocity.y -= players[i].velocity.y * linearDrag;
 				players[i].velocity.calcLengthAngle();
+				
+				System.out.println(players[i].direction);
+				System.out.println(players[i].velocity.length+" "+Math.toDegrees(players[i].direction));
+				System.out.println(players[i].velocity.getX()+" "+players[i].velocity.getY());
+				
 				
 				// add velocity to position
 				players[i].setX(players[i].getX() + players[i].velocity.getX());
@@ -129,8 +149,6 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				
 				
 			}
-			
-			System.out.println("looping");
 
 			
 			
@@ -140,7 +158,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 			long currentDelay = frameTime - endTime - startTime;
 			
 			try {
-				Thread.sleep(16);
+				Thread.sleep(28);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -164,6 +182,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				frame.setLocationRelativeTo(null);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
+				e.requestFocusInWindow();
 			}
 		});
 
@@ -200,16 +219,16 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		
-		if (key == KeyEvent.VK_W){
+		if (key == KeyEvent.VK_W && players[0].isMoveForward){
 			players[0].isMoveForward = false;
 		}
-		if (key == KeyEvent.VK_S){
+		if (key == KeyEvent.VK_S && players[0].isMoveBack){
 			players[0].isMoveBack = false;
 		}
-		if (key == KeyEvent.VK_D){
+		if (key == KeyEvent.VK_D && players[0].isMoveRight){
 			players[0].isMoveRight = false;
 		}
-		if (key == KeyEvent.VK_A){
+		if (key == KeyEvent.VK_A && players[0].isMoveLeft){
 			players[0].isMoveLeft = false;
 		}
 	}
