@@ -14,12 +14,12 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	Player [] players;
 	Wall [] walls;
 	
-	double forwardAccel = 0.001;
-	double sidewaysAccel = 0.001;
-	double backwardAccel = 0.001;
+	double forwardAccel = 0.02;
+	double sidewaysAccel = 0.02;
+	double backwardAccel = 0.02;
 	double quadDrag = 0;
-	double linearDrag = 0.03d;
-	double constDrag = 0.0001;
+	double linearDrag = 0.1;
+	double constDrag = 0.006;
 	
 	int drawScale = 25;
 	
@@ -107,16 +107,16 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				Vector moveForce = new Vector (0,0,true);
 				
 				if (players[i].isMoveForward){
-					moveForce.add(new Vector(-forwardAccel,players[i].direction,false));
+					moveForce.addComponents(new Vector(-forwardAccel,players[i].direction,false));
 				}
 				if (players[i].isMoveBack){
-					moveForce.add(new Vector(backwardAccel,players[i].direction,false));
+					moveForce.addComponents(new Vector(backwardAccel,players[i].direction,false));
 				}
 				if (players[i].isMoveRight){
-					moveForce.add(new Vector(sidewaysAccel,players[i].direction - (Math.PI/2),false));
+					moveForce.addComponents(new Vector(sidewaysAccel,players[i].direction - (Math.PI/2),false));
 				}
 				if (players[i].isMoveLeft){
-					moveForce.add(new Vector(-sidewaysAccel,players[i].direction + (Math.PI/2),false));
+					moveForce.addComponents(new Vector(-sidewaysAccel,players[i].direction + (Math.PI/2),false));
 				}
 				
 				// set movement vector to acceleration
@@ -124,7 +124,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				
 				// add acceleration to velocity
 				players[i].acceleration.calcLengthAngle();
-				players[i].velocity.add(players[i].acceleration);
+				players[i].velocity.addComponents(players[i].acceleration);
 
 
 				
@@ -135,7 +135,15 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				//players[i].velocity.length = Math.max(playerSpeed-constDrag, 0);
 				//players[i].velocity.calcComponents();
 				players[i].velocity.x -= players[i].velocity.x * linearDrag;
+				if(players[i].velocity.x>0)
+					players[i].velocity.x = Math.max(players[i].velocity.x-constDrag, 0);
+				if(players[i].velocity.x<0)
+					players[i].velocity.x = Math.min(players[i].velocity.x+constDrag, 0);
 				players[i].velocity.y -= players[i].velocity.y * linearDrag;
+				if(players[i].velocity.y>0)
+					players[i].velocity.y = Math.max(players[i].velocity.y-constDrag, 0);
+				if(players[i].velocity.y<0)
+					players[i].velocity.y = Math.min(players[i].velocity.y+constDrag, 0);
 				players[i].velocity.calcLengthAngle();
 				
 				System.out.println(players[i].direction);

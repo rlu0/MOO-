@@ -69,10 +69,14 @@ public class Vector {
 		}
 	}
 	
-	void add(Vector a){
+	void addComponents(Vector a){
 		setX(getX() + a.x);
 		setY(getY() + a.y);
 		calcLengthAngle();
+	}
+	
+	void addLengthAngle(){
+		setLength();
 	}
 	
 

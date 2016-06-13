@@ -8,7 +8,7 @@ public class VectorTest {
 		System.out.println(a.x + " " + a.y);
 		Vector b = new Vector (1,1, true);
 		Vector c = new Vector (-4,1, true);
-		c.add(b);
+		c.addComponents(b);
 		System.out.println(c.length + " " + Math.toDegrees(c.angle));
 		System.out.println(c.x + " " + c.y);
 		
