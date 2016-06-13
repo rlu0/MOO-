@@ -9,144 +9,53 @@ import javax.swing.JPanel;
 public class New3D
 {
 	static int[][] map = {
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 1 },
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1 } };
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1},
+		{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1},
+		{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1},
+		{1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1},
+		{1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1} };
 
 	static double playerx, playery;
-	int[] colours = { 123, 123, 123, 123, 123, 123, 123 };
 	static double direction, uberDirection;
 	static int sizex = 450;
 	static int sizey = 450;
@@ -164,8 +73,8 @@ public class New3D
 	public static void main(String[] args)
 	{
 
-		playerx = 35;
-		playery = 10;
+		playerx = 2;
+		playery = 2;
 		direction = 0;
 
 		New3D blah = new New3D();
@@ -189,9 +98,9 @@ public class New3D
 			if (laPressed == true)
 			{
 				// System.out.println("ye");
-				if (direction + 0.05 < 2 * Math.PI)
+				if (direction + 0.2 < 2 * Math.PI)
 				{
-					direction += 0.05;
+					direction += 0.2;
 				}
 				else
 				{
@@ -201,9 +110,9 @@ public class New3D
 			if (raPressed == true)
 			{
 				// System.out.println("ye");
-				if (direction - 0.05 > 0)
+				if (direction - 0.2 > 0)
 				{
-					direction -= 0.05;
+					direction -= 0.2;
 				}
 				else
 				{
@@ -218,35 +127,39 @@ public class New3D
 					xVal = walkrate * (Math.cos(direction));
 					if (playerx + xVal < sizex / 10)
 					{
-						yVal = walkrate * (Math.sin(direction));
-						if (playery - yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
 					}
-
+					yVal = walkrate * (Math.sin(direction));
+					if (playery - yVal > 0)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
+						}
+					}
 				}
 				else if (direction < Math.PI && direction > Math.PI / 2)
 				{
 					xVal = walkrate * (Math.cos(Math.PI - direction));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(Math.PI - direction));
-						if (playery - yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
 						}
-
+					}
+					yVal = walkrate * (Math.sin(Math.PI - direction));
+					if (playery - yVal > 0)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
+						}
 					}
 
 				}
@@ -255,18 +168,21 @@ public class New3D
 					xVal = walkrate * (Math.cos(direction - Math.PI));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(direction - Math.PI));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery += yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
 						}
-
 					}
+					yVal = walkrate * (Math.sin(direction - Math.PI));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
+					}
+
 
 				}
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
@@ -275,18 +191,20 @@ public class New3D
 							* (Math.cos(2 * Math.PI - direction));
 					if (playerx + xVal > 0)
 					{
-						yVal = walkrate
-								* (Math.sin(2 * Math.PI - direction));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery += yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
-
+					}
+					yVal = walkrate
+							* (Math.sin(2 * Math.PI - direction));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
 					}
 
 				}
@@ -323,75 +241,84 @@ public class New3D
 			{
 				if (direction < Math.PI / 2 && direction > 0)
 				{
-					xVal = walkrate * (Math.cos(direction));
+					xVal = walkrate * (Math.sin(direction));
 					if (playerx - xVal < sizex / 10)
 					{
-						yVal = walkrate * (Math.sin(direction));
-						if (playery - yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
+						}
+					}
+					yVal = walkrate * (Math.cos(direction));
+					if (playery - yVal > 0)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
 						}
 					}
 				}
 				else if (direction < Math.PI && direction > Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(Math.PI - direction));
+					xVal = walkrate * (Math.sin(Math.PI - direction));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(Math.PI - direction));
-						if (playery + yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery += yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
 						}
-
+					}
+					yVal = walkrate * (Math.cos(Math.PI - direction));
+					if (playery + yVal > 0)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
 					}
 				}
 				else if (direction < 3 * Math.PI / 2 && direction > Math.PI)
 				{
-					xVal = walkrate * (Math.cos(direction - Math.PI));
+					xVal = walkrate * (Math.sin(direction - Math.PI));
 					if (playerx + xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(direction - Math.PI));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery += yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
-
+					}
+					yVal = walkrate * (Math.cos(direction - Math.PI));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
 					}
 				}
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
 				{
 					xVal = walkrate
-							* (Math.cos(2 * Math.PI - direction));
+							* (Math.sin(2 * Math.PI - direction));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate
-								* (Math.sin(2 * Math.PI - direction));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
-
+					}
+					yVal = walkrate
+							* (Math.cos(2 * Math.PI - direction));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
+						}
 					}
 				}
 				else if (direction == 0 || direction == 2 * Math.PI)
@@ -431,17 +358,19 @@ public class New3D
 					xVal = walkrate * (Math.cos(direction));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(direction));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery += yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
 						}
-
+					}
+					yVal = walkrate * (Math.sin(direction));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
 					}
 					// playerx -= walkrate * (Math.cos(direction));
 					// playery += walkrate * (Math.sin(direction));
@@ -452,18 +381,20 @@ public class New3D
 							* (Math.cos(Math.PI - direction));
 					if (playerx + xVal > 0)
 					{
-						yVal = walkrate
-								* (Math.sin(Math.PI - direction));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery += yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
-
+					}
+					yVal = walkrate
+							* (Math.sin(Math.PI - direction));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
 					}
 					// playerx += walkrate * (Math.cos(direction - Math.PI /
 					// 2));
@@ -475,15 +406,18 @@ public class New3D
 					xVal = walkrate * (Math.cos(direction - Math.PI));
 					if (playerx + xVal < sizex / 10)
 					{
-						yVal = walkrate * (Math.sin(direction - Math.PI));
-						if (playery - yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
+						}
+					}
+					yVal = walkrate * (Math.sin(direction - Math.PI));
+					if (playery - yVal > 0)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
 						}
 					}
 					// playerx += walkrate * (Math.cos(direction - Math.PI));
@@ -494,18 +428,20 @@ public class New3D
 					xVal = walkrate * (Math.cos(2 * Math.PI - direction));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate
-								* (Math.sin(2 * Math.PI - direction));
-						if (playery - yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
 						}
-
+					}
+					yVal = walkrate
+							* (Math.sin(2 * Math.PI - direction));
+					if (playery - yVal > 0)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
+						}
 					}
 					// playerx -= walkrate
 					// * (Math.cos(direction - 3 * Math.PI / 2));
@@ -546,41 +482,45 @@ public class New3D
 				if (direction < Math.PI / 2 && direction > 0)
 				{
 					xVal = walkrate
-							* (Math.cos(direction));
+							* (Math.sin(direction));
 					if (playerx + xVal > 0)
 					{
-						yVal = walkrate
-								* (Math.sin(direction));
-						if (playery + yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery += yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
-
+					}
+					yVal = walkrate
+							* (Math.cos(direction));
+					if (playery + yVal < sizey / 10)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
+						}
 					}
 					// playerx += walkrate * (Math.cos(direction));
 					// playery += walkrate * (Math.sin(direction));
 				}
 				else if (direction < Math.PI && direction > Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(Math.PI - direction));
+					xVal = walkrate * (Math.sin(Math.PI - direction));
 					if (playerx + xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(Math.PI - direction));
-						if (playery - yVal < sizey / 10)
+						if (map[(int) (playery)][(int) (playerx
+								+ xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									+ xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx += xVal;
-							}
+							playerx += xVal;
 						}
-
+					}
+					yVal = walkrate * (Math.cos(Math.PI - direction));
+					if (playery - yVal < sizey / 10)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
+						}
 					}
 					// playerx -= walkrate * (Math.cos(direction - Math.PI /
 					// 2));
@@ -589,39 +529,44 @@ public class New3D
 				}
 				else if (direction < 3 * Math.PI / 2 && direction > Math.PI)
 				{
-					xVal = walkrate * (Math.cos(direction - Math.PI));
+					xVal = walkrate * (Math.sin(direction - Math.PI));
 					if (playerx - xVal > 0)
 					{
-						yVal = walkrate * (Math.sin(direction - Math.PI));
-						if (playery - yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery - yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery -= yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
 						}
-
+					}
+					yVal = walkrate * (Math.cos(direction - Math.PI));
+					if (playery - yVal > 0)
+					{
+						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
+						{
+							playery -= yVal;
+						}
 					}
 					// playerx -= walkrate * (Math.cos(direction - Math.PI));
 					// playery -= walkrate * (Math.sin(direction - Math.PI));
 				}
 				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(2 * Math.PI - direction));
+					xVal = walkrate * (Math.sin(2 * Math.PI - direction));
 					if (playerx - xVal < sizex / 10)
 					{
-						yVal = walkrate
-								* (Math.sin(2 * Math.PI - direction));
-						if (playery + yVal > 0)
+						if (map[(int) (playery)][(int) (playerx
+								- xVal)] == 0)
 						{
-							if (map[(int) (playery + yVal)][(int) (playerx
-									- xVal)] == 0)
-							{
-								playery += yVal;
-								playerx -= xVal;
-							}
+							playerx -= xVal;
+						}
+					}
+					yVal = walkrate
+							* (Math.cos(2 * Math.PI - direction));
+					if (playery + yVal > 0)
+					{
+						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
+						{
+							playery += yVal;
 						}
 					}
 					// playerx += walkrate
@@ -658,8 +603,8 @@ public class New3D
 							playerx -= walkrate;
 				}
 			}
-			System.out.println("Dir:" + direction + " PT: (" + playerx + ","
-					+ playery + ")");
+//			System.out.println("Dir:" + direction + " PT: (" + playerx + ","
+//					+ playery + ")");
 			window.repaint();
 			try
 			{
@@ -725,52 +670,52 @@ public class New3D
 				double tempy;
 				if (angle < Math.PI / 2 && angle > 0)
 				{
-					tempx = playerx + i * 0.1;
-					tempy = playery - (Math.tan(angle) * i * 0.1);
+					tempx = playerx + i * 0.01;
+					tempy = playery - (Math.tan(angle) * i * 0.01);
 				}
 				else if (angle < Math.PI && angle > Math.PI / 2)
 				{
 					// uber = 1;
-					tempx = playerx - i * 0.1;
+					tempx = playerx - i * 0.01;
 					tempy = playery
-							- (Math.tan(Math.PI - angle) * i * 0.1);
+							- (Math.tan(Math.PI - angle) * i * 0.01);
 				}
 				else if (angle < 3 * Math.PI / 2 && angle > Math.PI)
 				{
 					// uber = 2;
-					tempx = playerx - i * 0.1;
-					tempy = playery + (Math.tan(angle - Math.PI) * i * 0.1);
+					tempx = playerx - i * 0.01;
+					tempy = playery + (Math.tan(angle - Math.PI) * i * 0.01);
 				}
 				else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2)
 				{
 					// uber = 3;
-					tempx = playerx + i * 0.1;
+					tempx = playerx + i * 0.01;
 					tempy = playery
-							+ (Math.tan(2 * Math.PI - angle) * i * 0.1);
+							+ (Math.tan(2 * Math.PI - angle) * i * 0.01);
 				}
 				else if (angle == 0)
 				{
 					// uber = 4;
-					tempx = playerx + i * 0.1;
+					tempx = playerx + i * 0.01;
 					tempy = playery;
 				}
 				else if (angle == Math.PI / 2)
 				{
 					// uber = 5;
 					tempx = playerx;
-					tempy = playery - i * 0.1;
+					tempy = playery - i * 0.01;
 				}
 				else if (angle == Math.PI)
 				{
 					// uber = 6;
-					tempx = playerx - i * 0.1;
+					tempx = playerx - i * 0.01;
 					tempy = playery;
 				}
 				else
 				{
 					// uber = 7;
 					tempx = playerx;
-					tempy = playery + i * 0.1;
+					tempy = playery + i * 0.01;
 				}
 				if (tempx < 0 || tempx > sizex / 10.0 || tempy < 0
 						|| tempy > sizey / 10.0)
@@ -782,53 +727,54 @@ public class New3D
 						i++;
 						if (angle < Math.PI / 2 && angle > 0)
 						{
-							tempy = playery - i * 0.1;
-							tempx = playerx + ((i * 0.1) / Math.tan(angle));
+							tempy = playery - i * 0.01;
+							tempx = playerx + ((i * 0.01) / Math.tan(angle));
 						}
 						else if (angle < Math.PI && angle > Math.PI / 2)
 						{
-							tempy = playery - i * 0.1;
+							tempy = playery - i * 0.01;
 							tempx = playerx
-									- ((i * 0.1) / Math.tan(Math.PI - angle));
+									- ((i * 0.01) / Math.tan(Math.PI - angle));
 						}
 						else if (angle < 3 * Math.PI / 2 && angle > Math.PI)
 						{
-							tempy = playery + i * 0.1;
+							tempy = playery + i * 0.01;
 							tempx = playerx
-									- ((i * 0.1) / Math
+									- ((i * 0.01) / Math
 											.tan(angle - Math.PI));
 						}
 						else if (angle < 2 * Math.PI
 								&& angle > 3 * Math.PI / 2)
 						{
-							tempy = playery + i * 0.1;
+							tempy = playery + i * 0.01;
 							tempx = playerx
-									+ ((i * 0.1)
+									+ ((i * 0.01)
 											/ Math.tan(2 * Math.PI - angle));
 						}
 						else if (angle == 0)
 						{
-							tempx = playerx + i * 0.1;
+							tempx = playerx + i * 0.01;
 							tempy = playery;
 						}
 						else if (angle == Math.PI / 2)
 						{
 							tempx = playerx;
-							tempy = playery - i * 0.1;
+							tempy = playery - i * 0.01;
 						}
 						else if (angle == Math.PI)
 						{
-							tempx = playerx - i * 0.1;
+							tempx = playerx - i * 0.01;
 							tempy = playery;
 						}
 						else
 						{
 							tempx = playerx;
-							tempy = playery + i * 0.1;
+							tempy = playery + i * 0.01;
 						}
 						// System.out.println(tempx + " " + tempy);
 						if (map[(int) tempy][(int) tempx] == 1)
 						{
+							//System.out.println("shoe");
 							// System.out.println("got here");
 							newPt = new double[2];
 							newPt[0] = tempx;
@@ -910,6 +856,7 @@ public class New3D
 				// System.out.println("RS:" + newPt[0] + "," + newPt[1]);
 				// distA = distance(newPt);
 				distA = distance(newPt);
+				//System.out.println("left");
 
 				if (distA < 1)
 				{
