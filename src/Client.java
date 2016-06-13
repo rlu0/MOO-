@@ -526,6 +526,7 @@ public class Client
 		}
 		window.setVisible(false);
 		// Send first bit of information
+		data = "Ready";
 		output.println(data);
 		output.flush();
 
@@ -556,6 +557,32 @@ public class Client
 		}
 		currentMap = allMaps[0];
 		System.out.println("Yo mamma1");
+		
+//		try
+//		{
+//			if (input.ready())
+//			{
+//				// Message formatted: playerNum mapNum numEnemies
+//				String message = input.readLine();
+//
+//				playerNum = Integer.parseInt(message.substring(0,
+//						message.indexOf(" ")));
+//				message = message.substring(message.indexOf(" ") + 1);
+//				int mapNum = Integer.parseInt(message.substring(0,
+//						message.indexOf(" ")));
+//				message = message.substring(message.indexOf(" ") + 1);
+//				allMaps[0] = map0;
+//				currentMap = allMaps[mapNum];
+//				numPlayers = Integer.parseInt(message) + 1;
+//
+//			}
+//		}
+//		catch (IOException e)
+//		{
+//			// running = false;
+//			// e.printStackTrace();
+//		}
+		
 		(new Thread(new GameDisp())).run();
 		// (new Thread(new GameDisp())).run();
 		// System.out.println("Yo mamma2");

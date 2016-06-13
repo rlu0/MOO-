@@ -8,13 +8,24 @@
  */
 
 //imports for network communication
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-class ServerComm2 {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+class ServerComm2
+{
 
 	ServerSocket serverSock;// server socket for connection
 	static boolean running = true; // controls if the server is accepting
@@ -24,90 +35,298 @@ class ServerComm2 {
 	static boolean[] clientsRunning = new boolean[8];
 	int gameType;
 	int mapNum = 0;
-	int [][]currentMap = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,1,1,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-			{1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+	int[][] currentMap = { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+					1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+					0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1,
+					1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 1 },
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1 } };
 	double playerPositions[][] = new double[8][2];
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		new ServerComm2().go(); // start the server
 	}
 
-	public void go() {
-		Scanner keyboard = new Scanner(System.in);
-		System.out.println("Please Enter the port to watch:");
-		int port = keyboard.nextInt();
+	boolean doingStuff;
+
+	public void go()
+	{
+		class buttonListener implements ActionListener
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				doingStuff = true;
+				System.out.println(doingStuff);
+			}
+
+		}
+
+		boolean ready = false;
+		JFrame window = new JFrame("MOOD");
+		JPanel menuThing = new JPanel();
+		JLabel DOOM = new JLabel("MOOD THe GaMe - Server");
+		JLabel spacer = new JLabel("");
+		JLabel usernameL = new JLabel("Map: ");
+		JLabel IPL = new JLabel("Game Type: ");
+		JLabel portL = new JLabel("Port: ");
+		JTextField portF = new JTextField();
+		JTextField usernameF = new JTextField();
+		JTextField IPF = new JTextField();
+		JButton joinB = new JButton("Join");
+		buttonListener thing = new buttonListener();
+		joinB.addActionListener(thing);
+		GridLayout lay = new GridLayout(5, 2, 2, 2);
+		menuThing.add(DOOM);
+		menuThing.add(spacer);
+		menuThing.setLayout(lay);
+		menuThing.add(usernameL);
+		menuThing.add(usernameF);
+		menuThing.add(IPL);
+		menuThing.add(IPF);
+		menuThing.add(portL);
+		menuThing.add(portF);
+		menuThing.add(joinB);
+
+		window.add(menuThing);
+		window.setResizable(false);
+		window.setVisible(true);
+		window.setSize(300, 175);
+		int port = -1;
+		while (ready != true)
+		{
+			try
+			{
+				Thread.sleep(10);
+			}
+			catch (InterruptedException ex)
+			{
+				// e.printStackTrace();
+
+			}
+			if (doingStuff == true)
+			{
+				try
+				{
+					gameType = Integer.parseInt(IPF.getText());
+					//System.out.println("first");
+				}
+				catch (Exception e)
+				{
+					JOptionPane.showMessageDialog(null,
+							"The GameType is not an integer!");
+					doingStuff = false;
+				}
+				if (doingStuff == true)
+				{
+					try
+					{
+						port = Integer.parseInt(portF.getText());
+						//System.out.println("second");
+					}
+					catch (Exception e)
+					{
+						JOptionPane.showMessageDialog(null,
+								"The Port is not an integer!");
+						doingStuff = false;
+					}
+					if (doingStuff == true)
+					{
+						try
+						{
+							//System.out.println("third");
+							mapNum = Integer.parseInt(usernameF.getText());
+							if (mapNum >= 10 || mapNum < -1)
+							{
+								JOptionPane.showMessageDialog(null,
+										"The map is not an integer or is not listed!");
+								doingStuff = false;
+							}
+							else
+							{
+								ready = true;
+							}
+						}
+						catch (Exception e)
+						{
+							JOptionPane.showMessageDialog(null,
+									"The map is not an integer or is not listed!");
+							doingStuff = false;
+						}
+					}
+				}
+			}
+		}
+		window.setVisible(false);
+		// Scanner keyboard = new Scanner(System.in);
+		// System.out.println("Please Enter the port to watch:");
+		// int port = keyboard.nextInt();
 		// Game Mode Key
 		// 1 = deathmatch
 		// 2 = ???
-		System.out.println("Please enter the gametype:");
-		gameType = keyboard.nextInt();
+		// System.out.println("Please enter the gametype:");
+		// gameType = keyboard.nextInt();
 		Socket client = null;// hold the client connection
+		Boolean isSpace = false;
+		while (running)
+		{
+			try
+			{
+				serverSock = new ServerSocket(port);
+				// serverSock.setSoTimeout(50000); //5 second timeout
 
-		try {
-			serverSock = new ServerSocket(port);
-			// serverSock.setSoTimeout(50000); //5 second timeout
-
-			while (running) {
-				Boolean isSpace = false;
 				int index = 0;
-				for (int i = 0; i < clientsRunning.length; i++) {
-					if (clientsRunning[i] == false) {
+				for (int i = 0; i < clientsRunning.length; i++)
+				{
+					if (clientsRunning[i] == false)
+					{
 						isSpace = true;
 						index = i;
 					}
 				}
-				if (isSpace == true) {
+				if (isSpace == true)
+				{
 					clientsRunning[index] = true;
 					client = serverSock.accept();
 					System.out.println("Client connected");
 
-					ConnectionHandler clientHandler = new ConnectionHandler(client);
+					ConnectionHandler clientHandler = new ConnectionHandler(
+							client);
 
 					clientList.add(clientHandler);
-					for (int i = 0; i < clientList.size(); i++) {
+					// updates client list for existing players
+					for (int i = 0; i < clientList.size(); i++)
+					{
 						ConnectionHandler yo = clientList.get(i);
 						if (yo != null)
 							yo.setPlayerList(clientList);
@@ -118,20 +337,24 @@ class ServerComm2 {
 				}
 
 			}
-		} catch (Exception e) {
-			// System.out.println("Error accepting connection");
-			// close all and quit
-			try {
-				client.close();
-			} catch (Exception e1) {
-				System.out.println("Failed to close socket");
+			catch (Exception e)
+			{
+				try
+				{
+					client.close();
+				}
+				catch (Exception e1)
+				{
+					System.out.println("Failed to close socket");
+				}
 			}
-			System.exit(-1);
 		}
+
 	}
 
 	// ***** Inner class - thread for client connection
-	class ConnectionHandler implements Runnable {
+	class ConnectionHandler implements Runnable
+	{
 
 		private PrintWriter output; // assign printwriter to network stream
 		private BufferedReader input; // Stream for network input
@@ -140,18 +363,25 @@ class ServerComm2 {
 		String name;
 		ArrayList<ConnectionHandler> clientList = new ArrayList();
 
-		void updateLocations() {
+		void updateLocations()
+		{
 			int i = 0;
-			for (ConnectionHandler c : clientList) {
-				for (ConnectionHandler cc : clientList) {
-					try {
-						output= new PrintWriter(client.getOutputStream());
-					} catch (IOException e) {
+			for (ConnectionHandler c : clientList)
+			{
+				for (ConnectionHandler cc : clientList)
+				{
+					try
+					{
+						output = new PrintWriter(client.getOutputStream());
+					}
+					catch (IOException e)
+					{
 						// TODO Auto-generated catch block
 						System.out.println("Ray's computer is satan incarnate");
 					}
 					output.println("1 0 3");
-					output.println(playerPositions[i][0] + " " + playerPositions[i][1] + " " + i);
+					output.println(playerPositions[i][0] + " "
+							+ playerPositions[i][1] + " " + i);
 					output.flush();
 					i++;
 				}
@@ -160,19 +390,25 @@ class ServerComm2 {
 			}
 		}
 
-		void playerUpdate(double x, double y, int i) {
-			
-			playerPositions[i][0]=x;
-			playerPositions[i][1]=y;
+		void playerUpdate(double x, double y, int i)
+		{
+
+			playerPositions[i][0] = x;
+			playerPositions[i][1] = y;
 
 		}
 
-		void giveID() {
+		void giveID()
+		{
 			int i = 0;
-			for (ConnectionHandler cc : clientList) {
-				try {
-					output= new PrintWriter(client.getOutputStream());
-				} catch (IOException e) {
+			for (ConnectionHandler cc : clientList)
+			{
+				try
+				{
+					output = new PrintWriter(client.getOutputStream());
+				}
+				catch (IOException e)
+				{
 					// TODO Auto-generated catch block
 					System.out.println("Ray's computer is satan incarnate");
 				}
@@ -187,13 +423,18 @@ class ServerComm2 {
 		 * 
 		 * @param the socket belonging to this client connection
 		 */
-		ConnectionHandler(Socket s) {
+		ConnectionHandler(Socket s)
+		{
 			this.client = s; // constructor assigns client to this
-			try { // assign all connections to client
+			try
+			{ // assign all connections to client
 				this.output = new PrintWriter(client.getOutputStream());
-				InputStreamReader stream = new InputStreamReader(client.getInputStream());
+				InputStreamReader stream = new InputStreamReader(
+						client.getInputStream());
 				this.input = new BufferedReader(stream);
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 			running = true;
@@ -202,74 +443,90 @@ class ServerComm2 {
 		/*
 		 * run executed on start of thread
 		 */
-		public void run() {
+		public void run()
+		{
 
 			// Get a message from the client
 			String data = "";
-			while (clientList == null) {
-				try {
+			while (clientList == null)
+			{
+				try
+				{
 					Thread.sleep(100);
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e)
+				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			output.println(clientList.indexOf(client) + mapNum + clientList.size());
+			output.println(
+					clientList.indexOf(client) + mapNum + clientList.size());
 
-			while (running) { // loop until a server is closed
-				try {
+			while (running)
+			{ // loop until a server is closed
+				try
+				{
 					// Blah blah blah something about selecting game modes and
 					// starting
 
 					// create the players
 					players = new Player[clientList.size()];
 					int ff = 0;
-					for (ConnectionHandler c : clientList) {
+					for (ConnectionHandler c : clientList)
+					{
 						Hitbox h = new Hitbox();
 
-						double x, y,d;
-						do {
-							x = Math.random()*45;
-							y = Math.random()*45;
-							d = Math.random()*2*Math.PI;
+						double x, y, d;
+						do
+						{
+							x = Math.random() * 45;
+							y = Math.random() * 45;
+							d = Math.random() * 2 * Math.PI;
 
-						} while (currentMap[(int) x][(int) y] != 0);
+						}
+						while (currentMap[(int) x][(int) y] != 0);
 
 						players[ff] = new Player(x, y, d);
 
 						updateLocations();
 
 					}
-					DeathMatch dm=new DeathMatch(players);
-					if (input.ready()) { // check for an incoming message
+					DeathMatch dm = new DeathMatch(players);
+					if (input.ready())
+					{ // check for an incoming message
 						data = input.readLine();
 						System.out.println(data);
 						// Data code book
 						// 0 is position update ( 0,PID,X,Y)
 						// 1 is a shot fired ( 1,PID,TYPE,X,Y,Direction)
 						// 2 is a kill ( 2,VID,KID)
-//						StringTokenizer st = new StringTokenizer(data, ",");
-//						while (st.hasMoreTokens()) {
-//							if (st.nextToken().equals("0")) {
-//								playerUpdate(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Integer.parseInt(st.nextToken()));
-//								updateLocations();
-//							} else if (st.nextToken().equals("1")) {
-//
-//							} else {
-//								int ded= Integer.parseInt(st.nextToken());
-//								playerUpdate(-1,-1,ded);
-//								dm.addDeath(ded);
-//								dm.addScore(1, Integer.parseInt(st.nextToken()));
-//								if (dm.checkWinner())
-//									running=false;
-//							}
-//						}
+						// StringTokenizer st = new StringTokenizer(data, ",");
+						// while (st.hasMoreTokens()) {
+						// if (st.nextToken().equals("0")) {
+						// playerUpdate(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Integer.parseInt(st.nextToken()));
+						// updateLocations();
+						// } else if (st.nextToken().equals("1")) {
+						//
+						// } else {
+						// int ded= Integer.parseInt(st.nextToken());
+						// playerUpdate(-1,-1,ded);
+						// dm.addDeath(ded);
+						// dm.addScore(1, Integer.parseInt(st.nextToken()));
+						// if (dm.checkWinner())
+						// running=false;
+						// }
+						// }
 
-						if (data.toLowerCase().equals("quit")) {
+						if (data.toLowerCase().equals("quit"))
+						{
 							running = false;
 							boolean done = false;
-							for (int i = 0; i < clientsRunning.length && done == false; i++) {
-								if (clientsRunning[i] = true) {
+							for (int i = 0; i < clientsRunning.length
+									&& done == false; i++)
+							{
+								if (clientsRunning[i] = true)
+								{
 									clientsRunning[i] = false;
 									done = true;
 								}
@@ -277,7 +534,9 @@ class ServerComm2 {
 						}
 
 					}
-				} catch (IOException e) {
+				}
+				catch (IOException e)
+				{
 					System.out.println("Failed to receive msg from the client");
 					e.printStackTrace();
 				}
@@ -288,23 +547,29 @@ class ServerComm2 {
 			output.flush();
 
 			// close the socket
-			try {
+			try
+			{
 				input.close();
 				output.close();
 				client.close();
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				System.out.println("Failed to close socket");
 			}
 		} // end of run()
 
-		Socket getClient() {
+		Socket getClient()
+		{
 			return client;
 
 		}
 
-		void setPlayerList(ArrayList<ConnectionHandler> in) {
+		void setPlayerList(ArrayList<ConnectionHandler> in)
+		{
 			this.clientList = in;
-			output.println("01 " + clientList.indexOf(client) + clientList.size());
+			output.println(
+					"01 " + clientList.indexOf(client) + clientList.size());
 		}
 
 	} // end of inner class
