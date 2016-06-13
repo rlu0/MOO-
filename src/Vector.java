@@ -21,16 +21,48 @@ public class Vector {
 	
 	void calcLengthAngle(){
 		length = Math.sqrt(x*x + y*y);
-		double newAngle;
-		if (x==0){
+		double newAngle = 0;
+		if (x==0 && y==0){
 			newAngle = 0;
+			setAngle(newAngle);
+			return;
 		}
-		else {
-			newAngle = Math.tan(y/x);
+		else if (x==0){
+			if (y>0)
+				newAngle = Math.PI/2;
+			else if (y<0)
+				newAngle = (Math.PI*3)/2;
+			setAngle(newAngle);
+			return;
 		}
-		if(y > 0){
-			newAngle += Math.PI;
+		else if (y==0){
+			if (x>0)
+				newAngle = 0;
+			else if (x<0)
+				newAngle = Math.PI;
+			setAngle(newAngle);
+			return;
 		}
+		
+		newAngle = Math.atan(y/x);
+		
+		if(x > 0){
+			if(y > 0){
+				//nothing
+			}
+			if(y < 0){
+				newAngle += Math.PI*2;
+			}
+		}
+		else if (x < 0){
+			if(y > 0){
+				newAngle += Math.PI;
+			}
+			if(y < 0){
+				newAngle += Math.PI;
+			}
+		}
+		
 		setAngle(newAngle);
 	}
 	
@@ -75,9 +107,9 @@ public class Vector {
 		calcLengthAngle();
 	}
 	
-	void addLengthAngle(){
-		setLength();
-	}
+	//void addLengthAngle(){
+	//	setLength();
+	//}
 	
 
 }
