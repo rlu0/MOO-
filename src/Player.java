@@ -36,12 +36,12 @@ public class Player extends Thing {
 		velocity = new Vector(0,0,true);
 	}
 
-	Player(double x, double y) {
+	Player(double x, double y, double d) {
 		super(100);
 		hp = START_HP;
 		this.x = x;
 		this.y = y;
-		setDirection(START_DIRECTION);
+		direction = d;
 		this.hit = new CircleHit(x, y, 0.5);
 		acceleration = new Vector(0,0,true);
 		velocity = new Vector(0,0,true);
