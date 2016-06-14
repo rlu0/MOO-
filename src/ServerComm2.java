@@ -203,7 +203,7 @@ class ServerComm2
 		JTextField portF = new JTextField();
 		JTextField usernameF = new JTextField();
 		JTextField IPF = new JTextField();
-		JButton joinB = new JButton("Join");
+		JButton joinB = new JButton("Start Server");
 		buttonListener thing = new buttonListener();
 		joinB.addActionListener(thing);
 		GridLayout lay = new GridLayout(5, 2, 2, 2);
@@ -331,9 +331,12 @@ class ServerComm2
 						if (yo != null)
 							yo.setPlayerList(clientList);
 					}
-
-					Thread t = new Thread(clientHandler);
-					t.start(); // start the new thread
+					
+					(new Thread(clientHandler)).run();
+					
+//					Thread t = new Thread(clientHandler);
+//					t.start(); // start the new thread
+					
 				}
 
 			}
@@ -467,9 +470,7 @@ class ServerComm2
 			{ // loop until a server is closed
 				try
 				{
-					// Blah blah blah something about selecting game modes and
-					// starting
-
+					/*
 					// create the players
 					players = new Player[clientList.size()];
 					int ff = 0;
@@ -489,10 +490,11 @@ class ServerComm2
 
 						players[ff] = new Player(x, y, d);
 
-						updateLocations();
+						//updateLocations();
 
 					}
 					DeathMatch dm = new DeathMatch(players);
+					*/
 					if (input.ready())
 					{ // check for an incoming message
 						data = input.readLine();

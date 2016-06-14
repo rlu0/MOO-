@@ -27,6 +27,8 @@ public class Client
 	BufferedReader input; // reader for network stream
 	PrintWriter output; // printwriter for network output
 	boolean running = true; // thread status via boolean
+	
+	int [][] enemyLocations = new int[8][2];
 
 	// Various maps will be designed and put into here
 	static int[][] mapNeg1 = {};
@@ -582,14 +584,33 @@ public class Client
 //			// running = false;
 //			// e.printStackTrace();
 //		}
-		
-		(new Thread(new GameDisp())).run();
-		// (new Thread(new GameDisp())).run();
-		// System.out.println("Yo mamma2");
-		// MyKeyListenerA keyboard = new MyKeyListenerA();
-		// Client client = new Client();
-		// client.runs();
+		//System.out.println("Made it 1");
+		(new Thread(new GameDisp())).start();
+		//System.out.println("Made it 2");
+		(new Thread(new recieveInfo())).start();
 		while (running)
+		{
+			try
+			{
+			Thread.sleep(10);
+			}
+			catch(Exception e)
+			{
+				System.out.println("why is this happening");
+			}
+			//System.out.println("made it 3");
+			// Every 10 milliseconds the client returns the player's position
+			output.println("cp " + playerx + " " + playery);
+			output.flush();
+		}
+
+	}
+	
+	public class recieveInfo implements Runnable
+	{
+
+		@Override
+		public void run()
 		{
 			try
 			{
@@ -599,197 +620,19 @@ public class Client
 					msgArea.append("\n" + message);
 					if (message.toLowerCase().equals("quit"))
 					{
-						// running = false;
+						 running = false;
 					}
 				}
 			}
 			catch (IOException e)
 			{
-				msgArea.append("\n" + "Failed to receive msg from the server!");
-				// running = false;
-				// e.printStackTrace();
+				 running = false;
 			}
 
-			if (wPressed == true)
-			{
-				if (wSent1 == false)
-				{
-					wSent1 = true;
-					wSent2 = false;
-					output.println("gw");
-				}
-			}
-			if (wPressed == false)
-			{
-				if (wSent2 == false)
-				{
-					wSent2 = true;
-					wSent1 = false;
-					output.println("dw");
-				}
-			}
-			if (aPressed == true)
-			{
-				if (aSent1 == false)
-				{
-					aSent1 = true;
-					aSent2 = false;
-					output.println("ga");
-				}
-			}
-			if (aPressed == false)
-			{
-				if (aSent1 == false)
-				{
-					aSent2 = true;
-					aSent1 = false;
-					output.println("da");
-				}
-			}
-			if (sPressed == true)
-			{
-				if (sSent1 == false)
-				{
-					sSent1 = true;
-					sSent2 = false;
-					output.println("gs");
-				}
-			}
-			if (sPressed == false)
-			{
-				if (sSent1 == false)
-				{
-					sSent2 = true;
-					sSent1 = false;
-					output.println("ds");
-				}
-			}
-			if (dPressed == true)
-			{
-				if (dSent1 == false)
-				{
-					dSent1 = true;
-					dSent2 = false;
-					output.println("gd");
-				}
-			}
-			if (dPressed == false)
-			{
-				if (dSent1 == false)
-				{
-					dSent1 = true;
-					dSent2 = false;
-					output.println("dd");
-				}
-			}
+			
 		}
-
+		
 	}
-
-	// class gameWindow implements Runnable {
-	//
-	// @Override
-	// public void run() {
-	// System.out.println("Yo mamma");
-	// JFrame window = new JFrame("MOOD");
-	// JPanel bananarama = new GameDisp();
-	// window.add(bananarama);
-	// window.setVisible(true);
-	// window.setSize(470, 470);
-	// window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	// window.repaint();
-	// while (running) {
-	// try {
-	// Thread.sleep(100);
-	// } catch (InterruptedException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	// window.repaint();
-	// }
-	//
-	// }
-
-	// class GameDisp extends JPanel
-	// {
-	// GameDisp()
-	// {
-	// setSize(450, 450);
-	// }
-	//
-	// public void paintComponent(Graphics g)
-	// {
-	//
-	// g.setColor(Color.BLACK);
-	// g.fillRect(0, 0, getWidth(), getHeight());
-	//
-	//
-	//
-	// //Apparently re-initializing is necessary since multithreading and all
-	// allMaps[0] = map0;
-	//
-	// currentMap = allMaps[0];
-	//
-	// ///*
-	// int y = 0;
-	// for (int j = 0; j < currentMap.length; j++)
-	// {
-	// int x = 0;
-	// for (int i = 0; i < currentMap[j].length; i++)
-	// {
-	// if (currentMap[j][i] == 1)
-	// {
-	// g.setColor(Color.RED);
-	// g.fillRect(x, y, x + 5, y + 5);
-	// }
-	// else
-	// {
-	// g.setColor(Color.BLUE);
-	// g.fillRect(x, y, x + 9, y + 9);
-	// }
-	// //System.out.println("(" + x+","+y+")");
-	// x += 10;
-	// }
-	// y += 10;
-	// }//*/
-	// if (newMap == true)
-	// {
-	// double playx = 0;
-	// double playy = 0;
-	// while (currentMap[(int) (playy)][(int) (playx)] != 0)
-	// {
-	// playx = Math.random() * 45;
-	// playy = (Math.random() * 45);
-	// }
-	// you = new Player(playx*10, playy*10);
-	// }
-	// double currentX = you.getX();
-	// double currentY = you.getY();
-	// g.setColor(Color.BLUE);
-	// g.drawOval((int) (currentX - 2.5), (int) (currentY - 2.5),
-	// (int) (currentX + 2.5), (int) (currentY + 2.5));
-	//
-	// }
-	// }
-
-	// public class menu extends JPanel implements Runnable
-	// {
-	// menu()
-	// {
-	//
-	// }
-	//
-	// @Override
-	// public void run() {
-	//
-	// // window.getContentPane().add(yomamma);
-	//
-	//// KeyListener keyList = new TypeKeyListener();
-	//// window.addKeyListener(keyList);
-	//
-	// }
-	// }
 
 	public class GameDisp extends JPanel implements Runnable
 	{
@@ -808,13 +651,6 @@ public class Client
 			return Math.sqrt(Math.pow((pt[0] - playerx), 2)
 					+ Math.pow((pt[1] - playery), 2));
 		}
-
-		// public double distanceV(double[] pt, double angleAtWall)
-		// {
-		// return (Math.sqrt(Math.pow((pt[0] - playerx), 2)
-		// + Math.pow((pt[1] - playery), 2)))
-		// * Math.sin(angleAtWall);
-		// }
 
 		public double[] locatePoint(double angle)
 		{
@@ -1686,6 +1522,8 @@ public class Client
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape"))
 			{
+				output.println("quit");
+				output.flush();
 				running = false;
 			}
 		}
