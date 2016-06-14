@@ -86,8 +86,7 @@ public class New3D
 		direction = 0;
 		
 		players = new Player[1];
-		players [0] = new Player(2,2);
-		players[0].direction = Math.PI/2;
+		players [0] = new Player(2,2,Math.PI/2);
 		players[0].velocity = new Vector(0,players[0].direction,false);
 		players[0].acceleration = new Vector(0,players[0].direction, false);
 

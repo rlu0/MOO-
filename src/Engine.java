@@ -102,7 +102,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		}
 		
 		g.setColor(Color.RED);
-		g.drawRect((int)Math.round(lastCollisionX*drawScale), (int)Math.round(lastCollisionY*drawScale), 0, 0);
+		g.drawRect((int)Math.round(lastCollisionX*drawScale), (int)Math.round(lastCollisionY*drawScale), 1, 1);
 		
 		g.setColor(Color.WHITE);
 		g.drawString(players[0].getX() + " " + players[0].getY() + " " + players[0].isMoveForward,10, 10);
