@@ -2,8 +2,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class New3D
@@ -94,12 +98,20 @@ public class New3D
 
 	public void run()
 	{
+		playerx = 2;
+		playery = 2;
+		direction = 0;
 		JFrame window = new JFrame("MOOD");
 		JPanel bananarama = new GameDisp();
+		URL url = getClass().getResource("boots.gif");
+		Icon icon =  new ImageIcon(url);
+		JLabel yomamma = new JLabel(icon);
 		window.add(bananarama);
 		window.setResizable(false);
 		window.setVisible(true);
 		window.setSize(455, 475);
+		window.getContentPane().add(yomamma);
+		
 		KeyListener keyList = new MyKeyListener();
 		window.addKeyListener(keyList);
 		while (running)
