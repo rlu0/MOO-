@@ -105,6 +105,8 @@ public class Hitbox {
 	double [] RCIntersect(RectangleHit a, CircleHit b){
 		
 		double [] coord = new double [2];
+		coord[0] = Double.MAX_VALUE;
+		coord[1] = Double.MAX_VALUE;
 		
 		if (b.getX()>a.getX1() && b.getX()<a.getX2() && b.getY()>a.getY1()-b.getR() && b.getY()<a.getY1()){
 			coord[0] = b.getX();

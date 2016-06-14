@@ -440,19 +440,19 @@ public class Client
 
 		public void keyReleased(KeyEvent e)
 		{
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W"))
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W") && !wPressed)
 			{
 				wPressed = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A"))
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A") && !aPressed)
 			{
 				aPressed = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S"))
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S") && !sPressed)
 			{
 				sPressed = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D"))
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D") && !dPressed)
 			{
 				dPressed = false;
 			}

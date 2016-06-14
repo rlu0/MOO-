@@ -69,10 +69,6 @@ public class Vector {
 	void calcComponents(){
 		x = Math.cos(angle) * length;
 		y = Math.sin(angle) * length;
-		if (angle >= Math.PI){
-			x *= -1;
-			y *= -1;
-		}
 	}
 	
 	void setX(double x){
