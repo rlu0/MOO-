@@ -266,6 +266,7 @@ class ServerComm2
 						{
 							//System.out.println("third");
 							mapNum = Integer.parseInt(usernameF.getText());
+							System.out.println(mapNum);
 							if (mapNum >= 10 || mapNum < -1)
 							{
 								JOptionPane.showMessageDialog(null,
@@ -325,14 +326,14 @@ class ServerComm2
 
 					clientList.add(clientHandler);
 					// updates client list for existing players
-					for (int i = 0; i < clientList.size(); i++)
-					{
-						ConnectionHandler yo = clientList.get(i);
-						if (yo != null)
-							yo.setPlayerList(clientList);
-					}
+//					for (int i = 0; i < clientList.size(); i++)
+//					{
+//						ConnectionHandler yo = clientList.get(i);
+//						if (yo != null)
+//							yo.setPlayerList(clientList);
+//					}
 					
-					(new Thread(clientHandler)).run();
+					(new Thread(clientHandler)).start();
 					
 //					Thread t = new Thread(clientHandler);
 //					t.start(); // start the new thread
@@ -382,10 +383,10 @@ class ServerComm2
 						// TODO Auto-generated catch block
 						System.out.println("Ray's computer is satan incarnate");
 					}
-					output.println("1 0 3");
-					output.println(playerPositions[i][0] + " "
-							+ playerPositions[i][1] + " " + i);
-					output.flush();
+					//output.println("1 0 3");
+					//output.println(playerPositions[i][0] + " "
+					//		+ playerPositions[i][1] + " " + i);
+					//output.flush();
 					i++;
 				}
 				i = 0;
@@ -451,6 +452,7 @@ class ServerComm2
 
 			// Get a message from the client
 			String data = "";
+			System.out.println("Done this");
 			while (clientList == null)
 			{
 				try
@@ -463,11 +465,38 @@ class ServerComm2
 					e.printStackTrace();
 				}
 			}
-			output.println(
-					clientList.indexOf(client) + mapNum + clientList.size());
-
+			data = null;
+			while (data == null)
+			{
+				System.out.println(clientList.indexOf(client) + " " + mapNum + " " + clientList.size());
+				output.println(
+						clientList.indexOf(client) + " " + mapNum + " " + clientList.size());
+				output.flush();
+				System.out.println("flushed");
+				try
+				{
+					Thread.sleep(5000);
+				}
+				catch(Exception ie)
+				{
+					
+				}
+				try
+				{
+					if (input.ready())
+					{
+						data = input.readLine();
+						System.out.println(data);
+					}
+				}
+				catch (IOException e)
+				{
+					
+				}
+			}
 			while (running)
 			{ // loop until a server is closed
+				
 				try
 				{
 					/*
