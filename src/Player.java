@@ -20,6 +20,8 @@ public class Player extends Thing {
 	boolean isMoveBack;
 	boolean isMoveRight;
 	boolean isMoveLeft;
+	boolean isTurnRight;
+	boolean isTurnLeft;
 
 	CircleHit hit;
 
@@ -30,7 +32,6 @@ public class Player extends Thing {
 		hp = START_HP;
 		this.x = x;
 		this.y = y;
-		setDirection(START_DIRECTION);
 		this.hit = hit;
 		acceleration = new Vector(0,0,true);
 		velocity = new Vector(0,0,true);
@@ -41,7 +42,6 @@ public class Player extends Thing {
 		hp = START_HP;
 		this.x = x;
 		this.y = y;
-		setDirection(START_DIRECTION);
 		this.hit = new CircleHit(x, y, 0.5);
 		acceleration = new Vector(0,0,true);
 		velocity = new Vector(0,0,true);
