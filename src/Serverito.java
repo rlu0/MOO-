@@ -1,13 +1,3 @@
-/* [ChatProgramServer.java]
- * Description: This is an example of a chat server.
- * The program  waits for a client and accepts a message. 
- * It then responds to the message and quits.
- * This server demonstrates how to employ multithreading to accepts multiple clients
- * @author Mangat
- * @version 1.0a
- */
-
-//imports for network communication
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,9 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-class ServerComm2
+public class Serverito
 {
-
 	ServerSocket serverSock;// server socket for connection
 	static boolean running = true; // controls if the server is accepting
 									// clients
@@ -35,9 +24,10 @@ class ServerComm2
 	static boolean[] clientsRunning = new boolean[8];
 	int gameType;
 	int mapNum = 0;
-	int[][] currentMap = { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1 },
+	int[][] currentMap = {
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 					0, 0, 1 },
@@ -174,7 +164,7 @@ class ServerComm2
 
 	public static void main(String[] args)
 	{
-		new ServerComm2().go(); // start the server
+		new Serverito().go(); // start the server
 	}
 
 	boolean doingStuff;
@@ -239,7 +229,7 @@ class ServerComm2
 				try
 				{
 					gameType = Integer.parseInt(IPF.getText());
-					//System.out.println("first");
+					// System.out.println("first");
 				}
 				catch (Exception e)
 				{
@@ -252,7 +242,7 @@ class ServerComm2
 					try
 					{
 						port = Integer.parseInt(portF.getText());
-						//System.out.println("second");
+						// System.out.println("second");
 					}
 					catch (Exception e)
 					{
@@ -264,13 +254,14 @@ class ServerComm2
 					{
 						try
 						{
-							//System.out.println("third");
+							// System.out.println("third");
 							mapNum = Integer.parseInt(usernameF.getText());
 							System.out.println(mapNum);
 							if (mapNum >= 10 || mapNum < -1)
 							{
-								JOptionPane.showMessageDialog(null,
-										"The map is not an integer or is not listed!");
+								JOptionPane
+										.showMessageDialog(null,
+												"The map is not an integer or is not listed!");
 								doingStuff = false;
 							}
 							else
@@ -280,8 +271,9 @@ class ServerComm2
 						}
 						catch (Exception e)
 						{
-							JOptionPane.showMessageDialog(null,
-									"The map is not an integer or is not listed!");
+							JOptionPane
+									.showMessageDialog(null,
+											"The map is not an integer or is not listed!");
 							doingStuff = false;
 						}
 					}
@@ -290,14 +282,6 @@ class ServerComm2
 		}
 		window.setVisible(false);
 		System.out.println("Game started on port: " + port);
-		// Scanner keyboard = new Scanner(System.in);
-		// System.out.println("Please Enter the port to watch:");
-		// int port = keyboard.nextInt();
-		// Game Mode Key
-		// 1 = deathmatch
-		// 2 = ???
-		// System.out.println("Please enter the gametype:");
-		// gameType = keyboard.nextInt();
 		Socket client = null;// hold the client connection
 		Boolean isSpace = false;
 		try
@@ -336,65 +320,6 @@ class ServerComm2
 				}
 			}
 		}
-//		try
-//		{
-//			serverSock = new ServerSocket(port);
-//		}
-//		catch (Exception e)
-//		{
-//			System.out.println("YOU FORGOT TO CLOSE IT DAMMIT");
-//		}
-//		while (running)
-//		{
-//			try
-//			{
-//				int index = 0;
-//				for (int i = 0; i < clientsRunning.length; i++)
-//				{
-//					if (clientsRunning[i] == false)
-//					{
-//						isSpace = true;
-//						index = i;
-//					}
-//				}
-//				if (isSpace == true)
-//				{
-//					clientsRunning[index] = true;
-//					client = serverSock.accept();
-//					System.out.println("Client connected");
-//
-//					ConnectionHandler clientHandler = new ConnectionHandler(
-//							client);
-//
-//					clientList.add(clientHandler);
-//					// updates client list for existing players
-////					for (int i = 0; i < clientList.size(); i++)
-////					{
-////						ConnectionHandler yo = clientList.get(i);
-////						if (yo != null)
-////							yo.setPlayerList(clientList);
-////					}
-//					
-//					(new Thread(clientHandler)).start();
-//					
-////					Thread t = new Thread(clientHandler);
-////					t.start(); // start the new thread
-//					
-//				}
-//
-//			}
-//			catch (Exception e)
-//			{
-//				try
-//				{
-//					client.close();
-//				}
-//				catch (Exception e1)
-//				{
-//					System.out.println("Failed to close socket");
-//				}
-//			}
-//		}
 
 	}
 
@@ -425,10 +350,10 @@ class ServerComm2
 						// TODO Auto-generated catch block
 						System.out.println("Ray's computer is satan incarnate");
 					}
-					//output.println("1 0 3");
-					//output.println(playerPositions[i][0] + " "
-					//		+ playerPositions[i][1] + " " + i);
-					//output.flush();
+					// output.println("1 0 3");
+					// output.println(playerPositions[i][0] + " "
+					// + playerPositions[i][1] + " " + i);
+					// output.flush();
 					i++;
 				}
 				i = 0;
@@ -508,89 +433,25 @@ class ServerComm2
 				}
 			}
 			data = null;
-//			while (data == null)
-//			{
-//				System.out.println(clientList.indexOf(client) + " " + mapNum + " " + clientList.size());
-//				output.println(
-//						clientList.indexOf(client) + " " + mapNum + " " + clientList.size());
-//				output.flush();
-//				System.out.println("flushed");
-//				try
-//				{
-//					Thread.sleep(5000);
-//				}
-//				catch(Exception ie)
-//				{
-//					
-//				}
-//				try
-//				{
-//					if (input.ready())
-//					{
-//						data = input.readLine();
-//						System.out.println(data);
-//					}
-//				}
-//				catch (IOException e)
-//				{
-//					
-//				}
-//			}
 			while (running)
 			{ // loop until a server is closed
-				
+				System.out.println("yeash");
 				try
 				{
-					/*
-					// create the players
-					players = new Player[clientList.size()];
-					int ff = 0;
-					for (ConnectionHandler c : clientList)
-					{
-						Hitbox h = new Hitbox();
-
-						double x, y, d;
-						do
-						{
-							x = Math.random() * 45;
-							y = Math.random() * 45;
-							d = Math.random() * 2 * Math.PI;
-
-						}
-						while (currentMap[(int) x][(int) y] != 0);
-
-						players[ff] = new Player(x, y, d);
-
-						//updateLocations();
-
-					}
-					DeathMatch dm = new DeathMatch(players);
-					*/
+					Thread.sleep(1000);
+				}
+				catch (Exception e)
+				{
+					System.out.println("");
+				}
+				output.println("1 " + mapNum + " 7");
+				output.flush();
+				try
+				{
 					if (input.ready())
 					{ // check for an incoming message
 						data = input.readLine();
 						System.out.println(data);
-						// Data code book
-						// 0 is position update ( 0,PID,X,Y)
-						// 1 is a shot fired ( 1,PID,TYPE,X,Y,Direction)
-						// 2 is a kill ( 2,VID,KID)
-						// StringTokenizer st = new StringTokenizer(data, ",");
-						// while (st.hasMoreTokens()) {
-						// if (st.nextToken().equals("0")) {
-						// playerUpdate(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Integer.parseInt(st.nextToken()));
-						// updateLocations();
-						// } else if (st.nextToken().equals("1")) {
-						//
-						// } else {
-						// int ded= Integer.parseInt(st.nextToken());
-						// playerUpdate(-1,-1,ded);
-						// dm.addDeath(ded);
-						// dm.addScore(1, Integer.parseInt(st.nextToken()));
-						// if (dm.checkWinner())
-						// running=false;
-						// }
-						// }
-
 						if (data.toLowerCase().equals("quit"))
 						{
 							running = false;
@@ -641,9 +502,10 @@ class ServerComm2
 		void setPlayerList(ArrayList<ConnectionHandler> in)
 		{
 			this.clientList = in;
-			output.println(
-					"01 " + clientList.indexOf(client) + clientList.size());
+			output.println("01 " + clientList.indexOf(client)
+					+ clientList.size());
 		}
 
-	} // end of inner class
-} // end of ChatProgramServer class
+		// end of inner class
+	} // end of ChatProgramServer class
+}
