@@ -56,6 +56,7 @@ public class New3D
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1} };
 
 	static double playerx, playery;
+	static double playerxV, playeryV;
 	static double direction, uberDirection;
 	static int sizex = 450;
 	static int sizey = 450;
@@ -69,13 +70,22 @@ public class New3D
 	static boolean running = true;
 
 	static int walkrate = 1;
+	
+	static Player [] players;
 
 	public static void main(String[] args)
 	{
 
+		
 		playerx = 2;
 		playery = 2;
 		direction = 0;
+		
+		players = new Player[1];
+		players [0] = new Player(2,2);
+		players[0].direction = Math.PI/2;
+		players[0].velocity = new Vector(0,players[0].direction,false);
+		players[0].acceleration = new Vector(0,players[0].direction, false);
 
 		New3D blah = new New3D();
 		blah.run();
@@ -94,316 +104,320 @@ public class New3D
 		window.addKeyListener(keyList);
 		while (running)
 		{
+			
+			Vector moveVector = new Vector(0,players[0].direction,false);
+			
 			window.requestFocus();
 			if (laPressed == true)
 			{
 				// System.out.println("ye");
-				if (direction + 0.2 < 2 * Math.PI)
+				if (players[0].direction + 0.2 < 2 * Math.PI)
 				{
-					direction += 0.2;
+					players[0].direction += 0.2;
 				}
 				else
 				{
-					direction = 0.01;
+					players[0].direction = 0.01;
 				}
 			}
 			if (raPressed == true)
 			{
 				// System.out.println("ye");
-				if (direction - 0.2 > 0)
+				if (players[0].direction - 0.2 > 0)
 				{
-					direction -= 0.2;
+					players[0].direction -= 0.2;
 				}
 				else
 				{
-					direction = 2 * Math.PI - 0.01;
+					players[0].direction = 2 * Math.PI - 0.01;
 				}
 			}
 			double xVal, yVal;
 			if (wPressed == true)
 			{
-				if (direction < Math.PI / 2 && direction > 0)
+				if (players[0].direction < Math.PI / 2 && players[0].direction > 0)
 				{
-					xVal = walkrate * (Math.cos(direction));
+					xVal = walkrate * (Math.cos(players[0].direction));
 					if (playerx + xVal < sizex / 10)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								+ xVal)] == 0)
 						{
-							playerx += xVal;
+							playerxV += xVal;
 						}
 					}
-					yVal = walkrate * (Math.sin(direction));
+					yVal = walkrate * (Math.sin(players[0].direction));
 					if (playery - yVal > 0)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
 						{
-							playery -= yVal;
+							playeryV -= yVal;
 						}
 					}
 				}
-				else if (direction < Math.PI && direction > Math.PI / 2)
+				else if (players[0].direction < Math.PI && players[0].direction > Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(Math.PI - direction));
+					xVal = walkrate * (Math.cos(Math.PI - players[0].direction));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								- xVal)] == 0)
 						{
-							playerx -= xVal;
+							playerxV -= xVal;
 						}
 					}
-					yVal = walkrate * (Math.sin(Math.PI - direction));
+					yVal = walkrate * (Math.sin(Math.PI - players[0].direction));
 					if (playery - yVal > 0)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
 						{
-							playery -= yVal;
+							playeryV -= yVal;
 						}
 					}
 
 				}
-				else if (direction < 3 * Math.PI / 2 && direction > Math.PI)
+				else if (players[0].direction < 3 * Math.PI / 2 && players[0].direction > Math.PI)
 				{
-					xVal = walkrate * (Math.cos(direction - Math.PI));
+					xVal = walkrate * (Math.cos(players[0].direction - Math.PI));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								- xVal)] == 0)
 						{
-							playerx -= xVal;
+							playerxV -= xVal;
 						}
 					}
-					yVal = walkrate * (Math.sin(direction - Math.PI));
+					yVal = walkrate * (Math.sin(players[0].direction - Math.PI));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
 						{
-							playery += yVal;
+							playeryV += yVal;
 						}
 					}
 
 
 				}
-				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
+				else if (players[0].direction < 2 * Math.PI && players[0].direction > 3 * Math.PI / 2)
 				{
 					xVal = walkrate
-							* (Math.cos(2 * Math.PI - direction));
+							* (Math.cos(2 * Math.PI - players[0].direction));
 					if (playerx + xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								+ xVal)] == 0)
 						{
-							playerx += xVal;
+							playerxV += xVal;
 						}
 					}
 					yVal = walkrate
-							* (Math.sin(2 * Math.PI - direction));
+							* (Math.sin(2 * Math.PI - players[0].direction));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
 						{
-							playery += yVal;
+							playeryV += yVal;
 						}
 					}
 
 				}
-				else if (direction == 0 || direction == 2 * Math.PI)
+				else if (players[0].direction == 0 || players[0].direction == 2 * Math.PI)
 				{
 					if (playerx + walkrate < sizex / 10)
 						if (map[(int) (playery)][(int) (playerx
 								+ walkrate)] == 0)
-							playerx += walkrate;
+							playerxV += walkrate;
 				}
-				else if (direction == Math.PI / 2)
+				else if (players[0].direction == Math.PI / 2)
 				{
 					if (playery - walkrate > 0)
 						if (map[(int) (playery
 								- walkrate)][(int) (playerx)] == 0)
-							playery -= walkrate;
+							playeryV -= walkrate;
 				}
-				else if (direction == Math.PI)
+				else if (players[0].direction == Math.PI)
 				{
 					if (playerx - walkrate > 0)
 						if (map[(int) (playery)][(int) (playerx
 								- walkrate)] == 0)
-							playerx -= walkrate;
+							playerxV -= walkrate;
 				}
 				else
 				{
 					if (playery + walkrate < sizey / 10)
 						if (map[(int) (playery
 								+ walkrate)][(int) (playerx)] == 0)
-							playery += walkrate;
+							playeryV += walkrate;
 				}
 			}
 			if (aPressed == true)
 			{
-				if (direction < Math.PI / 2 && direction > 0)
+				if (players[0].direction < Math.PI / 2 && players[0].direction > 0)
 				{
-					xVal = walkrate * (Math.sin(direction));
-					if (playerx - xVal < sizex / 10)
+					
+					xVal = walkrate * (Math.sin(players[0].direction));
+					if (players[0].getX() - xVal < sizex / 10)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								- xVal)] == 0)
 						{
-							playerx -= xVal;
+							playerxV -= xVal;
 						}
 					}
-					yVal = walkrate * (Math.cos(direction));
+					yVal = walkrate * (Math.cos(players[0].direction));
 					if (playery - yVal > 0)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
 						{
-							playery -= yVal;
+							playeryV -= yVal;
 						}
 					}
 				}
-				else if (direction < Math.PI && direction > Math.PI / 2)
+				else if (players[0].direction < Math.PI && players[0].direction > Math.PI / 2)
 				{
-					xVal = walkrate * (Math.sin(Math.PI - direction));
+					xVal = walkrate * (Math.sin(Math.PI - players[0].direction));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								- xVal)] == 0)
 						{
-							playerx -= xVal;
+							playerxV -= xVal;
 						}
 					}
-					yVal = walkrate * (Math.cos(Math.PI - direction));
+					yVal = walkrate * (Math.cos(Math.PI - players[0].direction));
 					if (playery + yVal > 0)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
 						{
-							playery += yVal;
+							playeryV+= yVal;
 						}
 					}
 				}
-				else if (direction < 3 * Math.PI / 2 && direction > Math.PI)
+				else if (players[0].direction < 3 * Math.PI / 2 && players[0].direction > Math.PI)
 				{
-					xVal = walkrate * (Math.sin(direction - Math.PI));
+					xVal = walkrate * (Math.sin(players[0].direction - Math.PI));
 					if (playerx + xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								+ xVal)] == 0)
 						{
-							playerx += xVal;
+							playerxV += xVal;
 						}
 					}
-					yVal = walkrate * (Math.cos(direction - Math.PI));
+					yVal = walkrate * (Math.cos(players[0].direction - Math.PI));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
 						{
-							playery += yVal;
+							playeryV += yVal;
 						}
 					}
 				}
-				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
+				else if (players[0].direction < 2 * Math.PI && players[0].direction > 3 * Math.PI / 2)
 				{
 					xVal = walkrate
-							* (Math.sin(2 * Math.PI - direction));
+							* (Math.sin(2 * Math.PI - players[0].direction));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								+ xVal)] == 0)
 						{
-							playerx += xVal;
+							playerxV += xVal;
 						}
 					}
 					yVal = walkrate
-							* (Math.cos(2 * Math.PI - direction));
+							* (Math.cos(2 * Math.PI - players[0].direction));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
 						{
-							playery -= yVal;
+							playeryV -= yVal;
 						}
 					}
 				}
-				else if (direction == 0 || direction == 2 * Math.PI)
+				else if (players[0].direction == 0 || players[0].direction == 2 * Math.PI)
 				{
 
 					if (playery - walkrate > 0)
 						if (map[(int) (playery
 								- walkrate)][(int) (playerx)] == 0)
-							playery -= walkrate;
+							playeryV -= walkrate;
 				}
-				else if (direction == Math.PI / 2)
+				else if (players[0].direction == Math.PI / 2)
 				{
 					if (playerx - walkrate > 0)
 						if (map[(int) (playery)][(int) (playerx
 								- walkrate)] == 0)
-							playerx -= walkrate;
+							playerxV -= walkrate;
 				}
-				else if (direction == Math.PI)
+				else if (players[0].direction == Math.PI)
 				{
 					if (playery + walkrate < sizey / 10)
 						if (map[(int) (playery
 								+ walkrate)][(int) (playerx)] == 0)
-							playery += walkrate;
+							playeryV += walkrate;
 				}
 				else
 				{
 					if (playerx + walkrate < sizex / 10)
 						if (map[(int) (playery)][(int) (playerx
 								+ walkrate)] == 0)
-							playerx += walkrate;
+							playerxV += walkrate;
 				}
 			}
 			if (sPressed == true)
 			{
-				if (direction < Math.PI / 2 && direction > 0)
+				if (players[0].direction < Math.PI / 2 && players[0].direction > 0)
 				{
-					xVal = walkrate * (Math.cos(direction));
+					xVal = walkrate * (Math.cos(players[0].direction));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								- xVal)] == 0)
 						{
-							playerx -= xVal;
+							playerxV -= xVal;
 						}
 					}
-					yVal = walkrate * (Math.sin(direction));
+					yVal = walkrate * (Math.sin(players[0].direction));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
 						{
-							playery += yVal;
+							playeryV += yVal;
 						}
 					}
-					// playerx -= walkrate * (Math.cos(direction));
-					// playery += walkrate * (Math.sin(direction));
+					// playerx -= walkrate * (Math.cos(players[0].direction));
+					// playery += walkrate * (Math.sin(players[0].direction));
 				}
-				else if (direction < Math.PI && direction > Math.PI / 2)
+				else if (players[0].direction < Math.PI && players[0].direction > Math.PI / 2)
 				{
 					xVal = walkrate
-							* (Math.cos(Math.PI - direction));
+							* (Math.cos(Math.PI - players[0].direction));
 					if (playerx + xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
 								+ xVal)] == 0)
 						{
-							playerx += xVal;
+							playerxV += xVal;
 						}
 					}
 					yVal = walkrate
-							* (Math.sin(Math.PI - direction));
+							* (Math.sin(Math.PI - players[0].direction));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
 						{
-							playery += yVal;
+							playeryV += yVal;
 						}
 					}
-					// playerx += walkrate * (Math.cos(direction - Math.PI /
+					// playerx += walkrate * (Math.cos(players[0].direction - Math.PI /
 					// 2));
-					// playery += walkrate * (Math.sin(direction - Math.PI /
+					// playery += walkrate * (Math.sin(players[0].direction - Math.PI /
 					// 2));
 				}
-				else if (direction < 3 * Math.PI / 2 && direction > Math.PI)
+				else if (players[0].direction < 3 * Math.PI / 2 && players[0].direction > Math.PI)
 				{
-					xVal = walkrate * (Math.cos(direction - Math.PI));
+					xVal = walkrate * (Math.cos(players[0].direction - Math.PI));
 					if (playerx + xVal < sizex / 10)
 					{
 						if (map[(int) (playery)][(int) (playerx
@@ -412,7 +426,7 @@ public class New3D
 							playerx += xVal;
 						}
 					}
-					yVal = walkrate * (Math.sin(direction - Math.PI));
+					yVal = walkrate * (Math.sin(players[0].direction - Math.PI));
 					if (playery - yVal > 0)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
@@ -420,12 +434,12 @@ public class New3D
 							playery -= yVal;
 						}
 					}
-					// playerx += walkrate * (Math.cos(direction - Math.PI));
-					// playery -= walkrate * (Math.sin(direction - Math.PI));
+					// playerx += walkrate * (Math.cos(players[0].direction - Math.PI));
+					// playery -= walkrate * (Math.sin(players[0].direction - Math.PI));
 				}
-				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
+				else if (players[0].direction < 2 * Math.PI && players[0].direction > 3 * Math.PI / 2)
 				{
-					xVal = walkrate * (Math.cos(2 * Math.PI - direction));
+					xVal = walkrate * (Math.cos(2 * Math.PI - players[0].direction));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
@@ -435,7 +449,7 @@ public class New3D
 						}
 					}
 					yVal = walkrate
-							* (Math.sin(2 * Math.PI - direction));
+							* (Math.sin(2 * Math.PI - players[0].direction));
 					if (playery - yVal > 0)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
@@ -444,25 +458,25 @@ public class New3D
 						}
 					}
 					// playerx -= walkrate
-					// * (Math.cos(direction - 3 * Math.PI / 2));
+					// * (Math.cos(players[0].direction - 3 * Math.PI / 2));
 					// playery -= walkrate
-					// * (Math.sin(direction - 3 * Math.PI / 2));
+					// * (Math.sin(players[0].direction - 3 * Math.PI / 2));
 				}
-				else if (direction == 0 || direction == 2 * Math.PI)
+				else if (players[0].direction == 0 || players[0].direction == 2 * Math.PI)
 				{
 					if (playerx - walkrate > 0)
 						if (map[(int) (playery)][(int) (playerx
 								- walkrate)] == 0)
 							playerx -= walkrate;
 				}
-				else if (direction == Math.PI / 2)
+				else if (players[0].direction == Math.PI / 2)
 				{
 					if (playery + walkrate < sizey / 10)
 						if (map[(int) (playery
 								+ walkrate)][(int) (playerx)] == 0)
 							playery += walkrate;
 				}
-				else if (direction == Math.PI)
+				else if (players[0].direction == Math.PI)
 				{
 					if (playerx + walkrate < sizex / 10)
 						if (map[(int) (playery)][(int) (playerx
@@ -479,10 +493,10 @@ public class New3D
 			}
 			if (dPressed == true)
 			{
-				if (direction < Math.PI / 2 && direction > 0)
+				if (players[0].direction < Math.PI / 2 && players[0].direction > 0)
 				{
 					xVal = walkrate
-							* (Math.sin(direction));
+							* (Math.sin(players[0].direction));
 					if (playerx + xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
@@ -492,7 +506,7 @@ public class New3D
 						}
 					}
 					yVal = walkrate
-							* (Math.cos(direction));
+							* (Math.cos(players[0].direction));
 					if (playery + yVal < sizey / 10)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
@@ -500,12 +514,12 @@ public class New3D
 							playery += yVal;
 						}
 					}
-					// playerx += walkrate * (Math.cos(direction));
-					// playery += walkrate * (Math.sin(direction));
+					// playerx += walkrate * (Math.cos(players[0].direction));
+					// playery += walkrate * (Math.sin(players[0].direction));
 				}
-				else if (direction < Math.PI && direction > Math.PI / 2)
+				else if (players[0].direction < Math.PI && players[0].direction > Math.PI / 2)
 				{
-					xVal = walkrate * (Math.sin(Math.PI - direction));
+					xVal = walkrate * (Math.sin(Math.PI - players[0].direction));
 					if (playerx + xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
@@ -514,7 +528,7 @@ public class New3D
 							playerx += xVal;
 						}
 					}
-					yVal = walkrate * (Math.cos(Math.PI - direction));
+					yVal = walkrate * (Math.cos(Math.PI - players[0].direction));
 					if (playery - yVal < sizey / 10)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
@@ -522,14 +536,14 @@ public class New3D
 							playery -= yVal;
 						}
 					}
-					// playerx -= walkrate * (Math.cos(direction - Math.PI /
+					// playerx -= walkrate * (Math.cos(players[0].direction - Math.PI /
 					// 2));
-					// playery += walkrate * (Math.sin(direction - Math.PI /
+					// playery += walkrate * (Math.sin(players[0].direction - Math.PI /
 					// 2));
 				}
-				else if (direction < 3 * Math.PI / 2 && direction > Math.PI)
+				else if (players[0].direction < 3 * Math.PI / 2 && players[0].direction > Math.PI)
 				{
-					xVal = walkrate * (Math.sin(direction - Math.PI));
+					xVal = walkrate * (Math.sin(players[0].direction - Math.PI));
 					if (playerx - xVal > 0)
 					{
 						if (map[(int) (playery)][(int) (playerx
@@ -538,7 +552,7 @@ public class New3D
 							playerx -= xVal;
 						}
 					}
-					yVal = walkrate * (Math.cos(direction - Math.PI));
+					yVal = walkrate * (Math.cos(players[0].direction - Math.PI));
 					if (playery - yVal > 0)
 					{
 						if (map[(int) (playery - yVal)][(int) (playerx)] == 0)
@@ -546,12 +560,12 @@ public class New3D
 							playery -= yVal;
 						}
 					}
-					// playerx -= walkrate * (Math.cos(direction - Math.PI));
-					// playery -= walkrate * (Math.sin(direction - Math.PI));
+					// playerx -= walkrate * (Math.cos(players[0].direction - Math.PI));
+					// playery -= walkrate * (Math.sin(players[0].direction - Math.PI));
 				}
-				else if (direction < 2 * Math.PI && direction > 3 * Math.PI / 2)
+				else if (players[0].direction < 2 * Math.PI && players[0].direction > 3 * Math.PI / 2)
 				{
-					xVal = walkrate * (Math.sin(2 * Math.PI - direction));
+					xVal = walkrate * (Math.sin(2 * Math.PI - players[0].direction));
 					if (playerx - xVal < sizex / 10)
 					{
 						if (map[(int) (playery)][(int) (playerx
@@ -561,7 +575,7 @@ public class New3D
 						}
 					}
 					yVal = walkrate
-							* (Math.cos(2 * Math.PI - direction));
+							* (Math.cos(2 * Math.PI - players[0].direction));
 					if (playery + yVal > 0)
 					{
 						if (map[(int) (playery + yVal)][(int) (playerx)] == 0)
@@ -570,25 +584,25 @@ public class New3D
 						}
 					}
 					// playerx += walkrate
-					// * (Math.cos(direction - 3 * Math.PI / 2));
+					// * (Math.cos(players[0].direction - 3 * Math.PI / 2));
 					// playery -= walkrate
-					// * (Math.sin(direction - 3 * Math.PI / 2));
+					// * (Math.sin(players[0].direction - 3 * Math.PI / 2));
 				}
-				else if (direction == 0 || direction == 2 * Math.PI)
+				else if (players[0].direction == 0 || players[0].direction == 2 * Math.PI)
 				{
 					if (playery + walkrate < sizey / 10)
 						if (map[(int) (playery
 								+ walkrate)][(int) (playerx)] == 0)
 							playery += walkrate;
 				}
-				else if (direction == Math.PI / 2)
+				else if (players[0].direction == Math.PI / 2)
 				{
 					if (playerx + walkrate < sizex / 10)
 						if (map[(int) (playery)][(int) (playerx
 								+ walkrate)] == 0)
 							playerx += walkrate;
 				}
-				else if (direction == Math.PI)
+				else if (players[0].direction == Math.PI)
 				{
 					if (playery - walkrate > 0)
 						if (map[(int) (playery
@@ -603,7 +617,7 @@ public class New3D
 							playerx -= walkrate;
 				}
 			}
-//			System.out.println("Dir:" + direction + " PT: (" + playerx + ","
+//			System.out.println("Dir:" + players[0].direction + " PT: (" + playerx + ","
 //					+ playery + ")");
 			window.repaint();
 			try
@@ -798,7 +812,7 @@ public class New3D
 
 		public void paintComponent(Graphics g)
 		{
-			uberDirection = direction;
+			uberDirection = players[0].direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
 			// int gridPlayery = (int) (playery / 10);
@@ -820,8 +834,8 @@ public class New3D
 				 * if facing right
 				 */
 				// Left half of Screen
-				// if (direction <= Math.PI / 4
-				// || direction > Math.PI * 2 - Math.PI / 4) {
+				// if (players[0].direction <= Math.PI / 4
+				// || players[0].direction > Math.PI * 2 - Math.PI / 4) {
 				angle = findAngle(i * viewInc, dTM);
 				newPt = locatePoint(angle);
 				// System.out.println("LS:" + newPt[0] + "," + newPt[1]);
@@ -849,8 +863,8 @@ public class New3D
 				// }
 
 				// Right half of Screen
-				// if (direction <= Math.PI / 4
-				// || direction > Math.PI * 2 - Math.PI / 4) {
+				// if (players[0].direction <= Math.PI / 4
+				// || players[0].direction > Math.PI * 2 - Math.PI / 4) {
 				angle = findAngle(i * viewInc, dTM);
 				newPt = locatePoint(-angle);
 				// System.out.println("RS:" + newPt[0] + "," + newPt[1]);
@@ -958,12 +972,12 @@ public class New3D
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left"))
 			{
 				laPressed = false;
-				// direction+=0.01;
+				// players[0].direction+=0.01;
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right"))
 			{
 				raPressed = false;
-				// direction -= 0.01;
+				// players[0].direction -= 0.01;
 			}
 
 		}
