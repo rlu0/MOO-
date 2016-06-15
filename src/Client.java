@@ -733,7 +733,7 @@ public class Client {
 	Robot robot;
 	int mouseX;
 	double turnAmount;
-	double mouseSens = 0.005;
+	double mouseSens = 0.002;
 	
 	int frameTime = 28;
 
