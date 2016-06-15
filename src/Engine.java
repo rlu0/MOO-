@@ -31,7 +31,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	// Current thread
 	Thread animator;
 	
-	int frameTime = 16;
+	int frameTime = 28;
 	
 	double lastCollisionX = 0;
 	double lastCollisionY = 0;	
@@ -139,10 +139,10 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 			repaint();
 			
 			long endTime = System.currentTimeMillis();
-			long currentDelay = frameTime - endTime - startTime;
+			long currentDelay = frameTime - (endTime - startTime);
 			
 			try {
-				Thread.sleep(28);
+				Thread.sleep(currentDelay);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

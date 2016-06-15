@@ -690,6 +690,7 @@ public class Client {
 	int[][] currentMap = mapNeg1;
 	int playerNum;
 	int numPlayers;
+	
 
 	// Things relating to movement
 	static boolean wPressed = false;
@@ -717,10 +718,23 @@ public class Client {
 	static boolean raPressed = false;
 
 	static int walkrate = 1;
+	
+	double forwardAccel = 0.025;
+	double sidewaysAccel = 0.02;
+	double backwardAccel = 0.02;
+	double maxAccel = 0.025;
+	
+	double quadDrag = 0.05;
+	double linearDrag = 0.12;
+	double constDrag = 0.006;
+	
+	int frameTime = 28;
 
 	// List of things:
 	ArrayList<Player> players = new ArrayList<Player>();
 	ArrayList<Wall> walls = new ArrayList<Wall>();
+	
+
 
 	/**
 	 * Main
@@ -778,6 +792,115 @@ public class Client {
 	}
 
 	boolean doingStuff = false;
+	
+	void setWallArrayList(){
+		for (int i=0; i<currentMap.length; i++){
+			for (int j=0; j<currentMap[i].length; j++){
+				if (currentMap[i][j] == 1){
+					walls.add(new Wall(j,i,1,1));
+				}
+			}
+		}
+	}
+	
+	void movePlayers(){
+		// Per player physics
+		for(int i=0; i<players.size(); i++){
+			
+			
+			// movement vectors
+			Vector moveForce = new Vector (0,players.get(i).direction,false);
+			
+			if (players.get(i).isMoveForward){
+				moveForce.addComponents(new Vector(forwardAccel,players.get(i).direction,false));
+			}
+			if (players.get(i).isMoveBack){
+				moveForce.addComponents(new Vector(-backwardAccel,players.get(i).direction,false));
+			}
+			if (players.get(i).isMoveRight){
+				moveForce.addComponents(new Vector(sidewaysAccel,players.get(i).direction + (Math.PI/2),false));
+			}
+			if (players.get(i).isMoveLeft){
+				moveForce.addComponents(new Vector(sidewaysAccel,players.get(i).direction - (Math.PI/2),false));
+			}
+			if (players.get(i).isTurnLeft){
+				players.get(i).direction -= 0.1;
+			}
+			if (players.get(i).isTurnRight){
+				players.get(i).direction += 0.1;
+			}
+			// set movement vector to acceleration
+			moveForce.calcLengthAngle();
+			if (moveForce.length > 0.0001){
+				moveForce.length = maxAccel;
+
+			}
+			players.get(i).acceleration = moveForce;
+			
+			// add acceleration to velocity
+			//players[i].acceleration.calcLengthAngle();
+			players.get(i).acceleration.calcComponents();
+			players.get(i).velocity.addComponents(players.get(i).acceleration);
+				
+				
+	
+			// add drag to velocity
+			double playerSpeed = players.get(i).velocity.length;
+			players.get(i).velocity.length -= playerSpeed*playerSpeed*quadDrag;
+			players.get(i).velocity.length -= playerSpeed*linearDrag;
+			players.get(i).velocity.length = Math.max(players.get(i).velocity.length-constDrag, 0);
+			players.get(i).velocity.calcComponents();
+			
+			//System.out.println(players[i].direction);
+			//System.out.println(players[i].velocity.length+" "+Math.toDegrees(players[i].direction));
+			//System.out.println(players[i].velocity.getX()+" "+players[i].velocity.getY());
+
+
+			
+			// add velocity to position
+			players.get(i).setX(players.get(i).getX() + players.get(i).velocity.getX());
+			players.get(i).setY(players.get(i).getY() + players.get(i).velocity.getY());
+			
+			
+
+			
+			// add velocity to position
+			//players[i].setX(players[i].getX() + players[i].velocity.getX());
+			//players[i].setY(players[i].getY() + players[i].velocity.getY());
+			
+			// wall collisions
+	
+			for (int j = 0; j<walls.size(); j++){
+				double [] coord = players.get(i).hit.RCIntersect(walls.get(j).hit, players.get(i).hit);
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+					double xDisplace = players.get(i).getX()-coord[0];
+					double yDisplace = players.get(i).getY()-coord[1];
+					
+					//System.out.println(coord[0] + " " + coord[1]);
+					
+					//System.out.println();
+					//lastCollisionX = coord[0];
+					//lastCollisionY = coord[1];
+					
+					double centerDistance = Math.sqrt(Math.pow(players.get(i).getX()-coord[0],2)
+							+ Math.pow(players.get(i).getY()-coord[1], 2));
+					double displaceDist = players.get(i).hit.getR() - centerDistance;
+					
+					Vector displace = new Vector(xDisplace, yDisplace, true);
+					displace.length = displaceDist;
+					displace.calcComponents();
+					
+					//Vector bounceVelocity = new Vector(xDisplace, yDisplace, true);
+					//players[i].velocity.addComponents(bounceVelocity);
+					
+					players.get(i).setX(players.get(i).getX()+displace.getX());
+					players.get(i).setY(players.get(i).getY()+displace.getY());
+					
+				}
+			}
+			
+		}
+	}
 
 	public void go() {
 
@@ -792,6 +915,7 @@ public class Client {
 
 		boolean ready = false;
 		JFrame window = new JFrame("MOOD");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel menuThing = new JPanel();
 		JLabel DOOM = new JLabel("MOOD THe GaMe");
 		JLabel spacer = new JLabel("");
@@ -896,6 +1020,7 @@ public class Client {
 					System.out.println("Map Num:" + mapNum);
 					message = message.substring(message.indexOf(" ") + 1);
 					currentMap = allMaps[mapNum];
+					setWallArrayList();
 					numPlayers = Integer.parseInt(message) + 1;
 					loadingConf = true;
 				}
@@ -982,7 +1107,7 @@ public class Client {
 			}
 			// System.out.println("made it 3");
 			// Every 10 milliseconds the client returns the player's position
-			output.println("cp " + playerx + " " + playery);
+			output.println("cp " + players.get(0).getX() + " " + players.get(0).getY());
 			output.flush();
 		}
 
@@ -1018,7 +1143,7 @@ public class Client {
 		}
 
 		public double distance(double[] pt) {
-			return Math.sqrt(Math.pow((pt[0] - playerx), 2) + Math.pow((pt[1] - playery), 2));
+			return Math.sqrt(Math.pow((pt[0] - players.get(0).getX()), 2) + Math.pow((pt[1] - players.get(0).getY()), 2));
 		}
 
 		public double[] locatePoint(double angle) {
@@ -1040,36 +1165,36 @@ public class Client {
 				double tempx;
 				double tempy;
 				if (angle < Math.PI / 2 && angle > 0) {
-					tempx = playerx + i * 0.01;
-					tempy = playery - (Math.tan(angle) * i * 0.01);
+					tempx = players.get(0).getX() + i * 0.01;
+					tempy = players.get(0).getY() - (Math.tan(angle) * i * 0.01);
 				} else if (angle < Math.PI && angle > Math.PI / 2) {
 					// uber = 1;
-					tempx = playerx - i * 0.01;
-					tempy = playery - (Math.tan(Math.PI - angle) * i * 0.01);
+					tempx = players.get(0).getX() - i * 0.01;
+					tempy = players.get(0).getY() - (Math.tan(Math.PI - angle) * i * 0.01);
 				} else if (angle < 3 * Math.PI / 2 && angle > Math.PI) {
 					// uber = 2;
-					tempx = playerx - i * 0.01;
-					tempy = playery + (Math.tan(angle - Math.PI) * i * 0.01);
+					tempx = players.get(0).getX() - i * 0.01;
+					tempy = players.get(0).getY() + (Math.tan(angle - Math.PI) * i * 0.01);
 				} else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2) {
 					// uber = 3;
-					tempx = playerx + i * 0.01;
-					tempy = playery + (Math.tan(2 * Math.PI - angle) * i * 0.01);
+					tempx = players.get(0).getX() + i * 0.01;
+					tempy = players.get(0).getY() + (Math.tan(2 * Math.PI - angle) * i * 0.01);
 				} else if (angle == 0) {
 					// uber = 4;
-					tempx = playerx + i * 0.01;
-					tempy = playery;
+					tempx = players.get(0).getX() + i * 0.01;
+					tempy = players.get(0).getY();
 				} else if (angle == Math.PI / 2) {
 					// uber = 5;
-					tempx = playerx;
-					tempy = playery - i * 0.01;
+					tempx = players.get(0).getX();
+					tempy = players.get(0).getY() - i * 0.01;
 				} else if (angle == Math.PI) {
 					// uber = 6;
-					tempx = playerx - i * 0.01;
-					tempy = playery;
+					tempx = players.get(0).getX() - i * 0.01;
+					tempy = players.get(0).getY();
 				} else {
 					// uber = 7;
-					tempx = playerx;
-					tempy = playery + i * 0.01;
+					tempx = players.get(0).getX();
+					tempy = players.get(0).getY() + i * 0.01;
 				}
 				boolean changeRender = false;
 				if (angle > Math.PI/4 && angle < 3*Math.PI/4)
@@ -1087,29 +1212,29 @@ public class Client {
 					while (true) {
 						i++;
 						if (angle < Math.PI / 2 && angle > 0) {
-							tempy = playery - i * 0.01;
-							tempx = playerx + ((i * 0.01) / Math.tan(angle));
+							tempy = players.get(0).getY() - i * 0.01;
+							tempx = players.get(0).getX() + ((i * 0.01) / Math.tan(angle));
 						} else if (angle < Math.PI && angle > Math.PI / 2) {
-							tempy = playery - i * 0.01;
-							tempx = playerx - ((i * 0.01) / Math.tan(Math.PI - angle));
+							tempy = players.get(0).getY() - i * 0.01;
+							tempx = players.get(0).getX() - ((i * 0.01) / Math.tan(Math.PI - angle));
 						} else if (angle < 3 * Math.PI / 2 && angle > Math.PI) {
-							tempy = playery + i * 0.01;
-							tempx = playerx - ((i * 0.01) / Math.tan(angle - Math.PI));
+							tempy = players.get(0).getY() + i * 0.01;
+							tempx = players.get(0).getX() - ((i * 0.01) / Math.tan(angle - Math.PI));
 						} else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2) {
-							tempy = playery + i * 0.01;
-							tempx = playerx + ((i * 0.01) / Math.tan(2 * Math.PI - angle));
+							tempy = players.get(0).getY() + i * 0.01;
+							tempx = players.get(0).getX() + ((i * 0.01) / Math.tan(2 * Math.PI - angle));
 						} else if (angle == 0) {
-							tempx = playerx + i * 0.01;
-							tempy = playery;
+							tempx = players.get(0).getX() + i * 0.01;
+							tempy = players.get(0).getY();
 						} else if (angle == Math.PI / 2) {
-							tempx = playerx;
-							tempy = playery - i * 0.01;
+							tempx = players.get(0).getX();
+							tempy = players.get(0).getY() - i * 0.01;
 						} else if (angle == Math.PI) {
-							tempx = playerx - i * 0.01;
-							tempy = playery;
+							tempx = players.get(0).getX() - i * 0.01;
+							tempy = players.get(0).getY();
 						} else {
-							tempx = playerx;
-							tempy = playery + i * 0.1;
+							tempx = players.get(0).getX();
+							tempy = players.get(0).getY() + i * 0.1;
 						}
 						// System.out.println(tempx + " " + tempy);
 						if (currentMap[(int) tempy][(int) tempx] == 1) {
@@ -1135,7 +1260,7 @@ public class Client {
 		}
 
 		public void paintComponent(Graphics g) {
-			uberDirection = direction;
+			uberDirection = players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
 			// int gridPlayery = (int) (playery / 10);
@@ -1213,11 +1338,14 @@ public class Client {
 
 		}
 
+		
 		@Override
 		public void run() {
 			playerx = 2;
 			playery = 2;
-			direction = 0;
+			direction = 1;
+			
+			players.add(new Player(playerx, playery, direction));
 			JFrame window = new JFrame("MOOD");
 			JPanel bananarama = new GameDisp();
 			// URL url = getClass().getResource("boots.gif");
@@ -1231,7 +1359,28 @@ public class Client {
 
 			KeyListener keyList = new MyKeyListener();
 			window.addKeyListener(keyList);
-			while (running) {
+			
+			while (true){
+				long startTime = System.currentTimeMillis();
+				
+				
+				movePlayers();
+				
+				System.out.println(players.get(0).getX() + " " + players.get(0).getY());
+				
+				window.repaint();
+				
+				
+				long endTime = System.currentTimeMillis();
+				long currentDelay = frameTime - (endTime - startTime);
+				
+				try {
+					Thread.sleep(currentDelay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			/*while (running) {
 				window.requestFocus();
 				if (laPressed == true) {
 					// System.out.println("ye");
@@ -1576,8 +1725,8 @@ public class Client {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			window.setVisible(false);
+			}*/
+			//window.setVisible(false);
 
 		}
 
@@ -1618,24 +1767,34 @@ public class Client {
 			// System.out.println("keyPressed="
 			// + KeyEvent.getKeyText(e.getKeyCode()));
 
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W") && !players.get(0).isMoveForward) {
 				wPressed = true;
+				players.get(0).isMoveForward = true;
+				System.out.println("w");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A") && !players.get(0).isMoveLeft) {
 				aPressed = true;
+				players.get(0).isMoveLeft = true;
+				System.out.println("a");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S") && !players.get(0).isMoveBack) {
 				sPressed = true;
+				players.get(0).isMoveBack = true;
+				System.out.println("s");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D") && !players.get(0).isMoveRight) {
 				dPressed = true;
+				players.get(0).isMoveRight = true;
+				System.out.println("d");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left") && !players.get(0).isTurnLeft) {
 				laPressed = true;
+				players.get(0).isTurnLeft = true;
 				// System.out.println("Set true");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right") && !players.get(0).isTurnRight) {
 				raPressed = true;
+				players.get(0).isTurnRight = true;
 				// System.out.println("Set true");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape")) {
@@ -1646,24 +1805,30 @@ public class Client {
 		}
 
 		public void keyReleased(KeyEvent e) {
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W") && players.get(0).isMoveForward) {
 				wPressed = false;
+				players.get(0).isMoveForward = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A") && players.get(0).isMoveLeft) {
 				aPressed = false;
+				players.get(0).isMoveLeft = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S") && players.get(0).isMoveBack) {
 				sPressed = false;
+				players.get(0).isMoveBack = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D") && players.get(0).isMoveRight) {
 				dPressed = false;
+				players.get(0).isMoveRight = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left") && players.get(0).isTurnLeft) {
 				laPressed = false;
+				players.get(0).isTurnLeft = false;
 				// direction+=0.01;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right")) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right") && players.get(0).isTurnRight) {
 				raPressed = false;
+				players.get(0).isTurnRight = false;
 				// direction -= 0.01;
 			}
 
