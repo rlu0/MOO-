@@ -864,7 +864,7 @@ public class Client {
 		information.setLayout(lay2);
 		information.add(display);
 		information.add(riddlin);
-		loadingFrame.setSize(300, 300);
+		loadingFrame.setSize(400, 200);
 		loadingFrame.setVisible(true);
 		display.append("\n Hello " + username);
 		display.append("\n Please wait while the server sets things up!");
@@ -1014,7 +1014,17 @@ public class Client {
 					tempx = playerx;
 					tempy = playery + i * 0.01;
 				}
-				if (tempx < 0 || tempx > currentMap[1].length || tempy < 0 || tempy > currentMap.length) {
+				boolean changeRender = false;
+				if (angle > Math.PI/4 && angle < 3*Math.PI/4)
+				{
+					changeRender = true;
+				}
+				else if (angle > 5*Math.PI/4 && angle < 7*Math.PI/4)
+				{
+					changeRender = true;
+				}
+				
+				if (tempx < 0 || tempx > currentMap[1].length || tempy < 0 || tempy > currentMap.length || changeRender == true) {
 					i = 0;
 					// System.out.println("Doin this thang");
 					while (true) {
@@ -1042,7 +1052,7 @@ public class Client {
 							tempy = playery;
 						} else {
 							tempx = playerx;
-							tempy = playery + i * 0.01;
+							tempy = playery + i * 0.1;
 						}
 						// System.out.println(tempx + " " + tempy);
 						if (currentMap[(int) tempy][(int) tempx] == 1) {
