@@ -1,18 +1,25 @@
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class Engine extends JPanel implements Runnable, KeyListener{
+public class Engine extends JPanel implements Runnable, KeyListener, MouseMotionListener{
 	
 	Player [] players;
 	Wall [] walls;
@@ -34,7 +41,13 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	int frameTime = 28;
 	
 	double lastCollisionX = 0;
-	double lastCollisionY = 0;	
+	double lastCollisionY = 0;
+	
+	// Mouse movement
+	Robot robot;
+	int mouseX;
+	double turnAmount;
+	double mouseSens = 0.01;
 	
 	
 	Engine (){
@@ -60,6 +73,14 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		
 		// Init listeners
 		this.addKeyListener(this);
+		this.addMouseMotionListener(this);
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
@@ -127,7 +148,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 
 	public void run() {
 		
-		
+
 		
 		while (true){
 			long startTime = System.currentTimeMillis();
@@ -176,6 +197,11 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 			if (players[i].isTurnRight){
 				players[i].direction += 0.1;
 			}
+			//if (turnAmount != 0){
+			players[i].direction += turnAmount;
+			turnAmount = 0;
+			//}
+			
 			// set movement vector to acceleration
 			moveForce.calcLengthAngle();
 			if (moveForce.length > 0.0001){
@@ -235,7 +261,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 					double xDisplace = players[i].getX()-coord[0];
 					double yDisplace = players[i].getY()-coord[1];
 					
-					System.out.println(coord[0] + " " + coord[1]);
+					//System.out.println(coord[0] + " " + coord[1]);
 					
 					//System.out.println();
 					lastCollisionX = coord[0];
@@ -268,7 +294,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 					hitscans.get(i).shooter.getX() + shotVector.getX(),
 					hitscans.get(i).shooter.getY() + shotVector.getY());
 			
-			System.out.println(": " + shotLine.getX2() + " " + shotLine.getY2());
+			//System.out.println(": " + shotLine.getX2() + " " + shotLine.getY2());
 			
 			
 			double shortestLength = shotVector.length;
@@ -283,7 +309,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				double [] coord = shotLine.RLIntersect(walls[j].hit, shotLine);
 				
 				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
-					System.out.println("hit");
+					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
 					double currentLength = Math.pow(shotLine.getX1()-coord[0], 2)  + 
 							Math.pow(shotLine.getY1() + coord[1], 2);
 					
@@ -300,7 +326,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 			
 			hitscans.get(i).hit = shotLine;
 			
-			System.out.println(hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
+			//System.out.println(hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
 			
 			
 			
@@ -385,6 +411,29 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		if (key == KeyEvent.VK_Q && players[0].isTurnLeft){
 			players[0].isTurnLeft = false;
 		}
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		
+		mouseX = MouseInfo.getPointerInfo().getLocation().x;
+		//if (lastMouseX == 0) lastMouseX = mouseX;
+		turnAmount += (mouseX - (int)screenSize.getWidth()/2.0) * mouseSens;
+		
+		System.out.println(turnAmount);
+		//lastMouseX = mouseX;
+		
+		robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
+
 	}
 
 }

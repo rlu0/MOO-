@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
@@ -728,6 +730,11 @@ public class Client {
 	double linearDrag = 0.12;
 	double constDrag = 0.006;
 	
+	Robot robot;
+	int mouseX;
+	double turnAmount;
+	double mouseSens = 0.005;
+	
 	int frameTime = 28;
 
 	// List of things:
@@ -829,6 +836,12 @@ public class Client {
 			if (players.get(i).isTurnRight){
 				players.get(i).direction += 0.1;
 			}
+			
+			// mouse turning
+			players.get(i).direction += turnAmount;
+			turnAmount = 0;
+			
+			
 			// set movement vector to acceleration
 			moveForce.calcLengthAngle();
 			if (moveForce.length > 0.0001){
@@ -1399,6 +1412,13 @@ public class Client {
 			playery = 2;
 			direction = 0;
 			
+			try {
+				robot = new Robot();
+			} catch (AWTException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			players.add(new Player(playerx, playery, direction));
 			JFrame window = new JFrame("MOOD");
 			JPanel bananarama = new GameDisp();
@@ -1411,8 +1431,11 @@ public class Client {
 			window.setSize(455, 475);
 			// window.getContentPane().add(yomamma);
 
-			KeyListener keyList = new MyKeyListener();
-			window.addKeyListener(keyList);
+			//KeyListener keyList = new MyKeyListener();
+			//MouseMotionListener motionListener = new MouseMovementListener();
+			window.addKeyListener(new MyKeyListener());
+			window.addMouseMotionListener(new MouseMovementListener());
+			window.setLocationRelativeTo(null);
 			
 			while (true){
 				long startTime = System.currentTimeMillis();
@@ -1887,6 +1910,32 @@ public class Client {
 			}
 
 		}
+	}
+	
+	public class MouseMovementListener implements MouseMotionListener {
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			
+			
+			mouseX = MouseInfo.getPointerInfo().getLocation().x;
+			//if (lastMouseX == 0) lastMouseX = mouseX;
+			turnAmount += (mouseX - (int)screenSize.getWidth()/2.0) * mouseSens;
+			
+			System.out.println(turnAmount);
+			//lastMouseX = mouseX;
+			
+			robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
+		}
+		
 	}
 
 	// public class MyKeyListenerA implements KeyListener {
