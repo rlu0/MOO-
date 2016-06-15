@@ -192,15 +192,15 @@ public class Hitbox {
 		// Line equation
 		double lineA = b.getY2() - b.getY1();
 		double lineB = b.getX1() - b.getX2();
-		double lineC = lineA * b.getX1() + lineB * b.getY1();
+		//double lineC = lineA * b.getX1() + lineB * b.getY1();
 		
 		
 		//Upper rectangle line
 		double upA = 0;
 		double upB = a.getX1()-a.getX2();
-		double upC = upB * a.getY1();
+		//double upC = upB * a.getY1();
 		
-		double det = lineA*upB - upA*lineB;
+		/*double det = lineA*upB - upA*lineB;
 		if(det == 0){
 			//Lines are parallel
 		}else{
@@ -210,6 +210,40 @@ public class Hitbox {
 				intersectsX[0] = x;
 				intersectsY[0] = y;
 			}
+		}*/
+		
+		// x1 : b.getX1()
+		// x2 : b.getX2()
+		// y1 : b.getY1()
+		// y2 : b.getY2()
+		// x3 : a.getX1()
+		// x4 : a.getX2()
+		// y3 : a.getY1()
+		// y4 : a.getY1()
+		
+		double x12 =  b.getX1() - b.getX2();
+		double x34 = a.getX1()-a.getX2();
+		double y12 =  b.getY1() - b.getY2();
+		double y34 = 0;
+
+		double c = x12 * y34 - y12 * x34;
+
+		if (Math.abs(c) < 0.01){
+		  // No intersection
+		}
+		else {
+		  // Intersection
+		  double abc = b.getX1() * b.getY2() - b.getY1() * b.getX2();
+		  double def = a.getX1() * a.getY1() - a.getY1() * a.getX2();
+
+		  double x = (abc * x34 - def * x12) / c;
+		  double y = (abc * y34 - def * y12) / c;
+		  
+			if (x>a.getX1() && x<a.getX2()){
+				intersectsX[1] = x;
+				intersectsY[1] = y;
+			}
+
 		}
 		
 		/*
@@ -272,9 +306,9 @@ public class Hitbox {
 		int minDistIndex = 0;
 		
 		for (int i=0; i<4; i++){
+			
 			if (intersectsX[i] == Double.MAX_VALUE && intersectsY[i] == Double.MAX_VALUE){
 				break;
-
 			}
 			//System.out.println("not break");
 			double currentDist = Math.pow(intersectsX[i]-b.getX1(), 2) + Math.pow(intersectsY[i]-b.getY1(), 2);

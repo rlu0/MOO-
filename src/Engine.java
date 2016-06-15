@@ -21,7 +21,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	double forwardAccel = 0.025;
 	double sidewaysAccel = 0.02;
 	double backwardAccel = 0.02;
-	double maxAccel = 0.25;
+	double maxAccel = 0.025;
 	double quadDrag = 0.05;
 	double linearDrag = 0.12;
 	double constDrag = 0.006;
@@ -43,11 +43,12 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		players = new Player [1];
 		players[0] = new Player(4, 4, new CircleHit(5,5,0.25));
 		players[0].direction = (Math.PI*3)/2;
-		walls = new Wall [4];
+		walls = new Wall [5];
 		walls[0] = new Wall(0, 0, 10, 1);
 		walls[1] = new Wall(9, 1, 1, 8);
 		walls[2] = new Wall(0, 9, 10, 1);
 		walls[3] = new Wall(0, 1, 1, 8);
+		walls[4] = new Wall(3,4,1,2);
 		//testing
 		hitscans.add(new Hitscan(players[0],5,new Line(0,0,0,0)));
 		
@@ -106,12 +107,12 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		}
 		
 		// Draw Shots
-		g.setColor(new Color(255, 188, 56));
+		g.setColor(new Color(255, 100, 0));
 		for (int i=0; i<hitscans.size(); i++){
 			g.drawLine((int)Math.round(hitscans.get(i).hit.getX1() * drawScale),
 					(int)Math.round(hitscans.get(i).hit.getY1() * drawScale),
 					(int)Math.round(hitscans.get(i).hit.getX2() * drawScale),
-					(int)Math.round(hitscans.get(i).hit.getY2()) * drawScale);
+					(int)Math.round(hitscans.get(i).hit.getY2() * drawScale));
 		}
 		
 		g.setColor(Color.RED);
@@ -176,11 +177,15 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 			}
 			// set movement vector to acceleration
 			moveForce.calcLengthAngle();
-			moveForce.length = maxAccel;
+			if (moveForce.length > 0.0001){
+				moveForce.length = maxAccel;
+
+			}
 			players[i].acceleration = moveForce;
 			
 			// add acceleration to velocity
 			//players[i].acceleration.calcLengthAngle();
+			players[i].acceleration.calcComponents();
 			players[i].velocity.addComponents(players[i].acceleration);
 				
 				
@@ -256,24 +261,28 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	}
 	
 	void calcShot () {
-		for (int i=0; i<players.length; i++){
-			Vector shotVector = new Vector (hitscans.get(0).range, players[i].direction, false);
-			Line shotLine = new Line(players[i].getX(), players[i].getY(),
-					players[i].getX() + shotVector.getX(),
-					players[i].getY() + shotVector.getY());
+		for (int i=0; i<hitscans.size(); i++){
+			Vector shotVector = new Vector (hitscans.get(i).range, hitscans.get(i).shooter.direction, false);
+			Line shotLine = new Line(hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
+					hitscans.get(i).shooter.getX() + shotVector.getX(),
+					hitscans.get(i).shooter.getY() + shotVector.getY());
+			
+			System.out.println(": " + shotLine.getX2() + " " + shotLine.getY2());
+			
 			
 			double shortestLength = shotVector.length;
 			double [] shortestCoord = new double[2];
-			shortestCoord[0] = players[i].getX() + shotVector.getX();
-			shortestCoord[1] = players[i].getY() + shotVector.getY();
+			shortestCoord[0] = hitscans.get(i).shooter.getX() + shotVector.getX();
+			shortestCoord[1] = hitscans.get(i).shooter.getY() + shotVector.getY();
 			
 			for (int j=0; j<walls.length; j++){
 				
-				System.out.println("hit");
+				//System.out.println("hit");
 				
 				double [] coord = shotLine.RLIntersect(walls[j].hit, shotLine);
 				
 				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+					System.out.println("hit");
 					double currentLength = Math.pow(shotLine.getX1()-coord[0], 2)  + 
 							Math.pow(shotLine.getY1() + coord[1], 2);
 					
@@ -285,10 +294,12 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 				}
 			}
 			
-			shotLine = new Line (players[i].getX(), players[i].getY(),
+			shotLine = new Line (hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
 					shortestCoord[0], shortestCoord[1]);
 			
-			hitscans.get(0).hit = shotLine;
+			hitscans.get(i).hit = shotLine;
+			
+			System.out.println(hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
 			
 			
 			
