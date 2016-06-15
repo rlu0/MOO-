@@ -44,21 +44,21 @@ public class New3D {
 
 	
 	
-	
-	public void playDoot(){
-		doot.play();
-	}
-	
-	
-	
-	
-	
-	
-AudioClip	doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
-AudioClip	hg = Applet.newAudioClip(getCompleteURL("OST.wav"));
-AudioClip	sg = Applet.newAudioClip(getCompleteURL("OST.wav"));
-AudioClip	uzi = Applet.newAudioClip(getCompleteURL("OST.wav"));
-AudioClip	pls = Applet.newAudioClip(getCompleteURL("OST.wav"));	
+//	
+//	public void playDoot(){
+//		doot.play();
+//	}
+//	
+//	
+//	
+//	
+//	
+//	
+//AudioClip	doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
+//AudioClip	hg = Applet.newAudioClip(getCompleteURL("OST.wav"));
+//AudioClip	sg = Applet.newAudioClip(getCompleteURL("OST.wav"));
+//AudioClip	uzi = Applet.newAudioClip(getCompleteURL("OST.wav"));
+//AudioClip	pls = Applet.newAudioClip(getCompleteURL("OST.wav"));	
 	
 	
 	

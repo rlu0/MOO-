@@ -259,7 +259,7 @@ public class Serverito
 							// System.out.println("third");
 							mapNum = Integer.parseInt(usernameF.getText());
 							System.out.println(mapNum);
-							if (mapNum >= 10 || mapNum < -1)
+							if (mapNum > 10 || mapNum <= -1)
 							{
 								JOptionPane.showMessageDialog(null,
 										"The map is not an integer or is not listed!");
