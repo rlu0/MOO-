@@ -12,7 +12,7 @@ public class RectangleHit extends Hitbox {
 	
 	RectangleHit (double x1, double y1, double width, double height){
 		this.setX1(x1);
-		this.setX2(x2);
+		this.setY1(y1);
 		this.setWidth(width);
 		this.setHeight(height);
 		this.setX2(x1 + width);
@@ -23,7 +23,7 @@ public class RectangleHit extends Hitbox {
 		return x1;
 	}
 
-	void setX1(double x) {
+	void setX1(double x1) {
 		this.x1 = x1;
 	}
 
@@ -31,8 +31,24 @@ public class RectangleHit extends Hitbox {
 		return y1;
 	}
 
-	void setY1(double y) {
+	void setY1(double y1) {
 		this.y1 = y1;
+	}
+	
+	double getX2() {
+		return x2;
+	}
+
+	void setX2(double x2) {
+		this.x2 = x2;
+	}
+
+	double getY2() {
+		return y2;
+	}
+
+	void setY2(double y2) {
+		this.y2 = y2;
 	}
 
 	double getWidth() {
@@ -67,20 +83,6 @@ public class RectangleHit extends Hitbox {
 		this.materialID = materialID;
 	}
 
-	double getX2() {
-		return x2;
-	}
 
-	void setX2(double x2) {
-		this.x2 = x2;
-	}
-
-	double getY2() {
-		return y2;
-	}
-
-	void setY2(double y2) {
-		this.y2 = y2;
-	}
 
 }

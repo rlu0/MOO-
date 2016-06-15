@@ -118,7 +118,7 @@ public class Hitbox {
 			coord[1] = a.getY2();
 			return coord;
 		}
-		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2()-b.getR() && b.getX()<a.getX1()){
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX1()-b.getR() && b.getX()<a.getX1()){
 			coord[0] = a.getX1();
 			coord[1] = b.getY();
 			return coord;
@@ -272,11 +272,14 @@ public class Hitbox {
 		int minDistIndex = 0;
 		
 		for (int i=0; i<4; i++){
-			if (intersectsX[i] == Double.MAX_VALUE || intersectsY[i] == Double.MAX_VALUE){
+			if (intersectsX[i] == Double.MAX_VALUE && intersectsY[i] == Double.MAX_VALUE){
 				break;
+
 			}
+			//System.out.println("not break");
 			double currentDist = Math.pow(intersectsX[i]-b.getX1(), 2) + Math.pow(intersectsY[i]-b.getY1(), 2);
 			if (currentDist < minDist){
+				
 				minDist = currentDist;
 				minDistIndex = i;
 			}

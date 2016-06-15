@@ -85,10 +85,10 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		// Draw Walls
 		g.setColor(new Color (40,40,40));
 		for (int i=0; i<walls.length; i++){
-			g.fillRect((int)Math.round(walls[i].getX()		*  drawScale),
-					(int)Math.round(walls[i].getY()			*  drawScale),
-					(int)Math.round(walls[i].getWidth()		*  drawScale),
-					(int)Math.round(walls[i].getHeight())	*  drawScale);
+			g.fillRect((int)Math.round(walls[i].hit.getX1()							*  drawScale),
+					(int)Math.round(walls[i].hit.getY1()							*  drawScale),
+					(int)Math.round((walls[i].hit.getX2() - walls[i].hit.getX1())	*  drawScale),
+					(int)Math.round((walls[i].hit.getY2() - walls[i].hit.getY1())	*  drawScale));
 		}
 		
 		// Draw Player
@@ -225,7 +225,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	
 			for (int j = 0; j<walls.length; j++){
 				double [] coord = players[i].hit.RCIntersect(walls[j].hit, players[i].hit);
-				if (coord[0] != Double.MAX_VALUE && coord[0] != Double.MAX_VALUE){
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
 					double xDisplace = players[i].getX()-coord[0];
 					double yDisplace = players[i].getY()-coord[1];
 					
@@ -268,9 +268,12 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 			shortestCoord[1] = players[i].getY() + shotVector.getY();
 			
 			for (int j=0; j<walls.length; j++){
+				
+				System.out.println("hit");
+				
 				double [] coord = shotLine.RLIntersect(walls[j].hit, shotLine);
 				
-				if (coord[0] != Double.MAX_VALUE && coord[0] != Double.MAX_VALUE){
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
 					double currentLength = Math.pow(shotLine.getX1()-coord[0], 2)  + 
 							Math.pow(shotLine.getY1() + coord[1], 2);
 					
