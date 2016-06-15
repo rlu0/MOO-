@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Serverito
@@ -24,6 +25,7 @@ public class Serverito
 	static boolean[] clientsRunning = new boolean[8];
 	int gameType;
 	int mapNum = 0;
+	static boolean gameStart = false;
 	int[][] currentMap = {
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -281,7 +283,25 @@ public class Serverito
 			}
 		}
 		window.setVisible(false);
-		System.out.println("Game started on port: " + port);
+		
+		doingStuff = false;
+		//System.out.println("Game started on port: " + port);
+		JFrame loadingFrame = new JFrame("MOOD - Lobby");
+		
+		JPanel information = new JPanel();
+		JTextArea display = new JTextArea("Game started on port: " + port);
+		JButton startG = new JButton("Begin Game");
+		buttonListener butt = new buttonListener();
+		startG.addActionListener(butt);
+		
+		loadingFrame.add(information);
+		loadingFrame.add(startG);
+		GridLayout lay2 = new GridLayout(2, 1, 2, 2);
+		loadingFrame.setLayout(lay2);
+		loadingFrame.setSize(300,300);
+		loadingFrame.setVisible(true);
+		
+		information.add(display);
 		Socket client = null;// hold the client connection
 		Boolean isSpace = false;
 		try
@@ -292,19 +312,31 @@ public class Serverito
 		{
 			System.out.println("YOU FORGOT TO CLOSE IT DAMMIT");
 		}
-		while (running)
+		
+		while (running && gameStart == false)
 		{
 			try
 			{
+				Thread.sleep(100);
+			}
+			catch (Exception e)
+			{
+				
+			}
+			try
+			{
 				client = serverSock.accept();
-				System.out.println("Client connected");
+				display.append("\n Client connected");
 
 				ConnectionHandler clientHandler = new ConnectionHandler(
 						client);
 
 				clientList.add(clientHandler);
-
 				(new Thread(clientHandler)).start();
+				for (int i = 0; i < clientList.size(); i++)
+				{
+					clientList.get(i).setPlayerList(clientList);
+				}
 				// }
 
 			}
@@ -319,7 +351,10 @@ public class Serverito
 					System.out.println("Failed to close socket");
 				}
 			}
+			
 		}
+		loadingFrame.setVisible(false);
+		gameStart = true;
 
 	}
 
@@ -331,8 +366,8 @@ public class Serverito
 		private BufferedReader input; // Stream for network input
 		private Socket client; // keeps track of the client socket
 		private boolean running;
-		String name;
-		ArrayList<ConnectionHandler> clientList = new ArrayList();
+		String username;
+		ArrayList<ConnectionHandler> clientList = null;
 
 		void updateLocations()
 		{
@@ -432,20 +467,42 @@ public class Serverito
 					e.printStackTrace();
 				}
 			}
+			//output.println(clientList.indexOf(client) + mapNum + clientList.size());
+			output.println("1 " + mapNum + " 6");
+			output.flush();
 			data = null;
-			while (running)
-			{ // loop until a server is closed
-				System.out.println("yeash");
+			
+			while (gameStart == false)
+			{
 				try
 				{
 					Thread.sleep(1000);
 				}
 				catch (Exception e)
 				{
-					System.out.println("");
+					
 				}
-				output.println("1 " + mapNum + " 7");
-				output.flush();
+				System.out.println("waiting");
+				if (doingStuff == true)
+				{
+					gameStart = true;
+				}
+			}
+			System.out.println("starting");
+			output.println("starting");
+			output.flush();
+			
+			while (running)
+			{ // loop until a server is closed
+//				try
+//				{
+//					Thread.sleep(1000);
+//				}
+//				catch (Exception e)
+//				{
+//					System.out.println("");
+//				}
+				
 				try
 				{
 					if (input.ready())
@@ -498,12 +555,17 @@ public class Serverito
 			return client;
 
 		}
+		
+		String getUsername()
+		{
+			return username;
+		}
 
 		void setPlayerList(ArrayList<ConnectionHandler> in)
 		{
 			this.clientList = in;
-			output.println("01 " + clientList.indexOf(client)
-					+ clientList.size());
+//			output.println("01 " + clientList.indexOf(client)
+//					+ clientList.size());
 		}
 
 		// end of inner class

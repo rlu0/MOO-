@@ -1037,7 +1037,7 @@ public class Client
 		{
 			try
 			{
-				System.out.println("It is breaking");
+				//System.out.println("It is breaking");
 				Thread.sleep(100);
 			}
 			catch (Exception e)
@@ -1076,8 +1076,66 @@ public class Client
 				System.out.println("error thrown, that's bad");
 			}
 		}
-		output.println("Stahp");
-		output.flush();
+		data = null;
+		JFrame loadingFrame = new JFrame("MOOD - Lobby");
+		
+		JPanel information = new JPanel();
+		JTextArea display = new JTextArea("Welcome to Lobby " + (int)Math.random()*100);
+		
+		information.add(display);
+		// Could add a chat room
+		loadingFrame.add(information);
+
+		GridLayout lay2 = new GridLayout(1, 1, 2, 2);
+		loadingFrame.setLayout(lay2);
+		loadingFrame.setSize(300,300);
+		loadingFrame.setVisible(true);
+		display.append("\n Hello " + username);
+		display.append("\n Please wait while the server sets things up!");
+		while (running && data == null)
+		{
+			try
+			{
+				Thread.sleep(1000);
+				System.out.println("wait for it");
+			}
+			catch(Exception e)
+			{
+				
+			}
+			try
+			{
+				if (input.ready())
+				{
+					data = input.readLine();
+					System.out.println(data);
+					if (!data.toLowerCase().equals("starting"))
+					{
+						data = null;
+					}
+					else
+					{
+						display.append("\n Starting");
+						try
+						{
+							Thread.sleep(1000);
+						}
+						catch (Exception e)
+						{
+							
+						}
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				
+			}
+		}
+		loadingFrame.setVisible(false);
+		
+//		output.println("Stahp");
+//		output.flush();
 		System.out.println("Made it 1");
 		(new Thread(new GameDisp())).start();
 		System.out.println("Made it 2");
@@ -1980,19 +2038,19 @@ public class Client
 
 		public void keyReleased(KeyEvent e)
 		{
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W") && !wPressed)
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W"))
 			{
 				wPressed = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A") && !aPressed)
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A"))
 			{
 				aPressed = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S") && !sPressed)
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S"))
 			{
 				sPressed = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D") && !dPressed)
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D"))
 			{
 				dPressed = false;
 			}
