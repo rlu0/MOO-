@@ -29,6 +29,8 @@ public class Client
 	boolean running = true; // thread status via boolean
 
 	int[][] enemyLocations = new int[8][2];
+	
+	String [][] riddleList = {{"What has a foot but no legs?","What is the longest word in the dictionary?","What word becomes shorter when you add two letters to it?","What is so delicate that just saying it breaks it?", "What tree goes in your hand?", "How do you make one disappear?"},{"A: A snail!","A: Smiles, since there is a mile between each s!","A: Short","A: Silence", "A: Palm trees!", "A: Add the letter G to the beginning of it"}};
 
 	// Various maps will be designed and put into here
 	static int[][] mapNeg1 = {
@@ -1080,20 +1082,39 @@ public class Client
 		JFrame loadingFrame = new JFrame("MOOD - Lobby");
 		
 		JPanel information = new JPanel();
-		JTextArea display = new JTextArea("Welcome to Lobby " + (int)Math.random()*100);
+		JTextArea display = new JTextArea("Welcome to Lobby " + (int)(Math.random()*100));
+		JTextArea riddlin = new JTextArea("Riddle: ");
 		
-		information.add(display);
 		// Could add a chat room
 		loadingFrame.add(information);
 
-		GridLayout lay2 = new GridLayout(1, 1, 2, 2);
-		loadingFrame.setLayout(lay2);
+		GridLayout lay2 = new GridLayout(2, 1, 2, 2);
+		information.setLayout(lay2);
+		information.add(display);
+		information.add(riddlin);
 		loadingFrame.setSize(300,300);
 		loadingFrame.setVisible(true);
 		display.append("\n Hello " + username);
 		display.append("\n Please wait while the server sets things up!");
+		int riddleCount = 0;
+		int currentRiddle = 0;
 		while (running && data == null)
 		{
+			if (riddleCount == 0)
+			{
+				currentRiddle = (int)(Math.random()*riddleList[0].length);
+				riddlin.append("\n"+riddleList[0][currentRiddle]);
+			}
+			if (riddleCount == 5)
+			{
+				riddlin.append("\n" + riddleList[1][currentRiddle]);
+			}
+			riddleCount++;
+			if (riddleCount == 10)
+			{
+				riddleCount = 0;
+				riddlin.setText("Riddle: ");
+			}
 			try
 			{
 				Thread.sleep(1000);
@@ -1131,6 +1152,7 @@ public class Client
 			{
 				
 			}
+			
 		}
 		loadingFrame.setVisible(false);
 		
