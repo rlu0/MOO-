@@ -10,6 +10,7 @@ public class Hitscan {
 	Hitscan(Player shooter, double range, int framesLeft){
 		this.shooter = shooter;
 		this.range = range;
+		this.framesLeft = framesLeft;
 		vector = new Vector (this.range, this.shooter.direction, false);
 		hit = new Line(this.shooter.getX(), this.shooter.getY(), this.shooter.getX() + this.vector.getX(), this.shooter.getY() + this.vector.getY());
 	}

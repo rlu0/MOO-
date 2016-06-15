@@ -1,8 +1,3 @@
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-
-import javafx.scene.shape.Circle;
 
 public class Player extends Thing {
 	private double x;
@@ -22,6 +17,8 @@ public class Player extends Thing {
 	boolean isMoveLeft;
 	boolean isTurnRight;
 	boolean isTurnLeft;
+	boolean isShoot;
+	boolean canShoot;
 
 	CircleHit hit;
 

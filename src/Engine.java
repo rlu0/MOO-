@@ -17,9 +17,10 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 
-public class Engine extends JPanel implements Runnable, KeyListener, MouseMotionListener{
+public class Engine extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 	
 	Player [] players;
 	Wall [] walls;
@@ -63,7 +64,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 		walls[3] = new Wall(0, 1, 1, 8);
 		walls[4] = new Wall(3,4,1,2);
 		//testing
-		hitscans.add(new Hitscan(players[0],5,Integer.MAX_VALUE));
+		//hitscans.add(new Hitscan(players[0],5,100000000));
 		
 		// Init Panel
 		this.setPreferredSize(new Dimension(600,400));
@@ -74,6 +75,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 		// Init listeners
 		this.addKeyListener(this);
 		this.addMouseMotionListener(this);
+		this.addMouseListener(this);
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
@@ -127,6 +129,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 					(int)Math.round((players[i].hit.getY()+Math.sin(players[i].direction)*0.7) * drawScale));
 		}
 		
+		//ADD TO CLIENT
 		// Draw Shots
 		g.setColor(new Color(255, 100, 0));
 		for (int i=0; i<hitscans.size(); i++){
@@ -155,7 +158,9 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 			
 			movePlayers();
 			
-			calcShot();
+			// ADD TO CLIENT
+			generateShots();
+			calcShots();
 			
 			repaint();
 			
@@ -286,14 +291,30 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 		}
 	}
 	
-	void calcShot () {
+	
+	// ADD TO CLIENT
+	
+	void generateShots() {
+		if (players[0].isShoot && players[0].canShoot){
+			hitscans.add(new Hitscan(players[0], 5, 1));
+			System.out.println("new shot");
+			players[0].canShoot = false;
+		}
+		
+	}
+	
+	//ADD TO CLIENT
+	void calcShots () {
+		
 		for (int i=0; i<hitscans.size(); i++){
 			
-			/*if (hitscans.get(i).framesLeft == 0){
+			System.out.println(hitscans.get(i).framesLeft);
+			
+			if (hitscans.get(i).framesLeft == 0){
 				hitscans.remove(i);
 				i--;
 				continue;
-			}*/
+			}
 
 			
 			hitscans.get(i).update();
@@ -419,7 +440,17 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
+		
+		mouseX = MouseInfo.getPointerInfo().getLocation().x;
+		//if (lastMouseX == 0) lastMouseX = mouseX;
+		turnAmount += (mouseX - (int)screenSize.getWidth()/2.0) * mouseSens;
+		
+		//System.out.println(turnAmount);
+		//lastMouseX = mouseX;
+		
+		robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
 	}
 
 	@Override
@@ -437,6 +468,45 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 		
 		robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
 
+	}
+
+	
+	// ADD TO CLIENT
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		if (SwingUtilities.isLeftMouseButton(e) && !players[0].isShoot){
+			players[0].isShoot = true;
+		}
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+		if (SwingUtilities.isLeftMouseButton(e) && players[0].isShoot){
+			players[0].isShoot = false;
+			players[0].canShoot = true;
+		}
+		
 	}
 
 }
