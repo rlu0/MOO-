@@ -63,7 +63,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 		walls[3] = new Wall(0, 1, 1, 8);
 		walls[4] = new Wall(3,4,1,2);
 		//testing
-		hitscans.add(new Hitscan(players[0],5,new Line(0,0,0,0)));
+		hitscans.add(new Hitscan(players[0],5,Integer.MAX_VALUE));
 		
 		// Init Panel
 		this.setPreferredSize(new Dimension(600,400));
@@ -156,7 +156,6 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 			movePlayers();
 			
 			calcShot();
-			
 			
 			repaint();
 			
@@ -289,29 +288,35 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 	
 	void calcShot () {
 		for (int i=0; i<hitscans.size(); i++){
-			Vector shotVector = new Vector (hitscans.get(i).range, hitscans.get(i).shooter.direction, false);
-			Line shotLine = new Line(hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
-					hitscans.get(i).shooter.getX() + shotVector.getX(),
-					hitscans.get(i).shooter.getY() + shotVector.getY());
 			
-			//System.out.println(": " + shotLine.getX2() + " " + shotLine.getY2());
+			/*if (hitscans.get(i).framesLeft == 0){
+				hitscans.remove(i);
+				i--;
+				continue;
+			}*/
+
+			
+			hitscans.get(i).update();
+			
+			System.out.println(": " + hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
 			
 			
-			double shortestLength = shotVector.length;
+			double shortestLength = hitscans.get(i).vector.length;
 			double [] shortestCoord = new double[2];
-			shortestCoord[0] = hitscans.get(i).shooter.getX() + shotVector.getX();
-			shortestCoord[1] = hitscans.get(i).shooter.getY() + shotVector.getY();
+			shortestCoord[0] = hitscans.get(i).hit.getX2();
+			shortestCoord[1] = hitscans.get(i).hit.getY2();
 			
 			for (int j=0; j<walls.length; j++){
 				
 				//System.out.println("hit");
 				
-				double [] coord = shotLine.RLIntersect(walls[j].hit, shotLine);
+				double [] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit, hitscans.get(i).hit);
 				
 				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
 					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
-					double currentLength = Math.pow(shotLine.getX1()-coord[0], 2)  + 
-							Math.pow(shotLine.getY1() + coord[1], 2);
+					
+					double currentLength = Math.sqrt(Math.pow(hitscans.get(i).hit.getX1()-coord[0], 2)  + 
+							Math.pow(hitscans.get(i).hit.getY1() - coord[1], 2));
 					
 					if (currentLength < shortestLength){
 						shortestLength = currentLength;
@@ -321,13 +326,11 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 				}
 			}
 			
-			shotLine = new Line (hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
+			hitscans.get(i).hit = new Line (hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
 					shortestCoord[0], shortestCoord[1]);
 			
-			hitscans.get(i).hit = shotLine;
-			
 			//System.out.println(hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
-			
+			hitscans.get(i).framesLeft --;
 			
 			
 		}
@@ -429,7 +432,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseMotion
 		//if (lastMouseX == 0) lastMouseX = mouseX;
 		turnAmount += (mouseX - (int)screenSize.getWidth()/2.0) * mouseSens;
 		
-		System.out.println(turnAmount);
+		//System.out.println(turnAmount);
 		//lastMouseX = mouseX;
 		
 		robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);

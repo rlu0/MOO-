@@ -175,6 +175,29 @@ public class Hitbox {
 		
 		return coord;
 	}
+	
+	
+	double []  lineIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+		double [] coord = new double [2];
+		coord [0] = Double.MAX_VALUE;
+		coord [1] = Double.MAX_VALUE;
+		
+		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+		if (denom == 0.0) { // Lines are parallel.
+			return coord;
+		}
+		double ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3))/denom;
+		double ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3))/denom;
+		if (ua >= 0.0f && ua <= 1.0f && ub >= 0.0f && ub <= 1.0f) {
+			// Get the intersection point.
+			coord[0] = x1 + ua*(x2 - x1);
+			coord[1] = y1 + ua*(y2 - y1);
+			return coord;
+		}
+		return coord;
+	}
+	
+	
 	double[] RLIntersect(RectangleHit a, Line b){
 		
 		double [] intersectFinal = new double[2];
@@ -189,10 +212,37 @@ public class Hitbox {
 			intersectsY[i] = Double.MAX_VALUE;
 		}
 		
-		// Line equation
+		double [] coord = new double [2];
+		
+		// Rectangle Top
+		coord = lineIntersect(b.getX1(), b.getY1(), b.getX2(), b.getY2(), a.getX1(), a.getY1(), a.getX2(), a.getY1());
+		
+		intersectsX[0] = coord[0];
+		intersectsY[0] = coord[1];
+		
+		
+		// Rectangle Bottom
+		coord = lineIntersect(b.getX1(), b.getY1(), b.getX2(), b.getY2(), a.getX1(), a.getY2(), a.getX2(), a.getY2());
+		
+		intersectsX[1] = coord[0];
+		intersectsY[1] = coord[1];
+		
+		// Rectangle  Left
+		coord = lineIntersect(b.getX1(), b.getY1(), b.getX2(), b.getY2(), a.getX1(), a.getY1(), a.getX1(), a.getY2());
+		
+		intersectsX[2] = coord[0];
+		intersectsY[2] = coord[1];
+		
+		// Rectangle  Right
+		coord = lineIntersect(b.getX1(), b.getY1(), b.getX2(), b.getY2(), a.getX2(), a.getY1(), a.getX2(), a.getY2());
+		
+		intersectsX[3] = coord[0];
+		intersectsY[3] = coord[1];
+		
+		/*// Line equation
 		double lineA = b.getY2() - b.getY1();
 		double lineB = b.getX1() - b.getX2();
-		//double lineC = lineA * b.getX1() + lineB * b.getY1();
+		double lineC = lineA * b.getX1() + lineB * b.getY1();
 		
 		
 		//Upper rectangle line
@@ -200,7 +250,7 @@ public class Hitbox {
 		double upB = a.getX1()-a.getX2();
 		//double upC = upB * a.getY1();
 		
-		/*double det = lineA*upB - upA*lineB;
+		double det = lineA*upB - upA*lineB;
 		if(det == 0){
 			//Lines are parallel
 		}else{
@@ -211,40 +261,6 @@ public class Hitbox {
 				intersectsY[0] = y;
 			}
 		}*/
-		
-		// x1 : b.getX1()
-		// x2 : b.getX2()
-		// y1 : b.getY1()
-		// y2 : b.getY2()
-		// x3 : a.getX1()
-		// x4 : a.getX2()
-		// y3 : a.getY1()
-		// y4 : a.getY1()
-		
-		double x12 =  b.getX1() - b.getX2();
-		double x34 = a.getX1()-a.getX2();
-		double y12 =  b.getY1() - b.getY2();
-		double y34 = 0;
-
-		double c = x12 * y34 - y12 * x34;
-
-		if (Math.abs(c) < 0.01){
-		  // No intersection
-		}
-		else {
-		  // Intersection
-		  double abc = b.getX1() * b.getY2() - b.getY1() * b.getX2();
-		  double def = a.getX1() * a.getY1() - a.getY1() * a.getX2();
-
-		  double x = (abc * x34 - def * x12) / c;
-		  double y = (abc * y34 - def * y12) / c;
-		  
-			if (x>a.getX1() && x<a.getX2()){
-				intersectsX[1] = x;
-				intersectsY[1] = y;
-			}
-
-		}
 		
 		/*
 		//Down rectangle line
@@ -303,12 +319,12 @@ public class Hitbox {
 		
 		// Find closest intersection point
 		double minDist = Double.MAX_VALUE; // Distance not square rooted
-		int minDistIndex = 0;
+		int minDistIndex = -1;
 		
 		for (int i=0; i<4; i++){
 			
 			if (intersectsX[i] == Double.MAX_VALUE && intersectsY[i] == Double.MAX_VALUE){
-				break;
+				continue;
 			}
 			//System.out.println("not break");
 			double currentDist = Math.pow(intersectsX[i]-b.getX1(), 2) + Math.pow(intersectsY[i]-b.getY1(), 2);
@@ -319,7 +335,7 @@ public class Hitbox {
 			}
 		}
 		
-		if (minDist != Double.MAX_VALUE && minDist != Double.MAX_VALUE){
+		if (minDistIndex != -1){
 			intersectFinal[0] = intersectsX[minDistIndex];
 			intersectFinal[1] = intersectsY[minDistIndex];
 		}
