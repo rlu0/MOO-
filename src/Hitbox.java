@@ -118,16 +118,17 @@ public class Hitbox {
 			coord[1] = a.getY2();
 			return coord;
 		}
-		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2() && b.getX()<a.getX2()+b.getR()){
-			coord[0] = a.getX2();
-			coord[1] = b.getY();
-			return coord;
-		}
 		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2()-b.getR() && b.getX()<a.getX1()){
 			coord[0] = a.getX1();
 			coord[1] = b.getY();
 			return coord;
 		}
+		if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()>a.getX2() && b.getX()<a.getX2()+b.getR()){
+			coord[0] = a.getX2();
+			coord[1] = b.getY();
+			return coord;
+		}
+
 		
 		
 		/*if (b.getY()>a.getY1() && b.getY()<a.getY2() && b.getX()-b.getR() < a.getX2() && 
@@ -211,7 +212,7 @@ public class Hitbox {
 			}
 		}
 		
-		
+		/*
 		//Down rectangle line
 		double downA = 0;
 		double downB = a.getX1()-a.getX2();
@@ -264,7 +265,7 @@ public class Hitbox {
 				intersectsY[3] = y;
 			}
 		}
-		
+		*/
 		
 		// Find closest intersection point
 		double minDist = Double.MAX_VALUE; // Distance not square rooted
@@ -304,7 +305,21 @@ public class Hitbox {
 		return intersectFinal;
 		
 	}
-	private boolean CLIntersect(CircleHit a, Line b){
+	boolean CLIntersect(CircleHit a, Line b){
+		double [] coord = new double [2];
+		
+		double lineA = b.getY2() - b.getY1();
+		double lineB = b.getX1() - b.getX2();
+		double lineC = lineA * b.getX1() + lineB * b.getY1();
+		
+		if (lineA==0 && lineB==0) return false;
+		
+		double distance = (lineA*a.getX() + lineB*a.getY() + lineC)/Math.sqrt(lineA*lineA + lineB*lineB);
+		
+		if (distance < a.getR()){
+			return true;
+		}
+		
 		return false;
 		
 	}

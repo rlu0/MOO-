@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +16,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 	
 	Player [] players;
 	Wall [] walls;
+	ArrayList<Hitscan> hitscans = new ArrayList<Hitscan>();
 	
 	double forwardAccel = 0.025;
 	double sidewaysAccel = 0.02;
@@ -46,6 +48,8 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		walls[1] = new Wall(9, 1, 1, 8);
 		walls[2] = new Wall(0, 9, 10, 1);
 		walls[3] = new Wall(0, 1, 1, 8);
+		//testing
+		hitscans.add(new Hitscan(players[0],5,new Line(0,0,0,0)));
 		
 		// Init Panel
 		this.setPreferredSize(new Dimension(600,400));
@@ -101,6 +105,15 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 					(int)Math.round((players[i].hit.getY()+Math.sin(players[i].direction)*0.7) * drawScale));
 		}
 		
+		// Draw Shots
+		g.setColor(new Color(255, 188, 56));
+		for (int i=0; i<hitscans.size(); i++){
+			g.drawLine((int)Math.round(hitscans.get(i).hit.getX1() * drawScale),
+					(int)Math.round(hitscans.get(i).hit.getY1() * drawScale),
+					(int)Math.round(hitscans.get(i).hit.getX2() * drawScale),
+					(int)Math.round(hitscans.get(i).hit.getY2()) * drawScale);
+		}
+		
 		g.setColor(Color.RED);
 		g.drawRect((int)Math.round(lastCollisionX*drawScale), (int)Math.round(lastCollisionY*drawScale), 1, 1);
 		
@@ -117,7 +130,10 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		while (true){
 			long startTime = System.currentTimeMillis();
 			
-			movePlayers();			
+			movePlayers();
+			
+			calcShot();
+			
 			
 			repaint();
 			
@@ -215,26 +231,63 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 					
 					System.out.println(coord[0] + " " + coord[1]);
 					
+					//System.out.println();
 					lastCollisionX = coord[0];
 					lastCollisionY = coord[1];
 					
 					double centerDistance = Math.sqrt(Math.pow(players[i].getX()-coord[0],2)
 							+ Math.pow(players[i].getY()-coord[1], 2));
 					double displaceDist = players[i].hit.getR() - centerDistance;
-					System.out.println(centerDistance);
-					System.out.println(displaceDist);
 					
 					Vector displace = new Vector(xDisplace, yDisplace, true);
 					displace.length = displaceDist;
 					displace.calcComponents();
 					
-					Vector bounceVelocity = new Vector(xDisplace, yDisplace, true);
+					//Vector bounceVelocity = new Vector(xDisplace, yDisplace, true);
+					//players[i].velocity.addComponents(bounceVelocity);
 					
 					players[i].setX(players[i].getX()+displace.getX());
 					players[i].setY(players[i].getY()+displace.getY());
 					
 				}
 			}
+			
+		}
+	}
+	
+	void calcShot () {
+		for (int i=0; i<players.length; i++){
+			Vector shotVector = new Vector (hitscans.get(0).range, players[i].direction, false);
+			Line shotLine = new Line(players[i].getX(), players[i].getY(),
+					players[i].getX() + shotVector.getX(),
+					players[i].getY() + shotVector.getY());
+			
+			double shortestLength = shotVector.length;
+			double [] shortestCoord = new double[2];
+			shortestCoord[0] = players[i].getX() + shotVector.getX();
+			shortestCoord[1] = players[i].getY() + shotVector.getY();
+			
+			for (int j=0; j<walls.length; j++){
+				double [] coord = shotLine.RLIntersect(walls[j].hit, shotLine);
+				
+				if (coord[0] != Double.MAX_VALUE && coord[0] != Double.MAX_VALUE){
+					double currentLength = Math.pow(shotLine.getX1()-coord[0], 2)  + 
+							Math.pow(shotLine.getY1() + coord[1], 2);
+					
+					if (currentLength < shortestLength){
+						shortestLength = currentLength;
+						shortestCoord = coord;
+					}
+					
+				}
+			}
+			
+			shotLine = new Line (players[i].getX(), players[i].getY(),
+					shortestCoord[0], shortestCoord[1]);
+			
+			hitscans.get(0).hit = shotLine;
+			
+			
 			
 		}
 	}
