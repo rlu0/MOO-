@@ -1260,7 +1260,7 @@ public class Client {
 		}
 
 		public void paintComponent(Graphics g) {
-			uberDirection = players.get(0).direction;
+			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
 			// int gridPlayery = (int) (playery / 10);
@@ -1335,6 +1335,60 @@ public class Client {
 			}
 			g.setColor(Color.YELLOW);
 			g.drawOval(sizex / 2 - 5, sizey / 2 - 5, 10, 10);
+			
+			
+			
+			double drawScale = 2;
+			
+			// Top down view
+			Graphics2D graphics2D = (Graphics2D) g;
+			
+			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		            RenderingHints.VALUE_ANTIALIAS_ON); 
+			
+			// Draw Floor
+			//g.setColor(new Color(200,200,200));
+			//g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			
+			// Draw Walls
+			g.setColor(new Color (40,40,40));
+			for (int i=0; i<walls.size(); i++){
+				g.fillRect((int)Math.round(walls.get(i).hit.getX1()							*  drawScale),
+						(int)Math.round(walls.get(i).hit.getY1()							*  drawScale),
+						(int)Math.round((walls.get(i).hit.getX2() - walls.get(i).hit.getX1())	*  drawScale),
+						(int)Math.round((walls.get(i).hit.getY2() - walls.get(i).hit.getY1())	*  drawScale));
+			}
+			
+			// Draw Player
+			g.setColor(new Color(10, 84, 173));
+			for (int i=0; i<players.size(); i++){
+				g.fillOval((int)Math.round((players.get(i).hit.getX() - players.get(i).hit.getR()*2)* drawScale),
+						(int)Math.round((players.get(i).hit.getY() - players.get(i).hit.getR()*2) * drawScale),
+						(int)Math.round(players.get(i).hit.getR()*4 							* drawScale),
+						(int)Math.round(players.get(i).hit.getR()*4 							* drawScale));
+				
+				g.drawLine((int)Math.round(players.get(i).hit.getX() * drawScale),
+						(int)Math.round(players.get(i).hit.getY() * drawScale),
+						(int)Math.round((players.get(i).hit.getX()+Math.cos(players.get(i).direction)*2.5) * drawScale),
+						(int)Math.round((players.get(i).hit.getY()+Math.sin(players.get(i).direction)*2.5) * drawScale));
+			}
+			
+			// Draw Shots
+			/*g.setColor(new Color(255, 100, 0));
+			for (int i=0; i<hitscans.size(); i++){
+				g.drawLine((int)Math.round(hitscans.get(i).hit.getX1() * drawScale),
+						(int)Math.round(hitscans.get(i).hit.getY1() * drawScale),
+						(int)Math.round(hitscans.get(i).hit.getX2() * drawScale),
+						(int)Math.round(hitscans.get(i).hit.getY2() * drawScale));
+			}
+			
+			g.setColor(Color.RED);
+			g.drawRect((int)Math.round(lastCollisionX*drawScale), (int)Math.round(lastCollisionY*drawScale), 1, 1);
+			*/
+			
+			g.setColor(Color.WHITE);
+			g.drawString(players.get(0).getX() + " " + players.get(0).getY() + " " + players.get(0).isMoveForward,10, 10);
+			
 
 		}
 
@@ -1343,7 +1397,7 @@ public class Client {
 		public void run() {
 			playerx = 2;
 			playery = 2;
-			direction = 1;
+			direction = 0;
 			
 			players.add(new Player(playerx, playery, direction));
 			JFrame window = new JFrame("MOOD");

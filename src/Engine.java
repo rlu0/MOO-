@@ -120,6 +120,7 @@ public class Engine extends JPanel implements Runnable, KeyListener{
 		
 		g.setColor(Color.WHITE);
 		g.drawString(players[0].getX() + " " + players[0].getY() + " " + players[0].isMoveForward,10, 10);
+		
 	}
 	
 
