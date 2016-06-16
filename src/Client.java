@@ -203,7 +203,7 @@ public class Client
 
 		for (int k = 0; k < 11; k++)
 		{
-			System.out.println("");
+			// System.out.println("");
 			try
 			{
 				String filename = "";
@@ -211,7 +211,7 @@ public class Client
 					filename = "mapNeg1";
 				else
 					filename = "map" + k;
-				System.out.println(filename);
+				// System.out.println(filename);
 				File f = new File(filename);
 				Scanner inFile = new Scanner(f);
 				int j = 0;
@@ -224,10 +224,10 @@ public class Client
 					{
 						int currentInt = Integer.valueOf(split[i]);
 						allMaps[k][j][i] = currentInt;
-						System.out.print(allMaps[k][j][i]);
+						// System.out.print(allMaps[k][j][i]);
 					}
 					j++;
-					System.out.println("");
+					// System.out.println("");
 				}
 			}
 			catch (Exception e)
@@ -296,7 +296,7 @@ public class Client
 				if (currentMap[i][j] == 1)
 				{
 					walls[counter] = new Wall(j, i, 1, 1);
-					System.out.println("generating walls");
+					// System.out.println("generating walls");
 					counter++;
 				}
 
@@ -477,7 +477,7 @@ public class Client
 		if (players.get(0).isShoot && players.get(0).canShoot)
 		{
 			hitscans.add(new Hitscan(players.get(0), 20, 1));
-			System.out.println("new shot");
+			// System.out.println("new shot");
 			players.get(0).canShoot = false;
 		}
 
@@ -490,7 +490,7 @@ public class Client
 		for (int i = 0; i < hitscans.size(); i++)
 		{
 
-			System.out.println(hitscans.get(i).framesLeft);
+			// System.out.println(hitscans.get(i).framesLeft);
 
 			if (hitscans.get(i).framesLeft == 0)
 			{
@@ -501,8 +501,8 @@ public class Client
 
 			hitscans.get(i).update();
 
-			System.out.println(": " + hitscans.get(i).hit.getX2() + " "
-					+ hitscans.get(i).hit.getY2());
+			// System.out.println(": " + hitscans.get(i).hit.getX2() + " "
+			// + hitscans.get(i).hit.getY2());
 
 			double shortestLength = hitscans.get(i).vector.length;
 			double[] shortestCoord = new double[2];
@@ -521,7 +521,8 @@ public class Client
 						&& coord[1] != Double.MAX_VALUE)
 				{
 
-					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
+					// System.out.printf("hit: .4%f .4%f%n", coord[0],
+					// coord[1]);
 
 					double currentLength = Math.sqrt(
 							Math.pow(hitscans.get(i).hit.getX1() - coord[0], 2)
@@ -577,7 +578,7 @@ public class Client
 			public void actionPerformed(ActionEvent arg0)
 			{
 				doingStuff = true;
-				System.out.println(doingStuff);
+				// System.out.println(doingStuff);
 			}
 
 		}
@@ -627,7 +628,7 @@ public class Client
 			}
 			if (doingStuff == true)
 			{
-				System.out.println("a");
+				// System.out.println("a");
 				ip = IPF.getText();
 				int port = -1;
 				try
@@ -857,9 +858,9 @@ public class Client
 				{
 					Thread.sleep(10);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
-					
+
 				}
 				try
 				{
@@ -893,9 +894,16 @@ public class Client
 									.substring(message.indexOf(" ") + 1);
 							double direction = Double
 									.parseDouble(message.substring(0));
-							enemyLocations[playNum][0] = xPos;
-							enemyLocations[playNum][1] = yPos;
-							enemyLocations[playNum][2] = direction;
+							if (playerNum != 0)
+							{
+								enemyLocations[playNum][0] = xPos;
+								enemyLocations[playNum][1] = yPos;
+								enemyLocations[playNum][2] = direction;
+								players.get(playNum).setX(xPos);
+								players.get(playNum).setY(yPos);
+								players.get(playNum).setDirection(direction);
+							}
+
 							System.out.println(playNum + " " + xPos + " " + yPos
 									+ " " + direction);
 						}
@@ -1370,7 +1378,7 @@ public class Client
 								&& players.get(0).getY() == (int) (tempy))
 						{
 							objectHit = true;
-							g.fillRect((int) (Math.tan(theta) * dTM),
+							g.fillRect((int) (Math.tan(theta) * dTM - 10),
 									(int) (sizey / 2 - sizey / (2 * dist)),
 									(int) (Math.tan(theta) * dTM + 10),
 									(int) (sizey / 2 + sizey / (2 * dist)));
@@ -1506,28 +1514,28 @@ public class Client
 			{
 				wPressed = true;
 				players.get(0).isMoveForward = true;
-				System.out.println("w");
+				// System.out.println("w");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")
 					&& !players.get(0).isMoveLeft)
 			{
 				aPressed = true;
 				players.get(0).isMoveLeft = true;
-				System.out.println("a");
+				// System.out.println("a");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")
 					&& !players.get(0).isMoveBack)
 			{
 				sPressed = true;
 				players.get(0).isMoveBack = true;
-				System.out.println("s");
+				// System.out.println("s");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")
 					&& !players.get(0).isMoveRight)
 			{
 				dPressed = true;
 				players.get(0).isMoveRight = true;
-				System.out.println("d");
+				// System.out.println("d");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left")
 					&& !players.get(0).isTurnLeft)
@@ -1553,7 +1561,7 @@ public class Client
 			{
 				if (!players.get(0).isShoot)
 				{
-					System.out.println("clicked");
+					// System.out.println("clicked");
 					players.get(0).isShoot = true;
 					soundFire();
 					currentGun += 5;
@@ -1642,7 +1650,7 @@ public class Client
 			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0)
 					* mouseSens;
 
-			System.out.println(turnAmount);
+			// System.out.println(turnAmount);
 			// lastMouseX = mouseX;
 
 			robot.mouseMove((int) screenSize.getWidth() / 2,
@@ -1661,7 +1669,7 @@ public class Client
 			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0)
 					* mouseSens;
 
-			System.out.println(turnAmount);
+			// System.out.println(turnAmount);
 			// lastMouseX = mouseX;
 
 			robot.mouseMove((int) screenSize.getWidth() / 2,
@@ -1700,7 +1708,7 @@ public class Client
 			// TODO Auto-generated method stub
 			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot)
 			{
-				System.out.println("clicked");
+				// System.out.println("clicked");
 				players.get(0).isShoot = true;
 				soundFire();
 				currentGun += 5;
