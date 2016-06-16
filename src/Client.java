@@ -15,8 +15,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
-public class Client
-{
+public class Client {
 	JButton sendButton, clearButton;
 	JTextField typeField;
 	static JTextArea msgArea;
@@ -36,33 +35,19 @@ public class Client
 	// [x][0] is x position [x][1] is y position [x][2] is direction
 	double[][] enemyLocations = new double[8][3];
 
-	String[][] riddleList = {
-			{ "What has a foot but no legs?",
-					"What is the longest word in the dictionary?",
-					"What word becomes shorter when you add two letters to it?",
-					"What is so delicate that just saying it breaks it?",
-					"What tree goes in your hand?",
-					"How do you make one disappear?",
-					"What is tall when it's young and short when its tall?",
-					"What can you catch but not throw?",
-					"What goes up but never goes down?",
-					"What is the largest thing in existence?",
-					"What has a neck but no head?",
-					"What starts with P, ends with E and has over 1000 letters?",
-					"What gets bigger the more you remove from it?",
-					"What grows when you feed it and dies when watered?",
-					"What's your name man?",
-					"Did you know that 45% of this game was made in the last day?",
-					"Haribo" },
-			{ "A: A snail!", "A: Smiles, since there is a mile between each s!",
-					"A: Short", "A: Silence",
-					"A: Palm trees!",
-					"A: Add the letter G to the beginning of it",
-					"A: A candle!",
-					"A: A cold", "A: Your age", "A: Yo Mamma", "A: A bottle",
-					"A: The Post office",
-					"A: A hole", "A: fires", "A: Alexander Hamilton",
-					"Really its true!", "I don't know what else to say" } };
+	String[][] riddleList = { { "What has a foot but no legs?", "What is the longest word in the dictionary?",
+			"What word becomes shorter when you add two letters to it?",
+			"What is so delicate that just saying it breaks it?", "What tree goes in your hand?",
+			"How do you make one disappear?", "What is tall when it's young and short when its tall?",
+			"What can you catch but not throw?", "What goes up but never goes down?",
+			"What is the largest thing in existence?", "What has a neck but no head?",
+			"What starts with P, ends with E and has over 1000 letters?",
+			"What gets bigger the more you remove from it?", "What grows when you feed it and dies when watered?",
+			"What's your name man?", "Did you know that 45% of this game was made in the last day?", "Haribo" },
+			{ "A: A snail!", "A: Smiles, since there is a mile between each s!", "A: Short", "A: Silence",
+					"A: Palm trees!", "A: Add the letter G to the beginning of it", "A: A candle!", "A: A cold",
+					"A: Your age", "A: Yo Mamma", "A: A bottle", "A: The Post office", "A: A hole", "A: fires",
+					"A: Alexander Hamilton", "Really its true!", "I don't know what else to say" } };
 
 	Image handgun = new ImageIcon("handgun.png").getImage();
 	Image boots = new ImageIcon("boots.png").getImage();
@@ -75,42 +60,27 @@ public class Client
 	Image shottyG = new ImageIcon("shotty.gif").getImage();
 	Image plasmaG = new ImageIcon("plasma.gif").getImage();
 
-	
-	
+	public void soundFire() {
+		if (currentGun == 0) {
 
-	public void soundFire(){
-		if (currentGun==0){
-			
-		}
-		else if ( currentGun==1 )
-		{
-			hg.play(); 
-		}
-		else if (currentGun==2)
-		{
+		} else if (currentGun == 1) {
+			hg.play();
+		} else if (currentGun == 2) {
 			sg.play();
 		}
-		
-		else if (currentGun==3)
-		{
+
+		else if (currentGun == 3) {
 			sg.play();
-		}
-		else if (currentGun==4)
-		{
+		} else if (currentGun == 4) {
 			uzi.play();
-		}
-		else if (currentGun==5)
-		{
+		} else if (currentGun == 5) {
 			pls.play();
 		}
 
-		
 	}
-	
-	
+
 	int currentGun = 1;
-	
-	
+
 	AudioClip doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
 	AudioClip hg = Applet.newAudioClip(getCompleteURL("dspistol.wav"));
 	AudioClip sg = Applet.newAudioClip(getCompleteURL("dsshotgun.wav"));
@@ -118,15 +88,10 @@ public class Client
 	AudioClip pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 
 	// Gets the URL needed for newAudioClip
-	public URL getCompleteURL(String fileName)
-	{
-		try
-		{
-			return new URL("file:" + System.getProperty("user.dir") + "/"
-					+ fileName);
-		}
-		catch (MalformedURLException e)
-		{
+	public URL getCompleteURL(String fileName) {
+		try {
+			return new URL("file:" + System.getProperty("user.dir") + "/" + fileName);
+		} catch (MalformedURLException e) {
 			System.err.println(e.getMessage());
 		}
 		return null;
@@ -144,8 +109,7 @@ public class Client
 	static int[][] map7 = new int[52][51];
 	static int[][] map8 = new int[52][51];
 	static int[][] map9 = new int[52][51];
-	static int[][][] allMaps = { map0, map1, map2, map3, map4, map5, map6, map7,
-			map8, map9, mapNeg1 };
+	static int[][][] allMaps = { map0, map1, map2, map3, map4, map5, map6, map7, map8, map9, mapNeg1 };
 	int[][] currentMap = mapNeg1;
 	int playerNum;
 	int numPlayers;
@@ -201,16 +165,14 @@ public class Client
 	/**
 	 * Main
 	 * 
-	 * @param args parameters from command line
+	 * @param args
+	 *            parameters from command line
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 
-		for (int k = 0; k < 11; k++)
-		{
+		for (int k = 0; k < 11; k++) {
 			System.out.println("");
-			try
-			{
+			try {
 				String filename = "";
 				if (k == 10)
 					filename = "mapNeg1";
@@ -220,13 +182,11 @@ public class Client
 				File f = new File(filename);
 				Scanner inFile = new Scanner(f);
 				int j = 0;
-				while (inFile.hasNext())
-				{
+				while (inFile.hasNext()) {
 					String currentLine = inFile.nextLine();
 					String[] split = currentLine.split(" ");
 
-					for (int i = 0; i < split.length; i++)
-					{
+					for (int i = 0; i < split.length; i++) {
 						int currentInt = Integer.valueOf(split[i]);
 						allMaps[k][j][i] = currentInt;
 						System.out.print(allMaps[k][j][i]);
@@ -234,39 +194,28 @@ public class Client
 					j++;
 					System.out.println("");
 				}
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 
 			}
 		}
 
 		Client client = new Client(); // start the client
 
-		try
-		{
+		try {
 			client.go(); // begin the connection
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// msgArea.append("\n Connection to Server Failed!");
 			// e.printStackTrace();
-			try
-			{
+			try {
 				Thread.sleep(3000);
-			}
-			catch (InterruptedException ex)
-			{
+			} catch (InterruptedException ex) {
 				// e.printStackTrace();
 
 			}
 			// msgArea.append("\n Exiting program!");
-			try
-			{
+			try {
 				Thread.sleep(2000);
-			}
-			catch (InterruptedException ex)
-			{
+			} catch (InterruptedException ex) {
 				// e.printStackTrace();
 
 			}
@@ -277,16 +226,12 @@ public class Client
 
 	boolean doingStuff = false;
 
-	void setWallArray()
-	{
+	void setWallArray() {
 
 		int noOfWalls = 0;
-		for (int i = 0; i < currentMap.length; i++)
-		{
-			for (int j = 0; j < currentMap[i].length; j++)
-			{
-				if (currentMap[i][j] == 1)
-				{
+		for (int i = 0; i < currentMap.length; i++) {
+			for (int j = 0; j < currentMap[i].length; j++) {
+				if (currentMap[i][j] == 1) {
 					noOfWalls++;
 				}
 			}
@@ -294,12 +239,9 @@ public class Client
 		walls = new Wall[noOfWalls];
 
 		int counter = 0;
-		for (int i = 0; i < currentMap.length; i++)
-		{
-			for (int j = 0; j < currentMap[i].length; j++)
-			{
-				if (currentMap[i][j] == 1)
-				{
+		for (int i = 0; i < currentMap.length; i++) {
+			for (int j = 0; j < currentMap[i].length; j++) {
+				if (currentMap[i][j] == 1) {
 					walls[counter] = new Wall(j, i, 1, 1);
 					System.out.println("generating walls");
 					counter++;
@@ -310,41 +252,29 @@ public class Client
 
 	}
 
-	void movePlayers()
-	{
+	void movePlayers() {
 		// Per player physics
-		for (int i = 0; i < players.size(); i++)
-		{
+		for (int i = 0; i < players.size(); i++) {
 
 			// movement vectors
 			Vector moveForce = new Vector(0, players.get(i).direction, false);
 
-			if (players.get(i).isMoveForward)
-			{
-				moveForce.addComponents(new Vector(forwardAccel,
-						players.get(i).direction, false));
+			if (players.get(i).isMoveForward) {
+				moveForce.addComponents(new Vector(forwardAccel, players.get(i).direction, false));
 			}
-			if (players.get(i).isMoveBack)
-			{
-				moveForce.addComponents(new Vector(-backwardAccel,
-						players.get(i).direction, false));
+			if (players.get(i).isMoveBack) {
+				moveForce.addComponents(new Vector(-backwardAccel, players.get(i).direction, false));
 			}
-			if (players.get(i).isMoveRight)
-			{
-				moveForce.addComponents(new Vector(sidewaysAccel,
-						players.get(i).direction + (Math.PI / 2), false));
+			if (players.get(i).isMoveRight) {
+				moveForce.addComponents(new Vector(sidewaysAccel, players.get(i).direction + (Math.PI / 2), false));
 			}
-			if (players.get(i).isMoveLeft)
-			{
-				moveForce.addComponents(new Vector(sidewaysAccel,
-						players.get(i).direction - (Math.PI / 2), false));
+			if (players.get(i).isMoveLeft) {
+				moveForce.addComponents(new Vector(sidewaysAccel, players.get(i).direction - (Math.PI / 2), false));
 			}
-			if (players.get(i).isTurnLeft)
-			{
+			if (players.get(i).isTurnLeft) {
 				players.get(i).setDirection(players.get(i).getDirection() - 0.1);
 			}
-			if (players.get(i).isTurnRight)
-			{
+			if (players.get(i).isTurnRight) {
 				players.get(i).setDirection(players.get(i).getDirection() + 0.1);
 			}
 
@@ -354,8 +284,7 @@ public class Client
 
 			// set movement vector to acceleration
 			moveForce.calcLengthAngle();
-			if (moveForce.length > 0.0001)
-			{
+			if (moveForce.length > 0.0001) {
 				moveForce.length = maxAccel;
 
 			}
@@ -368,11 +297,9 @@ public class Client
 
 			// add drag to velocity
 			double playerSpeed = players.get(i).velocity.length;
-			players.get(i).velocity.length -= playerSpeed * playerSpeed
-					* quadDrag;
+			players.get(i).velocity.length -= playerSpeed * playerSpeed * quadDrag;
 			players.get(i).velocity.length -= playerSpeed * linearDrag;
-			players.get(i).velocity.length = Math
-					.max(players.get(i).velocity.length - constDrag, 0);
+			players.get(i).velocity.length = Math.max(players.get(i).velocity.length - constDrag, 0);
 			players.get(i).velocity.calcComponents();
 
 			// System.out.println(players[i].direction);
@@ -382,10 +309,8 @@ public class Client
 			// "+players[i].velocity.getY());
 
 			// add velocity to position
-			players.get(i).setX(
-					players.get(i).getX() + players.get(i).velocity.getX());
-			players.get(i).setY(
-					players.get(i).getY() + players.get(i).velocity.getY());
+			players.get(i).setX(players.get(i).getX() + players.get(i).velocity.getX());
+			players.get(i).setY(players.get(i).getY() + players.get(i).velocity.getY());
 
 			// add velocity to position
 			// players[i].setX(players[i].getX() + players[i].velocity.getX());
@@ -393,13 +318,9 @@ public class Client
 
 			// wall collisions
 
-			for (int j = 0; j < walls.length; j++)
-			{
-				double[] coord = players.get(i).hit
-						.RCIntersect(walls[j].hit, players.get(i).hit);
-				if (coord[0] != Double.MAX_VALUE
-						&& coord[1] != Double.MAX_VALUE)
-				{
+			for (int j = 0; j < walls.length; j++) {
+				double[] coord = players.get(i).hit.RCIntersect(walls[j].hit, players.get(i).hit);
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE) {
 					double xDisplace = players.get(i).getX() - coord[0];
 					double yDisplace = players.get(i).getY() - coord[1];
 
@@ -409,12 +330,9 @@ public class Client
 					// lastCollisionX = coord[0];
 					// lastCollisionY = coord[1];
 
-					double centerDistance = Math
-							.sqrt(Math.pow(players.get(i).getX() - coord[0], 2)
-									+ Math.pow(players.get(i).getY() - coord[1],
-											2));
-					double displaceDist = players.get(i).hit.getR()
-							- centerDistance;
+					double centerDistance = Math.sqrt(Math.pow(players.get(i).getX() - coord[0], 2)
+							+ Math.pow(players.get(i).getY() - coord[1], 2));
+					double displaceDist = players.get(i).hit.getR() - centerDistance;
 
 					Vector displace = new Vector(xDisplace, yDisplace, true);
 					displace.length = displaceDist;
@@ -424,10 +342,8 @@ public class Client
 					// true);
 					// players[i].velocity.addComponents(bounceVelocity);
 
-					players.get(i)
-							.setX(players.get(i).getX() + displace.getX());
-					players.get(i)
-							.setY(players.get(i).getY() + displace.getY());
+					players.get(i).setX(players.get(i).getX() + displace.getX());
+					players.get(i).setY(players.get(i).getY() + displace.getY());
 
 				}
 			}
@@ -435,10 +351,8 @@ public class Client
 		}
 	}
 
-	void generateShots()
-	{
-		if (players.get(0).isShoot && players.get(0).canShoot)
-		{
+	void generateShots() {
+		if (players.get(0).isShoot && players.get(0).canShoot) {
 			hitscans.add(new Hitscan(players.get(0), 20, 1));
 			System.out.println("new shot");
 			players.get(0).canShoot = false;
@@ -447,16 +361,13 @@ public class Client
 	}
 
 	// ADD TO CLIENT
-	void calcShots()
-	{
+	void calcShots() {
 
-		for (int i = 0; i < hitscans.size(); i++)
-		{
+		for (int i = 0; i < hitscans.size(); i++) {
 
 			System.out.println(hitscans.get(i).framesLeft);
 
-			if (hitscans.get(i).framesLeft == 0)
-			{
+			if (hitscans.get(i).framesLeft == 0) {
 				hitscans.remove(i);
 				i--;
 				continue;
@@ -464,36 +375,27 @@ public class Client
 
 			hitscans.get(i).update();
 
-			System.out.println(": " + hitscans.get(i).hit.getX2() + " "
-					+ hitscans.get(i).hit.getY2());
+			System.out.println(": " + hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
 
 			double shortestLength = hitscans.get(i).vector.length;
 			double[] shortestCoord = new double[2];
 			shortestCoord[0] = hitscans.get(i).hit.getX2();
 			shortestCoord[1] = hitscans.get(i).hit.getY2();
 
-			for (int j = 0; j < walls.length; j++)
-			{
+			for (int j = 0; j < walls.length; j++) {
 
 				// System.out.println("hit");
 
-				double[] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit,
-						hitscans.get(i).hit);
+				double[] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit, hitscans.get(i).hit);
 
-				if (coord[0] != Double.MAX_VALUE
-						&& coord[1] != Double.MAX_VALUE)
-				{
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE) {
 
 					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
 
-					double currentLength = Math.sqrt(
-							Math.pow(hitscans.get(i).hit.getX1() - coord[0], 2)
-									+
-									Math.pow(hitscans.get(i).hit.getY1()
-											- coord[1], 2));
+					double currentLength = Math.sqrt(Math.pow(hitscans.get(i).hit.getX1() - coord[0], 2)
+							+ Math.pow(hitscans.get(i).hit.getY1() - coord[1], 2));
 
-					if (currentLength < shortestLength)
-					{
+					if (currentLength < shortestLength) {
 						shortestLength = currentLength;
 						shortestCoord = coord;
 					}
@@ -501,8 +403,7 @@ public class Client
 				}
 			}
 
-			hitscans.get(i).hit = new Line(hitscans.get(i).shooter.getX(),
-					hitscans.get(i).shooter.getY(),
+			hitscans.get(i).hit = new Line(hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
 					shortestCoord[0], shortestCoord[1]);
 
 			// System.out.println(hitscans.get(i).hit.getX2() + " " +
@@ -512,14 +413,11 @@ public class Client
 		}
 	}
 
-	public void go()
-	{
+	public void go() {
 
-		class buttonListener implements ActionListener
-		{
+		class buttonListener implements ActionListener {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				doingStuff = true;
 				System.out.println(doingStuff);
 			}
@@ -558,60 +456,42 @@ public class Client
 		window.setVisible(true);
 		window.setSize(300, 175);
 
-		while (ready != true)
-		{
-			try
-			{
+		while (ready != true) {
+			try {
 				Thread.sleep(10);
-			}
-			catch (InterruptedException ex)
-			{
+			} catch (InterruptedException ex) {
 				// e.printStackTrace();
 
 			}
-			if (doingStuff == true)
-			{
+			if (doingStuff == true) {
 				System.out.println("a");
 				ip = IPF.getText();
 				int port = -1;
-				try
-				{
+				try {
 					port = Integer.parseInt(portF.getText());
-				}
-				catch (Exception e)
-				{
-					JOptionPane.showMessageDialog(null,
-							"The Port is not an integer!");
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "The Port is not an integer!");
 					doingStuff = false;
 				}
 				username = usernameF.getText();
-				if (doingStuff == true)
-				{
-					try
-					{
+				if (doingStuff == true) {
+					try {
 						mySocket = new Socket(ip, port);
-						InputStreamReader stream1 = new InputStreamReader(
-								mySocket.getInputStream()); // Stream
-															// for
-															// network
-															// input
+						InputStreamReader stream1 = new InputStreamReader(mySocket.getInputStream()); // Stream
+																										// for
+																										// network
+																										// input
 						input = new BufferedReader(stream1);
 
 						output = new PrintWriter(mySocket.getOutputStream());
 						// assign printwriter to network stream
 						ready = true;
 
-					}
-					catch (IOException e)
-					{
-						JOptionPane.showMessageDialog(null,
-								"The IP entered or Port is not available!");
-						try
-						{
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(null, "The IP entered or Port is not available!");
+						try {
 							Thread.sleep(500);
-						}
-						catch (InterruptedException ex)
-						{
+						} catch (InterruptedException ex) {
 							// e.printStackTrace();
 
 						}
@@ -627,35 +507,27 @@ public class Client
 		output.flush();
 		System.out.println(data);
 		boolean loadingConf = false;
-		while (loadingConf == false)
-		{
-			try
-			{
+		while (loadingConf == false) {
+			try {
 				// System.out.println("It is breaking");
 				Thread.sleep(100);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				// TODO: handle exception
 			}
 			// Establishes the world and a location based on the
 			// playerAssignment
-			try
-			{
-				if (input.ready())
-				{
+			try {
+				if (input.ready()) {
 					System.out.println("Made it here");
 
 					// Message formatted: playerNum mapNum numEnemies
 					String message = input.readLine();
 					System.out.println("Message:" + message);
-					playerNum = Integer.parseInt(
-							message.substring(0, message.indexOf(" ")));
+					playerNum = Integer.parseInt(message.substring(0, message.indexOf(" ")));
 					System.out.println(playerNum);
 					message = message.substring(message.indexOf(" ") + 1);
 					System.out.println("Message:" + message);
-					int mapNum = Integer.parseInt(
-							message.substring(0, message.indexOf(" ")));
+					int mapNum = Integer.parseInt(message.substring(0, message.indexOf(" ")));
 					System.out.println("Map Num:" + mapNum);
 					message = message.substring(message.indexOf(" ") + 1);
 					currentMap = allMaps[mapNum];
@@ -665,9 +537,7 @@ public class Client
 					loadingConf = true;
 
 				}
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				// running = false;
 				// e.printStackTrace();
 				System.out.println("error thrown, that's bad");
@@ -679,8 +549,7 @@ public class Client
 		JFrame loadingFrame = new JFrame("MOOD - Lobby");
 
 		JPanel information = new JPanel();
-		JTextArea display = new JTextArea(
-				"Welcome to Lobby " + (int) (Math.random() * 100));
+		JTextArea display = new JTextArea("Welcome to Lobby " + (int) (Math.random() * 100));
 		JTextArea riddlin = new JTextArea("Riddle: ");
 
 		// Could add a chat room
@@ -696,58 +565,41 @@ public class Client
 		display.append("\n Please wait while the server sets things up!");
 		int riddleCount = 0;
 		int currentRiddle = 0;
-		while (running && data == null)
-		{
-			if (riddleCount == 0)
-			{
+		while (running && data == null) {
+			if (riddleCount == 0) {
 				currentRiddle = (int) (Math.random() * riddleList[0].length);
 				riddlin.append("\n" + riddleList[0][currentRiddle]);
 			}
-			if (riddleCount == 5)
-			{
+			if (riddleCount == 5) {
 				riddlin.append("\n" + riddleList[1][currentRiddle]);
 			}
 			riddleCount++;
-			if (riddleCount == 10)
-			{
+			if (riddleCount == 10) {
 				riddleCount = 0;
 				riddlin.setText("Riddle: ");
 			}
-			try
-			{
+			try {
 				Thread.sleep(1000);
 				System.out.println("wait for it");
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 
 			}
-			try
-			{
-				if (input.ready())
-				{
+			try {
+				if (input.ready()) {
 					data = input.readLine();
 					System.out.println(data);
-					if (!data.toLowerCase().equals("starting"))
-					{
+					if (!data.toLowerCase().equals("starting")) {
 						data = null;
-					}
-					else
-					{
+					} else {
 						display.append("\n Starting");
-						try
-						{
+						try {
 							Thread.sleep(1000);
-						}
-						catch (Exception e)
-						{
+						} catch (Exception e) {
 
 						}
 					}
 				}
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 
 			}
 
@@ -760,65 +612,48 @@ public class Client
 		(new Thread(new GameDisp())).start();
 		System.out.println("Made it 2");
 		(new Thread(new recieveInfo())).start();
-		while (running)
-		{
-			try
-			{
+		while (running) {
+			try {
 				Thread.sleep(10);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				System.out.println("why is this happening");
 			}
 			// System.out.println("made it 3");
 			// Every 10 milliseconds the client returns the player's position
-			output.println("cp " + players.get(0).getX() + " "
-					+ players.get(0).getY() + " "
-					+ players.get(0).getDirection());
+			output.println(
+					"cp " + players.get(0).getX() + " " + players.get(0).getY() + " " + players.get(0).getDirection());
 			output.flush();
 		}
 
 	}
 
-	public class recieveInfo implements Runnable
-	{
+	public class recieveInfo implements Runnable {
 
 		@Override
-		public void run()
-		{
-			try
-			{
-				if (input.ready())
-				{
+		public void run() {
+			try {
+				if (input.ready()) {
 					String message = input.readLine();
 					msgArea.append("\n" + message);
-					if (message.toLowerCase().equals("quit"))
-					{
+					if (message.toLowerCase().equals("quit")) {
 						running = false;
 					}
-					if (message.substring(0, message.indexOf(" ")).equals("pl"))
-					{
+					if (message.substring(0, message.indexOf(" ")).equals("pl")) {
 						// formatted pl player# xPos yPos direction
-						int playNum = Integer.parseInt(
-								message.substring(0, message.indexOf(" ")));
+						int playNum = Integer.parseInt(message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
-						double xPos = Double.parseDouble(
-								message.substring(0, message.indexOf(" ")));
+						double xPos = Double.parseDouble(message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
-						double yPos = Double.parseDouble(
-								message.substring(0, message.indexOf(" ")));
+						double yPos = Double.parseDouble(message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
-						double direction = Double.parseDouble(
-								message.substring(0, message.indexOf(" ")));
+						double direction = Double.parseDouble(message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
 						enemyLocations[playNum][0] = xPos;
 						enemyLocations[playNum][1] = yPos;
 						enemyLocations[playNum][2] = direction;
 					}
 				}
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				running = false;
 			}
 
@@ -826,163 +661,110 @@ public class Client
 
 	}
 
-	public class GameDisp extends JPanel implements Runnable
-	{
-		GameDisp()
-		{
+	public class GameDisp extends JPanel implements Runnable {
+		GameDisp() {
 			setSize(sizex, sizey);
 		}
 
-		public double findAngle(double opp, double adj)
-		{
+		public double findAngle(double opp, double adj) {
 			return Math.atan(opp / adj);
 		}
 
-		public double distance(double[] pt)
-		{
-			return Math.sqrt(Math.pow((pt[0] - players.get(0).getX()), 2)
-					+ Math.pow((pt[1] - players.get(0).getY()), 2));
+		public double distance(double[] pt) {
+			return Math
+					.sqrt(Math.pow((pt[0] - players.get(0).getX()), 2) + Math.pow((pt[1] - players.get(0).getY()), 2));
 		}
 
-		public double[] locatePoint(double angle)
-		{
+		public double[] locatePoint(double angle) {
 			angle += uberDirection;
 
-			if (angle > 2 * Math.PI)
-			{
+			if (angle > 2 * Math.PI) {
 				angle -= 2 * Math.PI;
-			}
-			else if (angle < 0)
-			{
+			} else if (angle < 0) {
 				angle += 2 * Math.PI;
 			}
 
 			// System.out.println("Angle Start:" +angle);
 			double newPt[] = null;
 			int i = 0;
-			while (true)
-			{
+			while (true) {
 				i++;
 				// System.out.println(i);
 				// int uber = 0;
 				double tempx;
 				double tempy;
-				if (angle < Math.PI / 2 && angle > 0)
-				{
+				if (angle < Math.PI / 2 && angle > 0) {
 					tempx = players.get(0).getX() + i * 0.01;
-					tempy = players.get(0).getY()
-							- (Math.tan(angle) * i * 0.01);
-				}
-				else if (angle < Math.PI && angle > Math.PI / 2)
-				{
+					tempy = players.get(0).getY() - (Math.tan(angle) * i * 0.01);
+				} else if (angle < Math.PI && angle > Math.PI / 2) {
 					// uber = 1;
 					tempx = players.get(0).getX() - i * 0.01;
-					tempy = players.get(0).getY()
-							- (Math.tan(Math.PI - angle) * i * 0.01);
-				}
-				else if (angle < 3 * Math.PI / 2 && angle > Math.PI)
-				{
+					tempy = players.get(0).getY() - (Math.tan(Math.PI - angle) * i * 0.01);
+				} else if (angle < 3 * Math.PI / 2 && angle > Math.PI) {
 					// uber = 2;
 					tempx = players.get(0).getX() - i * 0.01;
-					tempy = players.get(0).getY()
-							+ (Math.tan(angle - Math.PI) * i * 0.01);
-				}
-				else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2)
-				{
+					tempy = players.get(0).getY() + (Math.tan(angle - Math.PI) * i * 0.01);
+				} else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2) {
 					// uber = 3;
 					tempx = players.get(0).getX() + i * 0.01;
-					tempy = players.get(0).getY()
-							+ (Math.tan(2 * Math.PI - angle) * i * 0.01);
-				}
-				else if (angle == 0)
-				{
+					tempy = players.get(0).getY() + (Math.tan(2 * Math.PI - angle) * i * 0.01);
+				} else if (angle == 0) {
 					// uber = 4;
 					tempx = players.get(0).getX() + i * 0.01;
 					tempy = players.get(0).getY();
-				}
-				else if (angle == Math.PI / 2)
-				{
+				} else if (angle == Math.PI / 2) {
 					// uber = 5;
 					tempx = players.get(0).getX();
 					tempy = players.get(0).getY() - i * 0.01;
-				}
-				else if (angle == Math.PI)
-				{
+				} else if (angle == Math.PI) {
 					// uber = 6;
 					tempx = players.get(0).getX() - i * 0.01;
 					tempy = players.get(0).getY();
-				}
-				else
-				{
+				} else {
 					// uber = 7;
 					tempx = players.get(0).getX();
 					tempy = players.get(0).getY() + i * 0.01;
 				}
 				boolean changeRender = false;
-				if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4)
-				{
+				if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
 					changeRender = true;
-				}
-				else if (angle > 5 * Math.PI / 4 && angle < 7 * Math.PI / 4)
-				{
+				} else if (angle > 5 * Math.PI / 4 && angle < 7 * Math.PI / 4) {
 					changeRender = true;
 				}
 
-				if (tempx < 0 || tempx > currentMap[1].length || tempy < 0
-						|| tempy > currentMap.length || changeRender == true)
-				{
+				if (tempx < 0 || tempx > currentMap[1].length || tempy < 0 || tempy > currentMap.length
+						|| changeRender == true) {
 					i = 0;
 					// System.out.println("Doin this thang");
-					while (true)
-					{
+					while (true) {
 						i++;
-						if (angle < Math.PI / 2 && angle > 0)
-						{
+						if (angle < Math.PI / 2 && angle > 0) {
 							tempy = players.get(0).getY() - i * 0.01;
-							tempx = players.get(0).getX()
-									+ ((i * 0.01) / Math.tan(angle));
-						}
-						else if (angle < Math.PI && angle > Math.PI / 2)
-						{
+							tempx = players.get(0).getX() + ((i * 0.01) / Math.tan(angle));
+						} else if (angle < Math.PI && angle > Math.PI / 2) {
 							tempy = players.get(0).getY() - i * 0.01;
-							tempx = players.get(0).getX()
-									- ((i * 0.01) / Math.tan(Math.PI - angle));
-						}
-						else if (angle < 3 * Math.PI / 2 && angle > Math.PI)
-						{
+							tempx = players.get(0).getX() - ((i * 0.01) / Math.tan(Math.PI - angle));
+						} else if (angle < 3 * Math.PI / 2 && angle > Math.PI) {
 							tempy = players.get(0).getY() + i * 0.01;
-							tempx = players.get(0).getX()
-									- ((i * 0.01) / Math.tan(angle - Math.PI));
-						}
-						else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2)
-						{
+							tempx = players.get(0).getX() - ((i * 0.01) / Math.tan(angle - Math.PI));
+						} else if (angle < 2 * Math.PI && angle > 3 * Math.PI / 2) {
 							tempy = players.get(0).getY() + i * 0.01;
-							tempx = players.get(0).getX() + ((i * 0.01)
-									/ Math.tan(2 * Math.PI - angle));
-						}
-						else if (angle == 0)
-						{
+							tempx = players.get(0).getX() + ((i * 0.01) / Math.tan(2 * Math.PI - angle));
+						} else if (angle == 0) {
 							tempx = players.get(0).getX() + i * 0.01;
 							tempy = players.get(0).getY();
-						}
-						else if (angle == Math.PI / 2)
-						{
+						} else if (angle == Math.PI / 2) {
 							tempx = players.get(0).getX();
 							tempy = players.get(0).getY() - i * 0.01;
-						}
-						else if (angle == Math.PI)
-						{
+						} else if (angle == Math.PI) {
 							tempx = players.get(0).getX() - i * 0.01;
 							tempy = players.get(0).getY();
-						}
-						else
-						{
+						} else {
 							tempx = players.get(0).getX();
 							tempy = players.get(0).getY() + i * 0.1;
 						}
 						// System.out.println(tempx + " " + tempy);
-						if (currentMap[(int) tempy][(int) tempx] == 1)
-						{
+						if (currentMap[(int) tempy][(int) tempx] == 1) {
 							// System.out.println("shoe");
 							// System.out.println("got here");
 							newPt = new double[2];
@@ -992,8 +774,7 @@ public class Client
 						}
 					}
 				}
-				if (currentMap[(int) tempy][(int) tempx] == 1)
-				{
+				if (currentMap[(int) tempy][(int) tempx] == 1) {
 					// System.out.println("got here");
 					newPt = new double[2];
 					newPt[0] = tempx;
@@ -1005,9 +786,8 @@ public class Client
 			}
 		}
 
-		public void paintComponent(Graphics g)
-		{
-			Image[] guns= {boots,handgun,shotty,uzis,plasma,bootsG,handgunG, shottyG,uzisG,plasmaG};
+		public void paintComponent(Graphics g) {
+			Image[] guns = { boots, handgun, shotty, uzis, plasma, bootsG, handgunG, shottyG, uzisG, plasmaG };
 			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
@@ -1024,8 +804,7 @@ public class Client
 			double[] newPt = null;
 			double angle = 0;
 			// increments screen by 1 pixels each time
-			for (int i = 0; i < 226; i++)
-			{
+			for (int i = 0; i < 226; i++) {
 				/*
 				 * if facing right
 				 */
@@ -1039,20 +818,16 @@ public class Client
 				double distA = distance(newPt);
 				int col = (int) (distA);
 				Color color;
-				if (distA < 1)
-				{
+				if (distA < 1) {
 					color = new Color(255, 0, 0);
-				}
-				else
-				{
+				} else {
 					color = new Color((int) (255 / distA), 0, 0);
 				}
 				// color = new Color((int) (Math.random() * 256),
 				// (int) (Math.random() * 256),
 				// (int) (Math.random() * 256));
 				g.setColor(color);
-				g.drawLine(sizex / 2 - i, (int) ((sizey / 2.0) - 225.0 / distA),
-						sizex / 2 - i,
+				g.drawLine(sizex / 2 - i, (int) ((sizey / 2.0) - 225.0 / distA), sizex / 2 - i,
 						(int) ((sizey / 2.0) + 225.0 / distA));
 
 				// }
@@ -1060,19 +835,16 @@ public class Client
 				// Right half of Screen
 				// if (direction <= Math.PI / 4
 				// || direction > Math.PI * 2 - Math.PI / 4) {
-				angle = findAngle(i * viewInc, dTM);
+				// angle = findAngle(i * viewInc, dTM);
 				newPt = locatePoint(-angle);
 				// System.out.println("RS:" + newPt[0] + "," + newPt[1]);
 				// distA = distance(newPt);
 				distA = distance(newPt);
 				// System.out.println("left");
 
-				if (distA < 1)
-				{
+				if (distA < 1) {
 					color = new Color(255, 0, 0);
-				}
-				else
-				{
+				} else {
 					color = new Color((int) (255 / distA), 0, 0);
 				}
 
@@ -1080,8 +852,7 @@ public class Client
 				// (int) (Math.random() * 256),
 				// (int) (Math.random() * 256));
 				g.setColor(color);
-				g.drawLine(sizex / 2 + i, (int) ((sizey / 2.0) - 225.0 / distA),
-						sizex / 2 + i,
+				g.drawLine(sizex / 2 + i, (int) ((sizey / 2.0) - 225.0 / distA), sizex / 2 + i,
 						(int) ((sizey / 2.0) + 225.0 / distA));
 
 				// }
@@ -1090,6 +861,7 @@ public class Client
 				// System.out.println(angle);
 				// System.out.println(newPt[0] + " , " + newPt[1]);
 			}
+
 			g.setColor(Color.YELLOW);
 			g.drawOval(sizex / 2 - 5, sizey / 2 - 5, 10, 10);
 
@@ -1098,8 +870,7 @@ public class Client
 			// Top down view
 			Graphics2D graphics2D = (Graphics2D) g;
 
-			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 			// Draw Floor
 			// g.setColor(new Color(200,200,200));
@@ -1107,53 +878,36 @@ public class Client
 
 			// Draw Walls
 			g.setColor(new Color(40, 40, 40));
-			for (int i = 0; i < walls.length; i++)
-			{
-				g.fillRect(
-						(int) Math.round(walls[i].hit.getX1() * drawScale),
+			for (int i = 0; i < walls.length; i++) {
+				g.fillRect((int) Math.round(walls[i].hit.getX1() * drawScale),
 						(int) Math.round(walls[i].hit.getY1() * drawScale),
-						(int) Math.round((walls[i].hit.getX2()
-								- walls[i].hit.getX1()) * drawScale),
-						(int) Math.round((walls[i].hit.getY2()
-								- walls[i].hit.getY1()) * drawScale));
+						(int) Math.round((walls[i].hit.getX2() - walls[i].hit.getX1()) * drawScale),
+						(int) Math.round((walls[i].hit.getY2() - walls[i].hit.getY1()) * drawScale));
 			}
 
 			// Draw Player
 			g.setColor(new Color(10, 84, 173));
-			for (int i = 0; i < players.size(); i++)
-			{
-				g.fillOval((int) Math.round((players.get(i).hit.getX()
-						- players.get(i).hit.getR() * 3) * drawScale),
-						(int) Math.round((players.get(i).hit.getY()
-								- players.get(i).hit.getR() * 3) * drawScale),
-						(int) Math.round(
-								players.get(i).hit.getR() * 6 * drawScale),
-						(int) Math.round(
-								players.get(i).hit.getR() * 6 * drawScale));
+			for (int i = 0; i < players.size(); i++) {
+				g.fillOval((int) Math.round((players.get(i).hit.getX() - players.get(i).hit.getR() * 3) * drawScale),
+						(int) Math.round((players.get(i).hit.getY() - players.get(i).hit.getR() * 3) * drawScale),
+						(int) Math.round(players.get(i).hit.getR() * 6 * drawScale),
+						(int) Math.round(players.get(i).hit.getR() * 6 * drawScale));
 
-				g.drawLine(
-						(int) Math.round(players.get(i).hit.getX() * drawScale),
+				g.drawLine((int) Math.round(players.get(i).hit.getX() * drawScale),
 						(int) Math.round(players.get(i).hit.getY() * drawScale),
-						(int) Math.round((players.get(i).hit.getX()
-								+ Math.cos(players.get(i).direction) * 4)
-								* drawScale),
-						(int) Math.round((players.get(i).hit.getY()
-								+ Math.sin(players.get(i).direction) * 4)
-								* drawScale));
+						(int) Math.round(
+								(players.get(i).hit.getX() + Math.cos(players.get(i).direction) * 4) * drawScale),
+						(int) Math.round(
+								(players.get(i).hit.getY() + Math.sin(players.get(i).direction) * 4) * drawScale));
 			}
 
 			// Draw Shots
 			g.setColor(new Color(255, 100, 0));
-			for (int i = 0; i < hitscans.size(); i++)
-			{
-				g.drawLine((int) Math
-						.round(hitscans.get(i).hit.getX1() * drawScale),
-						(int) Math
-								.round(hitscans.get(i).hit.getY1() * drawScale),
-						(int) Math
-								.round(hitscans.get(i).hit.getX2() * drawScale),
-						(int) Math.round(
-								hitscans.get(i).hit.getY2() * drawScale));
+			for (int i = 0; i < hitscans.size(); i++) {
+				g.drawLine((int) Math.round(hitscans.get(i).hit.getX1() * drawScale),
+						(int) Math.round(hitscans.get(i).hit.getY1() * drawScale),
+						(int) Math.round(hitscans.get(i).hit.getX2() * drawScale),
+						(int) Math.round(hitscans.get(i).hit.getY2() * drawScale));
 			}
 
 			/*
@@ -1170,25 +924,90 @@ public class Client
 			 * (int)Math.round(lastCollisionY*drawScale), 1, 1);
 			 */
 
+			for (int k = 0; k < enemyLocations.length; k++) {
+				double[] fat = { enemyLocations[k][0], enemyLocations[k][1] };
+				double dist = distance(fat);
+				double theta;
+				if (enemyLocations[k][0] < players.get(0).getX()) {
+					if (enemyLocations[k][1] < players.get(0).getY()) {
+						theta = Math.PI - Math.acos(dist / (players.get(0).getX() - enemyLocations[k][0]));
+					} else {
+						theta = Math.PI + Math.acos(dist / (players.get(0).getX() - enemyLocations[k][0]));
+					}
+				} else {
+					if (enemyLocations[k][1] < players.get(0).getY()) {
+						theta = Math.acos(dist / (enemyLocations[k][0] - players.get(0).getX()));
+					} else {
+						theta = 2 * Math.PI - Math.acos(dist / (enemyLocations[k][0] - players.get(0).getX()));
+					}
+				}
+				boolean objectHit = false;
+				int p = 0;
+				if (theta < players.get(0).getDirection() + 5 * Math.PI / 18
+						&& theta > players.get(0).getDirection() - 5 * Math.PI / 18) {
+					while (!objectHit) {
+						p++;
+						double tempx;
+						double tempy;
+						if (theta < Math.PI / 2 && theta > 0) {
+							tempx = players.get(0).getX() + p * 0.01;
+							tempy = players.get(0).getY() - (Math.tan(theta) * p * 0.01);
+						} else if (theta < Math.PI && theta > Math.PI / 2) {
+							// uber = 1;
+							tempx = players.get(0).getX() - p * 0.01;
+							tempy = players.get(0).getY() - (Math.tan(Math.PI - theta) * p * 0.01);
+						} else if (theta < 3 * Math.PI / 2 && theta > Math.PI) {
+							// uber = 2;
+							tempx = players.get(0).getX() - p * 0.01;
+							tempy = players.get(0).getY() + (Math.tan(theta - Math.PI) * p * 0.01);
+						} else if (theta < 2 * Math.PI && theta > 3 * Math.PI / 2) {
+							// uber = 3;
+							tempx = players.get(0).getX() + p * 0.01;
+							tempy = players.get(0).getY() + (Math.tan(2 * Math.PI - theta) * p * 0.01);
+						} else if (theta == 0) {
+							// uber = 4;
+							tempx = players.get(0).getX() + p * 0.01;
+							tempy = players.get(0).getY();
+						} else if (theta == Math.PI / 2) {
+							// uber = 5;
+							tempx = players.get(0).getX();
+							tempy = players.get(0).getY() - p * 0.01;
+						} else if (theta == Math.PI) {
+							// uber = 6;
+							tempx = players.get(0).getX() - p * 0.01;
+							tempy = players.get(0).getY();
+						} else {
+							// uber = 7;
+							tempx = players.get(0).getX();
+							tempy = players.get(0).getY() + p * 0.01;
+						}
+						if (currentMap[(int) tempy][(int) tempx] == 1) {
+							objectHit = true;
+						} else if ((int) (players.get(0).getX()) == (int) (tempx)
+								&& players.get(0).getY() == (int) (tempy)) {
+							objectHit = true;
+
+						}
+					}
+
+				}
+			}
+
 			g.setColor(Color.WHITE);
-			g.drawString(players.get(0).getX() + " " + players.get(0).getY()
-					+ " " + players.get(0).isMoveForward, 10, 10);
+			g.drawString(players.get(0).getX() + " " + players.get(0).getY() + " " + players.get(0).isMoveForward, 10,
+					10);
 			g.drawImage(guns[currentGun], 150, 400, this);
 		}
 
 		@Override
-		public void run()
-		{
+		public void run() {
 			playerx = 2;
 			playery = 2;
 			direction = 0;
 
-			try
-			{
+			try {
 				robot = new Robot();
-			}
-			catch (AWTException e1)
-			{
+			} catch (AWTException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -1212,8 +1031,7 @@ public class Client
 			window.addMouseListener(new MouseClickListener());
 			window.setLocationRelativeTo(null);
 
-			while (running)
-			{
+			while (running) {
 				long startTime = System.currentTimeMillis();
 
 				movePlayers();
@@ -1230,12 +1048,9 @@ public class Client
 
 				long currentDelay = frameTime - (endTime - startTime);
 				if (currentDelay > 0)
-					try
-					{
+					try {
 						Thread.sleep(currentDelay);
-					}
-					catch (InterruptedException e)
-					{
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 			}
@@ -1245,136 +1060,102 @@ public class Client
 
 	}
 
-	public class TypeKeyListener implements KeyListener
-	{
+	public class TypeKeyListener implements KeyListener {
 
 		@Override
-		public void keyPressed(KeyEvent arg0)
-		{
+		public void keyPressed(KeyEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void keyReleased(KeyEvent arg0)
-		{
+		public void keyReleased(KeyEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void keyTyped(KeyEvent arg0)
-		{
+		public void keyTyped(KeyEvent arg0) {
 
 		}
 
 	}
 
-	public class MyKeyListener implements KeyListener
-	{
+	public class MyKeyListener implements KeyListener {
 
-		public void keyTyped(KeyEvent e)
-		{
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape"))
-			{
+		public void keyTyped(KeyEvent e) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape")) {
 				output.println("quit");
 				output.flush();
 				running = false;
 			}
 		}
 
-		public void keyPressed(KeyEvent e)
-		{
+		public void keyPressed(KeyEvent e) {
 
 			// System.out.println("keyPressed="
 			// + KeyEvent.getKeyText(e.getKeyCode()));
 
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")
-					&& !players.get(0).isMoveForward)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W") && !players.get(0).isMoveForward) {
 				wPressed = true;
 				players.get(0).isMoveForward = true;
 				System.out.println("w");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")
-					&& !players.get(0).isMoveLeft)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A") && !players.get(0).isMoveLeft) {
 				aPressed = true;
 				players.get(0).isMoveLeft = true;
 				System.out.println("a");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")
-					&& !players.get(0).isMoveBack)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S") && !players.get(0).isMoveBack) {
 				sPressed = true;
 				players.get(0).isMoveBack = true;
 				System.out.println("s");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")
-					&& !players.get(0).isMoveRight)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D") && !players.get(0).isMoveRight) {
 				dPressed = true;
 				players.get(0).isMoveRight = true;
 				System.out.println("d");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left")
-					&& !players.get(0).isTurnLeft)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left") && !players.get(0).isTurnLeft) {
 				laPressed = true;
 				players.get(0).isTurnLeft = true;
 				// System.out.println("Set true");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right")
-					&& !players.get(0).isTurnRight)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right") && !players.get(0).isTurnRight) {
 				raPressed = true;
 				players.get(0).isTurnRight = true;
 				// System.out.println("Set true");
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape"))
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape")) {
 				output.println("quit");
 				output.flush();
 				running = false;
 			}
 		}
 
-		public void keyReleased(KeyEvent e)
-		{
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")
-					&& players.get(0).isMoveForward)
-			{
+		public void keyReleased(KeyEvent e) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W") && players.get(0).isMoveForward) {
 				wPressed = false;
 				players.get(0).isMoveForward = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")
-					&& players.get(0).isMoveLeft)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A") && players.get(0).isMoveLeft) {
 				aPressed = false;
 				players.get(0).isMoveLeft = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")
-					&& players.get(0).isMoveBack)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S") && players.get(0).isMoveBack) {
 				sPressed = false;
 				players.get(0).isMoveBack = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")
-					&& players.get(0).isMoveRight)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D") && players.get(0).isMoveRight) {
 				dPressed = false;
 				players.get(0).isMoveRight = false;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left")
-					&& players.get(0).isTurnLeft)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left") && players.get(0).isTurnLeft) {
 				laPressed = false;
 				players.get(0).isTurnLeft = false;
 				// direction+=0.01;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right")
-					&& players.get(0).isTurnRight)
-			{
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right") && players.get(0).isTurnRight) {
 				raPressed = false;
 				players.get(0).isTurnRight = false;
 				// direction -= 0.01;
@@ -1383,95 +1164,80 @@ public class Client
 		}
 	}
 
-	public class MouseMovementListener implements MouseMotionListener
-	{
+	public class MouseMovementListener implements MouseMotionListener {
 
 		@Override
-		public void mouseDragged(MouseEvent e)
-		{
+		public void mouseDragged(MouseEvent e) {
 			// TODO Auto-generated method stub
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 			mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			// if (lastMouseX == 0) lastMouseX = mouseX;
-			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0)
-					* mouseSens;
+			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0) * mouseSens;
 
 			System.out.println(turnAmount);
 			// lastMouseX = mouseX;
 
-			robot.mouseMove((int) screenSize.getWidth() / 2,
-					(int) screenSize.getHeight() / 2);
+			robot.mouseMove((int) screenSize.getWidth() / 2, (int) screenSize.getHeight() / 2);
 
 		}
 
 		@Override
-		public void mouseMoved(MouseEvent e)
-		{
+		public void mouseMoved(MouseEvent e) {
 
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 			mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			// if (lastMouseX == 0) lastMouseX = mouseX;
-			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0)
-					* mouseSens;
+			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0) * mouseSens;
 
 			System.out.println(turnAmount);
 			// lastMouseX = mouseX;
 
-			robot.mouseMove((int) screenSize.getWidth() / 2,
-					(int) screenSize.getHeight() / 2);
+			robot.mouseMove((int) screenSize.getWidth() / 2, (int) screenSize.getHeight() / 2);
 		}
 
 	}
 
-	public class MouseClickListener implements MouseListener
-	{
+	public class MouseClickListener implements MouseListener {
 
 		@Override
-		public void mouseClicked(MouseEvent e)
-		{
+		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e)
-		{
+		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void mouseExited(MouseEvent e)
-		{
+		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e)
-		{
+		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot)
-			{
+			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot) {
 				System.out.println("clicked");
 				players.get(0).isShoot = true;
 				soundFire();
-				currentGun+=5;
-		
+				currentGun += 5;
+
 			}
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent e)
-		{
+		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if (SwingUtilities.isLeftMouseButton(e) && players.get(0).isShoot)
-			{
+			if (SwingUtilities.isLeftMouseButton(e) && players.get(0).isShoot) {
 				players.get(0).isShoot = false;
 				players.get(0).canShoot = true;
-				currentGun-=5;
+				currentGun -= 5;
 			}
 		}
 

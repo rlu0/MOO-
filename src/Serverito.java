@@ -535,7 +535,7 @@ public class Serverito
 								}
 							}
 						}
-						if (data.substring(0,data.indexOf(" ")).equals("cp"))
+						if (data.indexOf("cp")!= -1);
 						{
 							data = data.substring(data.indexOf(" ") + 1);
 							xLocation = Double.parseDouble(data.substring(0,data.indexOf(" ")));

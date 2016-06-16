@@ -76,7 +76,7 @@ public class Player extends Thing {
 
 	}
 	void turnLeft() {
-		if (getDirection() == 0) {
+		if (getDirection() <= 0) {
 			setDirection(2 * Math.PI - .25);
 		} else {
 			setDirection(getDirection() - .25);
@@ -84,7 +84,7 @@ public class Player extends Thing {
 	}
 	void turnRight() {
 		setDirection(getDirection() + 10);
-		if (getDirection() == 2 * Math.PI) {
+		if (getDirection() >= 2 * Math.PI) {
 			setDirection(.25);
 		} else {
 			setDirection(getDirection() + .25);
