@@ -13,9 +13,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-
+/**
+ * 
+ */
 import javax.swing.*;
-
+/**
+ * Contains the client for MOOD
+ * @version June 16 2016
+ * @author Ray, Micheal,Tony
+ *
+ */
 public class Client
 {
 	JButton sendButton, clearButton;
@@ -99,6 +106,7 @@ public class Client
 					"Seriously, clean out your computer, this place is filthy!",
 					"What you say!" } };
 
+//Load images
 	Image handgun = new ImageIcon("handgun.png").getImage();
 	Image boots = new ImageIcon("boots.png").getImage();
 	Image uzis = new ImageIcon("uzi.png").getImage();
@@ -110,6 +118,7 @@ public class Client
 	Image shottyG = new ImageIcon("shotty.gif").getImage();
 	Image plasmaG = new ImageIcon("plasma.gif").getImage();
 
+	//depending on what gun fire
 	public void soundFire()
 	{
 		if (currentGun == 0)
@@ -142,6 +151,7 @@ public class Client
 
 	int currentGun = 1;
 
+	//Load in the sound files
 	AudioClip doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
 	AudioClip hg = Applet.newAudioClip(getCompleteURL("dspistol.wav"));
 	AudioClip sg = Applet.newAudioClip(getCompleteURL("dsshotgun.wav"));
@@ -244,6 +254,7 @@ public class Client
 			// System.out.println("");
 			try
 			{
+				//Loading maps
 				String filename = "";
 				if (k == 10)
 					filename = "mapNeg1";
@@ -310,6 +321,10 @@ public class Client
 
 	boolean doingStuff = false;
 
+	
+/**
+ * initializes the walls
+ */
 	void setWallArray()
 	{
 
@@ -343,6 +358,10 @@ public class Client
 
 	}
 
+	
+	/**
+	 * Takes the info from the server and uses it to move the other players in the map
+	 */
 	void movePlayers()
 	{
 		// Per player physics
@@ -398,7 +417,7 @@ public class Client
 			players.get(i).acceleration = moveForce;
 
 			// add acceleration to velocity
-			// players[i].acceleration.calcLengthAngle();
+			
 			players.get(i).acceleration.calcComponents();
 			players.get(i).velocity.addComponents(players.get(i).acceleration);
 
@@ -411,21 +430,14 @@ public class Client
 					.max(players.get(i).velocity.length - constDrag, 0);
 			players.get(i).velocity.calcComponents();
 
-			// System.out.println(players[i].direction);
-			// System.out.println(players[i].velocity.length+"
-			// "+Math.toDegrees(players[i].direction));
-			// System.out.println(players[i].velocity.getX()+"
-			// "+players[i].velocity.getY());
-
+	
 			// add velocity to position
 			players.get(i).setX(
 					players.get(i).getX() + players.get(i).velocity.getX());
 			players.get(i).setY(
 					players.get(i).getY() + players.get(i).velocity.getY());
 
-			// add velocity to position
-			// players[i].setX(players[i].getX() + players[i].velocity.getX());
-			// players[i].setY(players[i].getY() + players[i].velocity.getY());
+		
 
 			// wall collisions
 
@@ -439,12 +451,7 @@ public class Client
 					double xDisplace = players.get(i).getX() - coord[0];
 					double yDisplace = players.get(i).getY() - coord[1];
 
-					// System.out.println(coord[0] + " " + coord[1]);
-
-					// System.out.println();
-					// lastCollisionX = coord[0];
-					// lastCollisionY = coord[1];
-
+				
 					double centerDistance = Math
 							.sqrt(Math.pow(players.get(i).getX() - coord[0], 2)
 									+ Math.pow(
@@ -457,9 +464,6 @@ public class Client
 					displace.length = displaceDist;
 					displace.calcComponents();
 
-					// Vector bounceVelocity = new Vector(xDisplace, yDisplace,
-					// true);
-					// players[i].velocity.addComponents(bounceVelocity);
 
 					players.get(i)
 							.setX(players.get(i).getX() + displace.getX());
@@ -497,10 +501,7 @@ public class Client
 					displace.length = displaceDist;
 					displace.calcComponents();
 
-					// Vector bounceVelocity = new Vector(xDisplace, yDisplace,
-					// true);
-					// players[i].velocity.addComponents(bounceVelocity);
-
+					
 					players.get(i)
 							.setX(players.get(i).getX() + displace.getX());
 					players.get(i)
@@ -512,6 +513,10 @@ public class Client
 		}
 	}
 
+	
+	/**
+	 * Generates the lines for the hitscans
+	 */
 	void generateShots()
 	{
 		if (players.get(0).isShoot && players.get(0).canShoot)
@@ -523,14 +528,14 @@ public class Client
 
 	}
 
-	// ADD TO CLIENT
+	// Checks for collisions of bullets
 	void calcShots()
 	{
 
 		for (int i = 0; i < hitscans.size(); i++)
 		{
 
-			// System.out.println(hitscans.get(i).framesLeft);
+			
 
 			if (hitscans.get(i).framesLeft == 0)
 			{
@@ -541,8 +546,6 @@ public class Client
 
 			hitscans.get(i).update();
 
-			// System.out.println(": " + hitscans.get(i).hit.getX2() + " "
-			// + hitscans.get(i).hit.getY2());
 
 			double shortestLength = hitscans.get(i).vector.length;
 			double[] shortestCoord = new double[2];
@@ -589,6 +592,9 @@ public class Client
 		}
 	}
 
+	/**
+	 * Checks if it hit players
+	 */
 	void checkHits()
 	{
 		for (int i = 0; i < hitscans.size(); i++)
@@ -609,6 +615,7 @@ public class Client
 		}
 	}
 
+	//Main program Thread
 	public void go()
 	{
 
@@ -623,6 +630,8 @@ public class Client
 
 		}
 
+		//Window Things
+		
 		boolean ready = false;
 		JFrame window = new JFrame("MOOD");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -655,8 +664,12 @@ public class Client
 		window.setVisible(true);
 		window.setSize(300, 175);
 
+		
+		
 		while (ready != true)
 		{
+
+			//Connection things ( port and IP)
 			try
 			{
 				Thread.sleep(10);
@@ -668,7 +681,7 @@ public class Client
 			}
 			if (doingStuff == true)
 			{
-				// System.out.println("a");
+				
 				ip = IPF.getText();
 				int port = -1;
 				try
@@ -681,6 +694,8 @@ public class Client
 							"The Port is not an integer!");
 					doingStuff = false;
 				}
+				
+				
 				username = usernameF.getText();
 				if (doingStuff == true)
 				{
@@ -728,7 +743,7 @@ public class Client
 		{
 			try
 			{
-				// System.out.println("It is breaking");
+				
 				Thread.sleep(100);
 			}
 			catch (Exception e)
@@ -783,6 +798,7 @@ public class Client
 		// Could add a chat room
 		loadingFrame.add(information);
 
+		//Loading screen
 		GridLayout lay2 = new GridLayout(2, 1, 2, 2);
 		information.setLayout(lay2);
 		information.add(display);
@@ -795,6 +811,7 @@ public class Client
 		int currentRiddle = 0;
 		while (running && data == null)
 		{
+			//Run riddles
 			if (riddleCount == 0)
 			{
 				currentRiddle = (int) (Math.random() * riddleList[0].length);
@@ -821,6 +838,8 @@ public class Client
 			}
 			try
 			{
+				
+				//Actual game portion
 				if (input.ready())
 				{
 					data = input.readLine();
@@ -836,6 +855,8 @@ public class Client
 								double xPos = 0;
 								double yPos = 0;
 								double dir = 0;
+								
+								//break down the data from server
 								if (input.ready())
 								{
 									data = input.readLine();
@@ -924,6 +945,12 @@ public class Client
 		}
 	}
 
+	
+	/**
+	 * 
+	 * Recieves info from the server
+	 *
+	 */
 	public class recieveInfo implements Runnable
 	{
 
@@ -989,18 +1016,36 @@ public class Client
 
 	}
 
+	/**
+	 * Contains the actual drawing portion of the game
+	 * 
+	 *
+	 */
 	public class GameDisp extends JPanel implements Runnable
 	{
+		//Creates a display
 		GameDisp()
 		{
 			setSize(sizex, sizey);
 		}
 
+		/**
+		 *  Given two lengths of two lines finds the angle between the two
+		 * @param opp opposite line
+		 * @param adj adjacent line
+		 * @return the angle between the two
+		 */
 		public double findAngle(double opp, double adj)
 		{
 			return Math.atan(opp / adj);
 		}
 
+		/**
+		 * Finds the distance between two points
+		 * @param pt an array of points
+		 * @return the distance between the two points
+		 * 
+		 */
 		public double distance(double[] pt)
 		{
 			return Math
@@ -1008,6 +1053,11 @@ public class Client
 							+ Math.pow((pt[1] - players.get(0).getY()), 2));
 		}
 
+		/**
+		 * finds the point on the opposite side of the wall thats closest
+		 * @param angle the angle that is being viewed at
+		 * @return the point as a double ( x,y)
+		 */
 		public double[] locatePoint(double angle)
 		{
 			angle += uberDirection;
@@ -1027,8 +1077,7 @@ public class Client
 			while (true)
 			{
 				i++;
-				// System.out.println(i);
-				// int uber = 0;
+			//Iterates through at increments of 0.01 to determine the closest wall using tan
 				double tempx;
 				double tempy;
 				if (angle < Math.PI / 2 && angle > 0)
@@ -1082,6 +1131,7 @@ public class Client
 					tempx = players.get(0).getX();
 					tempy = players.get(0).getY() + i * 0.01;
 				}
+				// If the player's FOV is at a Northern or Southern direction, changes the method of display
 				boolean changeRender = false;
 				if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4)
 				{
@@ -1092,12 +1142,15 @@ public class Client
 					changeRender = true;
 				}
 
+				// Determines whether a different approach is necessary (if the increments jump past the wall blocks)
 				if (tempx < 0 || tempx > currentMap[1].length || tempy < 0
 						|| tempy > currentMap.length
 						|| changeRender == true)
 				{
 					i = 0;
-					// System.out.println("Doin this thang");
+					
+					
+					//Similar to above, a variation that is slightly more precise but more processing intensive
 					while (true)
 					{
 						i++;
@@ -1145,11 +1198,9 @@ public class Client
 							tempx = players.get(0).getX();
 							tempy = players.get(0).getY() + i * 0.1;
 						}
-						// System.out.println(tempx + " " + tempy);
+						// Checks whether a wall has been reached or the loop needs another increment
 						if (currentMap[(int) tempy][(int) tempx] == 1)
 						{
-							// System.out.println("shoe");
-							// System.out.println("got here");
 							newPt = new double[2];
 							newPt[0] = tempx;
 							newPt[1] = tempy;
@@ -1157,24 +1208,28 @@ public class Client
 						}
 					}
 				}
+				// Checks whether a wall has been reached for the larger picture loop
 				if (currentMap[(int) tempy][(int) tempx] == 1)
 				{
-					// System.out.println("got here");
 					newPt = new double[2];
 					newPt[0] = tempx;
 					newPt[1] = tempy;
 					return newPt;
 
 				}
-				// System.out.println(tempx+" "+tempy);
 			}
 		}
 
+		/*
+		 * Draws the various images and pictures on the main window
+		 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+		 */
 		public void paintComponent(Graphics g)
 		{
 
 			Graphics2D graphics2D = (Graphics2D) g;
 
+			// Doesn't affect speed, makes the image seem nicer
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -1182,34 +1237,26 @@ public class Client
 					handgunG, shottyG, uzisG, plasmaG };
 			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
-			// int gridPlayerx = (int) (playerx / 10);
-			// int gridPlayery = (int) (playery / 10);
 			double[] centrePt = null;
 			centrePt = locatePoint(0);
 
-			// // Only works if facing right
-
+			// determines the distance to the middle and calculates what to draw
 			double dTM = distance(centrePt);
-			// System.out.println(dTM);
 			double viewInc = (Math.tan(Math.PI * 5 / 18) * dTM) / 225;
-			// System.out.println(viewInc);
 			double[] newPt = null;
 			double angle = 0;
-			// increments screen by 1 pixels each time
+			
+			// increments screen by 1 pixel each time in drawing the image of the screen
 			for (int i = 0; i < 226; i++)
 			{
-				/*
-				 * if facing right
-				 */
-				// Left half of Screen
-				// if (direction <= Math.PI / 4
-				// || direction > Math.PI * 2 - Math.PI / 4) {
+				// First chunk determines what is in the left side of the screen
 				angle = findAngle(i * viewInc, dTM);
 				newPt = locatePoint(angle);
-				// System.out.println("LS:" + newPt[0] + "," + newPt[1]);
 
+				// Distance to the new wall to establish high to display the lines
 				double distA = distance(newPt);
 				int col = (int) (distA);
+				// Alters the wall colors based on how far the player is from the wall
 				Color color;
 				if (distA < 1)
 				{
@@ -1219,10 +1266,9 @@ public class Client
 				{
 					color = new Color((int) (255 / distA), 0, 0);
 				}
-				// color = new Color((int) (Math.random() * 256),
-				// (int) (Math.random() * 256),
-				// (int) (Math.random() * 256));
 				g.setColor(color);
+				
+				// Draws a line part of the wall
 				g.drawLine(sizex / 2 - i,
 						(int) ((sizey / 2.0) - 225.0 / distA),
 						sizex / 2 - i,
