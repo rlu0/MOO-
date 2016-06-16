@@ -73,7 +73,7 @@ public class Client
 	Image plasma= new ImageIcon("plasma.png").getImage();
 	Image handgunG= new ImageIcon("handgun.gif").getImage();
 	Image bootsG= new ImageIcon("boots.gif").getImage();
-	Image uzisG= new ImageIcon("uzi.gif").getImage();
+	Image uzisG= new ImageIcon("uzis.gif").getImage();
 	Image shottyG= new ImageIcon("shotty.gif").getImage();
 	Image plasmaG= new ImageIcon("plasma.gif").getImage();	
 	int currentGun =7;
