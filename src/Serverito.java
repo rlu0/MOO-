@@ -330,10 +330,12 @@ public class Serverito
 
 				clientList.add(clientHandler);
 				(new Thread(clientHandler)).start();
-				for (int i = 0; i < clientList.size(); i++)
-				{
-					clientList.get(i).setPlayerList(clientList);
-				}
+				// for (int i = 0; i < clientList.size(); i++)
+				// {
+				// clientList.get(i).setPlayerList(clientList);
+				// }
+				display.append(
+						"Number of Players in Lobby: " + clientList.size());
 				// }
 
 			}
@@ -364,7 +366,6 @@ public class Serverito
 		private Socket client; // keeps track of the client socket
 		private boolean running;
 		String username = "-";
-		ArrayList<ConnectionHandler> clientList = null;
 		private double xLocation = 0;
 		private double yLocation = 0;
 		private double dir = 0;
@@ -506,7 +507,7 @@ public class Serverito
 			(new Thread(new updateLocations())).start();
 			while (running)
 			{
-				//System.out.println("farts");
+				// System.out.println("farts");
 
 				try
 				{
@@ -516,12 +517,12 @@ public class Serverito
 						{
 							Thread.sleep(30);
 						}
-						catch(Exception e)
+						catch (Exception e)
 						{
-							
+
 						}
 						data = input.readLine();
-						System.out.println(username + ": " +data);
+
 						if (data.toLowerCase().equals("quit"))
 						{
 							running = false;
@@ -538,7 +539,7 @@ public class Serverito
 						}
 						if (data.indexOf("cp") != -1)
 						{
-							System.out.println(data);
+							// System.out.println(data);
 							data = data.substring(data.indexOf(" ") + 1);
 							if (data.indexOf(" ") != -1)
 							{
@@ -556,6 +557,8 @@ public class Serverito
 								}
 							}
 						}
+						System.out.println(username + ": " + xLocation + " "
+								+ yLocation + " " + dir);
 					}
 				}
 				catch (IOException e)
@@ -593,12 +596,12 @@ public class Serverito
 			return username;
 		}
 
-		void setPlayerList(ArrayList<ConnectionHandler> in)
-		{
-			this.clientList = in;
-			// output.println("01 " + clientList.indexOf(client)
-			// + clientList.size());
-		}
+		// void setPlayerList(ArrayList<ConnectionHandler> in)
+		// {
+		// clientList = in;
+		// // output.println("01 " + clientList.indexOf(client)
+		// // + clientList.size());
+		// }
 
 		double getX()
 		{
@@ -623,16 +626,28 @@ public class Serverito
 			{
 				while (running)
 				{
-					for (int i = 0; i < clientList.size(); i++)
+					try
 					{
-						ConnectionHandler poo = clientList.get(i);
-						if (poo != null)
+						Thread.sleep(10);
+					}
+					catch (Exception e)
+					{
+						
+					}
+					if (clientList != null)
+					{
+						for (int i = 0; i < clientList.size(); i++)
 						{
-							String message = "pl ";
-							message = message + i + " " + poo.getX() + " "
-									+ poo.getY() + " " + poo.getDir();
-							output.println(message);
-							output.flush();
+							ConnectionHandler poo = clientList.get(i);
+							if (poo != null)
+							{
+								String message = "pl ";
+								message = message + i + " " + poo.getX() + " "
+										+ poo.getY() + " " + poo.getDir();
+								System.out.println("Sending " + poo.getUsername() + "'s info to " + username);
+								output.println(message);
+								output.flush();
+							}
 						}
 					}
 				}
