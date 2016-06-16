@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
@@ -740,6 +741,7 @@ public class Client {
 	// List of things:
 	ArrayList<Player> players = new ArrayList<Player>();
 	ArrayList<Wall> walls = new ArrayList<Wall>();
+	ArrayList<Hitscan> hitscans = new ArrayList<Hitscan>();
 	
 
 
@@ -911,6 +913,69 @@ public class Client {
 					
 				}
 			}
+			
+		}
+	}
+	
+	void generateShots() {
+		if (players.get(0).isShoot && players.get(0).canShoot){
+			hitscans.add(new Hitscan(players.get(0), 5, 1));
+			System.out.println("new shot");
+			players.get(0).canShoot = false;
+		}
+		
+	}
+	
+	//ADD TO CLIENT
+	void calcShots () {
+		
+		for (int i=0; i<hitscans.size(); i++){
+			
+			System.out.println(hitscans.get(i).framesLeft);
+			
+			if (hitscans.get(i).framesLeft == 0){
+				hitscans.remove(i);
+				i--;
+				continue;
+			}
+
+			
+			hitscans.get(i).update();
+			
+			System.out.println(": " + hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
+			
+			
+			double shortestLength = hitscans.get(i).vector.length;
+			double [] shortestCoord = new double[2];
+			shortestCoord[0] = hitscans.get(i).hit.getX2();
+			shortestCoord[1] = hitscans.get(i).hit.getY2();
+			
+			for (int j=0; j<walls.size(); j++){
+				
+				//System.out.println("hit");
+				
+				double [] coord = hitscans.get(i).hit.RLIntersect(walls.get(j).hit, hitscans.get(i).hit);
+				
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
+					
+					double currentLength = Math.sqrt(Math.pow(hitscans.get(i).hit.getX1()-coord[0], 2)  + 
+							Math.pow(hitscans.get(i).hit.getY1() - coord[1], 2));
+					
+					if (currentLength < shortestLength){
+						shortestLength = currentLength;
+						shortestCoord = coord;
+					}
+					
+				}
+			}
+			
+			hitscans.get(i).hit = new Line (hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
+					shortestCoord[0], shortestCoord[1]);
+			
+			//System.out.println(hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
+			hitscans.get(i).framesLeft --;
+			
 			
 		}
 	}
@@ -1387,7 +1452,7 @@ public class Client {
 			}
 			
 			// Draw Shots
-			/*g.setColor(new Color(255, 100, 0));
+			g.setColor(new Color(255, 100, 0));
 			for (int i=0; i<hitscans.size(); i++){
 				g.drawLine((int)Math.round(hitscans.get(i).hit.getX1() * drawScale),
 						(int)Math.round(hitscans.get(i).hit.getY1() * drawScale),
@@ -1395,9 +1460,7 @@ public class Client {
 						(int)Math.round(hitscans.get(i).hit.getY2() * drawScale));
 			}
 			
-			g.setColor(Color.RED);
-			g.drawRect((int)Math.round(lastCollisionX*drawScale), (int)Math.round(lastCollisionY*drawScale), 1, 1);
-			*/
+			
 			
 			g.setColor(Color.WHITE);
 			g.drawString(players.get(0).getX() + " " + players.get(0).getY() + " " + players.get(0).isMoveForward,10, 10);
@@ -1435,6 +1498,7 @@ public class Client {
 			//MouseMotionListener motionListener = new MouseMovementListener();
 			window.addKeyListener(new MyKeyListener());
 			window.addMouseMotionListener(new MouseMovementListener());
+			window.addMouseListener(new MouseClickListener());
 			window.setLocationRelativeTo(null);
 			
 			while (running){
@@ -1572,7 +1636,17 @@ public class Client {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			// TODO Auto-generated method stub
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			
+			
+			mouseX = MouseInfo.getPointerInfo().getLocation().x;
+			//if (lastMouseX == 0) lastMouseX = mouseX;
+			turnAmount += (mouseX - (int)screenSize.getWidth()/2.0) * mouseSens;
+			
+			System.out.println(turnAmount);
+			//lastMouseX = mouseX;
+			
+			robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
 		}
 
 		@Override
@@ -1589,6 +1663,45 @@ public class Client {
 			//lastMouseX = mouseX;
 			
 			robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
+		}
+		
+	}
+	
+	public class MouseClickListener implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot){
+				players.get(0).isShoot = true;
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			if (SwingUtilities.isLeftMouseButton(e) && players.get(0).isShoot){
+				players.get(0).isShoot = false;
+				players.get(0).canShoot = true;
+			}
 		}
 		
 	}
