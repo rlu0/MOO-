@@ -478,7 +478,6 @@ public class Client
 
 	public void go()
 	{
-		doot.loop();
 
 		class buttonListener implements ActionListener
 		{
@@ -718,7 +717,7 @@ public class Client
 
 		}
 		loadingFrame.setVisible(false);
-
+		doot.loop();
 		// output.println("Stahp");
 		// output.flush();
 		System.out.println("Made it 1");
