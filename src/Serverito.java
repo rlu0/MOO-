@@ -512,6 +512,14 @@ public class Serverito
 				{
 					if (input.ready())
 					{ // check for an incoming message
+						try
+						{
+							Thread.sleep(10);
+						}
+						catch(Exception e)
+						{
+							
+						}
 						data = input.readLine();
 						System.out.println(data);
 						if (data.toLowerCase().equals("quit"))
