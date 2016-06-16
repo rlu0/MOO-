@@ -168,7 +168,8 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 			long currentDelay = frameTime - (endTime - startTime);
 			
 			try {
-				Thread.sleep(currentDelay);
+				if (currentDelay > 0)
+					Thread.sleep(currentDelay);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -471,7 +472,6 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 	}
 
 	
-	// ADD TO CLIENT
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
