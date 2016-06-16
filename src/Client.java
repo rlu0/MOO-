@@ -1173,7 +1173,7 @@ public class Client
 			g.setColor(Color.WHITE);
 			g.drawString(players.get(0).getX() + " " + players.get(0).getY()
 					+ " " + players.get(0).isMoveForward, 10, 10);
-			g.drawImage(guns[currentGun], 51, 50, this);
+			g.drawImage(guns[currentGun], 150, 400, this);
 		}
 
 		@Override
