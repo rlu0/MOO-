@@ -352,22 +352,52 @@ public class Hitbox {
 		intersectFinal[1] = Double.MAX_VALUE; // Y coordinate
 		
 		if (Math.sqrt(Math.pow(b.getX()-a.getX(), 2) + Math.pow(b.getY()-a.getY(), 2)) < a.getR() + b.getR()){
-			intersectFinal[0] = (a.getX()*b.getR()+b.getX()*a.getR())/2;
-			intersectFinal[0] = (a.getY()*b.getR()+b.getY()*a.getR())/2;
+			intersectFinal[0] = (a.getX()*b.getR()+b.getX()*a.getR())/(a.getR()+b.getR());
+			intersectFinal[1] = (a.getY()*b.getR()+b.getY()*a.getR())/(a.getR()+b.getR());
 		}
 		return intersectFinal;
 		
 	}
+	
+	
+	double dist(double x1, double y1, double x2,double y2, double x3, double y3){ // x3,y3 is the point
+		
+    double px = x2-x1;
+    double py = y2-y1;
+
+    double cross = px*px + py*py;
+
+    double u =  ((x3 - x1) * px + (y3 - y1) * py) / cross;
+
+    if( u > 1){
+        u = 1;
+    }
+    else if( u < 0){
+        u = 0;
+    }
+
+    double x = x1 + u * px;
+    double y = y1 + u * py;
+
+    double dx = x - x3;
+    double dy = y - y3;
+
+    // Note: If the actual distance does not matter,
+    // if you only want to compare what this function;
+    // returns to other results of this function, you;
+    // can just return the squared distance instead;
+    // (i.e. remove the sqrt) to gain a little performance;
+
+    double dist = Math.sqrt(dx*dx + dy*dy);
+
+    return dist;
+	}
+	
+	
 	boolean CLIntersect(CircleHit a, Line b){
-		double [] coord = new double [2];
 		
-		double lineA = b.getY2() - b.getY1();
-		double lineB = b.getX1() - b.getX2();
-		double lineC = lineA * b.getX1() + lineB * b.getY1();
 		
-		if (lineA==0 && lineB==0) return false;
-		
-		double distance = (lineA*a.getX() + lineB*a.getY() + lineC)/Math.sqrt(lineA*lineA + lineB*lineB);
+		double distance = dist(b.getX1(), b.getY1(), b.getX2(), b.getY2(), a.getX(), a.getY());
 		
 		if (distance < a.getR()){
 			return true;

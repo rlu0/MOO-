@@ -54,9 +54,10 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 	Engine (){
 		
 		// Init GAME VARS
-		players = new Player [1];
+		players = new Player [2];
 		players[0] = new Player(4, 4, new CircleHit(5,5,0.25));
 		players[0].direction = (Math.PI*3)/2;
+		players[1] = new Player(7,7,0);
 		walls = new Wall [5];
 		walls[0] = new Wall(0, 0, 10, 1);
 		walls[1] = new Wall(9, 1, 1, 8);
@@ -161,6 +162,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 			// ADD TO CLIENT
 			generateShots();
 			calcShots();
+			checkHits();
 			
 			repaint();
 			
@@ -178,7 +180,7 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 	
 	void movePlayers(){
 		// Per player physics
-		for(int i=0; i<players.length; i++){
+		for(int i=0; i<1; i++){
 			
 			
 			// movement vectors
@@ -289,6 +291,40 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 				}
 			}
 			
+			// player collisions
+			
+			for (int j = 1; j<players.length; j++){
+				if(i==j){
+					continue;
+				}
+				double [] coord = players[i].hit.CCIntersect(players[j].hit, players[i].hit);
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+					double xDisplace = players[i].getX()-coord[0];
+					double yDisplace = players[i].getY()-coord[1];
+					
+					//System.out.println(coord[0] + " " + coord[1]);
+					
+					//System.out.println();
+					lastCollisionX = coord[0];
+					lastCollisionY = coord[1];
+					
+					double centerDistance = Math.sqrt(Math.pow(players[i].getX()-coord[0],2)
+							+ Math.pow(players[i].getY()-coord[1], 2));
+					double displaceDist = players[i].hit.getR() - centerDistance;
+					
+					Vector displace = new Vector(xDisplace, yDisplace, true);
+					displace.length = displaceDist;
+					displace.calcComponents();
+					
+					//Vector bounceVelocity = new Vector(xDisplace, yDisplace, true);
+					//players[i].velocity.addComponents(bounceVelocity);
+					
+					players[i].setX(players[i].getX()+displace.getX());
+					players[i].setY(players[i].getY()+displace.getY());
+					
+				}
+			}
+			
 		}
 	}
 	
@@ -355,6 +391,20 @@ public class Engine extends JPanel implements Runnable, KeyListener, MouseListen
 			hitscans.get(i).framesLeft --;
 			
 			
+		}
+	}
+	
+	void checkHits(){
+		for (int i=0; i<hitscans.size(); i++){
+			for (int j=0; j<players.length; j++){
+				if (players[j].equals(hitscans.get(i).shooter)){
+					continue;
+				}
+				if (hitscans.get(i).hit.CLIntersect(players[j].hit, hitscans.get(i).hit)){
+					players[j].setHP(players[j].getHP() - 30);
+					System.out.println("PLAYER "+j+" HIT");
+				}
+			}
 		}
 	}
 	
