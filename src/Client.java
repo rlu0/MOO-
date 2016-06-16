@@ -769,6 +769,8 @@ public class Client
 			}
 			// System.out.println("made it 3");
 			// Every 10 milliseconds the client returns the player's position
+			System.out.println("cp " + players.get(0).getX() + " " + players.get(0).getY()
+							+ " " + players.get(0).getDirection());
 			output.println(
 					"cp " + players.get(0).getX() + " " + players.get(0).getY()
 							+ " " + players.get(0).getDirection());
