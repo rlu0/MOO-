@@ -1,4 +1,8 @@
-
+/**
+ * Vector class, supports algebraic/geometric vectors and vector addition
+ * @author Tony, Michael, Ray
+ * @version 2016-06-14
+ */
 public class Vector {
 	
 	double x;
@@ -6,6 +10,12 @@ public class Vector {
 	double length;
 	double angle;
 	
+	/**
+	 * Constructor, input in two modes
+	 * @param xLength x component or vector length
+	 * @param yAngle y comonent or vector angle
+	 * @param isComponentMode determine input mode
+	 */
 	Vector (double xLength, double yAngle, boolean isComponentMode){
 		if (isComponentMode){ // x,y component input mode
 			this.x = xLength;
@@ -19,6 +29,9 @@ public class Vector {
 		}
 	}
 	
+	/**
+	 * Calculate vector length and angle given x and y component
+	 */
 	void calcLengthAngle(){
 		length = Math.sqrt(x*x + y*y);
 		double newAngle = 0;
@@ -66,6 +79,9 @@ public class Vector {
 		setAngle(newAngle);
 	}
 	
+	/**
+	 * Calculate x and y components
+	 */
 	void calcComponents(){
 		x = Math.cos(angle) * length;
 		y = Math.sin(angle) * length;

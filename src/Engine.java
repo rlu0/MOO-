@@ -19,7 +19,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-
+/**
+ * Physics testing purposes
+ * @author Tony
+ * @version 2016-06-15
+ */
 public class Engine extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 	
 	Player [] players;
