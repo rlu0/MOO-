@@ -97,6 +97,12 @@ public class Player extends Thing {
 
 	void setDirection(double direction) {
 		this.direction = direction;
+		while (this.direction < 0){
+			this.direction += Math.PI*2;
+		}
+		while (this.direction >= Math.PI*2){
+			this.direction -= Math.PI*2;
+		}
 	}
 
 }
