@@ -40,7 +40,7 @@ public class Serverito
 	static int[][][] allMaps = { map0, map1, map2, map3, map4, map5, map6, map7,
 			map8, map9, mapNeg1 };
 	int[][] currentMap = mapNeg1;
-	double playerPositions[][] = new double[8][2];
+	double playerPositions[][] = new double[8][3];
 
 	public static void main(String[] args)
 	{
@@ -223,7 +223,7 @@ public class Serverito
 		{
 			System.out.println("YOU FORGOT TO CLOSE IT DAMMIT");
 		}
-
+		int i = 0;
 		while (running && gameStart == false)
 		{
 			try
@@ -239,8 +239,7 @@ public class Serverito
 				client = serverSock.accept();
 				display.append("\n Client connected");
 
-				ConnectionHandler clientHandler = new ConnectionHandler(client);
-
+				ConnectionHandler clientHandler = new ConnectionHandler(client, i);
 				clientList.add(clientHandler);
 				(new Thread(clientHandler)).start();
 				// for (int i = 0; i < clientList.size(); i++)
@@ -248,7 +247,7 @@ public class Serverito
 				// clientList.get(i).setPlayerList(clientList);
 				// }
 				display.append(
-						"Number of Players in Lobby: " + clientList.size());
+						"\n Number of Players in Lobby: " + clientList.size());
 				// }
 
 			}
@@ -279,6 +278,7 @@ public class Serverito
 		private Socket client; // keeps track of the client socket
 		private boolean running;
 		String username = "-";
+		int index;
 		private double xLocation = 0;
 		private double yLocation = 0;
 		private double dir = 0;
@@ -348,13 +348,18 @@ public class Serverito
 		 * 
 		 * @param the socket belonging to this client connection
 		 */
-		ConnectionHandler(Socket s)
+		ConnectionHandler(Socket s, int i)
 		{
-			while (currentMap[(int) (yLocation)][(int) (xLocation)] == 1)
+			do
 			{
 				xLocation = Math.random() * currentMap[1].length;
 				yLocation = Math.random() * currentMap.length;
 			}
+			while (currentMap[(int) (yLocation)][(int) (xLocation)] == 1);
+			dir = Math.random()*2*Math.PI;
+			playerPositions[i][0] = xLocation;
+			playerPositions[i][1] = yLocation;
+			playerPositions[i][2] = dir;
 			this.client = s; // constructor assigns client to this
 			try
 			{ // assign all connections to client
@@ -427,6 +432,8 @@ public class Serverito
 			System.out.println("starting");
 			output.println("starting");
 			output.flush();
+			for (int i = 0; i < 8; i++)
+				output.println(i+" " + playerPositions[i][0] + " " + playerPositions[i][1] + " " + playerPositions[i][2]);
 			(new Thread(new updateLocations())).start();
 			while (running)
 			{

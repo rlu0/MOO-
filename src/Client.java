@@ -34,34 +34,69 @@ public class Client
 	boolean running = true; // thread status via boolean
 
 	// [x][0] is x position [x][1] is y position [x][2] is direction
-	double[][] enemyLocations = new double[8][3];
+	double[][] playerLocations = new double[8][3];
 
-	String[][] riddleList = { { "What has a foot but no legs?",
-			"What is the longest word in the dictionary?",
-			"What word becomes shorter when you add two letters to it?",
-			"What is so delicate that just saying it breaks it?",
-			"What tree goes in your hand?",
-			"How do you make one disappear?",
-			"What is tall when it's young and short when its tall?",
-			"What can you catch but not throw?",
-			"What goes up but never goes down?",
-			"What is the largest thing in existence?",
-			"What has a neck but no head?",
-			"What starts with P, ends with E and has over 1000 letters?",
-			"What gets bigger the more you remove from it?",
-			"What grows when you feed it and dies when watered?",
-			"What's your name man?",
-			"Did you know that 45% of this game was made in the last day?",
-			"Haribo" },
-			{ "A: A snail!", "A: Smiles, since there is a mile between each s!",
-					"A: Short", "A: Silence",
+	String[][] riddleList = {
+			{
+					"What has a foot but no legs?",
+					"What is the longest word in the dictionary?",
+					"What word becomes shorter when you add two letters to it?",
+					"What is so delicate that just saying it breaks it?",
+					"What tree goes in your hand?",
+					"How do you make one disappear?",
+					"What is tall when it's young and short when its tall?",
+					"What can you catch but not throw?",
+					"What goes up but never goes down?",
+					"What is the largest thing in existence?",
+					"What has a neck but no head?",
+					"What starts with P, ends with E and has over 1000 letters?",
+					"What gets bigger the more you remove from it?",
+					"What grows when you feed it and dies when watered?",
+					"What's your name man?",
+					"Did you know that 45% of this game was made in the last day?",
+					"Haribo", "Who da best?", "Is this game fun?",
+					"Why are my clothes on fire?",
+					"Even Now The evil seed of what you have done",
+					"Did you remember to turn off the stove?",
+					"What's the trick to tying laces quickly?",
+					"What's the best kind of shirt?",
+					"A flock of seagulls approaches you, what do you do?",
+					"Disco Fever!!!!!!",
+					"I wonder what's for dinner?",
+					"Gee, I wonder what Ganon's up to?",
+					"Now I know what a meatball feels like!",
+					"All your base are belong to us" },
+			{
+					"A: A snail!",
+					"A: Smiles, since there is a mile between each s!",
+					"A: Short",
+					"A: Silence",
 					"A: Palm trees!",
 					"A: Add the letter G to the beginning of it",
-					"A: A candle!", "A: A cold",
-					"A: Your age", "A: Yo Mamma", "A: A bottle",
-					"A: The Post office", "A: A hole", "A: fires",
-					"A: Alexander Hamilton", "Really its true!",
-					"I don't know what else to say" } };
+					"A: A candle!",
+					"A: A cold",
+					"A: Your age",
+					"A: Yo Mamma",
+					"A: A bottle",
+					"A: The Post office",
+					"A: A hole",
+					"A: fires",
+					"A: Alexander Hamilton",
+					"Really its true!",
+					"I don't know what else to say",
+					"C'est Moi",
+					"Depends how brain dead you are",
+					"Look into  your heart, that's where the answer always lies",
+					"germinates within you",
+					"You'll find out when you get home",
+					"A: Use velcro",
+					"A: Ones with 4 holes in them",
+					"A: You run, you run so far away",
+					"The BeeGees would be proud",
+					"I hope its a spaghetti!",
+					"Mah Boi",
+					"Seriously, clean out your computer, this place is filthy!",
+					"What you say!" } };
 
 	Image handgun = new ImageIcon("handgun.png").getImage();
 	Image boots = new ImageIcon("boots.png").getImage();
@@ -139,7 +174,8 @@ public class Client
 	static int[][] map7 = new int[52][51];
 	static int[][] map8 = new int[52][51];
 	static int[][] map9 = new int[52][51];
-	static int[][][] allMaps = { map0, map1, map2, map3, map4, map5, map6, map7,
+	static int[][][] allMaps = { map0, map1, map2, map3, map4, map5, map6,
+			map7,
 			map8, map9, mapNeg1 };
 	int[][] currentMap = mapNeg1;
 	int playerNum;
@@ -161,9 +197,10 @@ public class Client
 	static boolean dSent2 = true;
 
 	// 3D stuff
-	static double playerx = 2;
-	static double playery = 2;
-	static double direction, uberDirection;
+	static double playerx = -1;
+	static double playery = -1;
+	static double direction = -1;
+	static double uberDirection;
 	static int sizex = 450;
 	static int sizey = 450;
 	// Things relating to movement
@@ -409,7 +446,8 @@ public class Client
 
 					double centerDistance = Math
 							.sqrt(Math.pow(players.get(i).getX() - coord[0], 2)
-									+ Math.pow(players.get(i).getY() - coord[1],
+									+ Math.pow(
+											players.get(i).getY() - coord[1],
 											2));
 					double displaceDist = players.get(i).hit.getR()
 							- centerDistance;
@@ -448,7 +486,8 @@ public class Client
 
 					double centerDistance = Math
 							.sqrt(Math.pow(players.get(i).getX() - coord[0], 2)
-									+ Math.pow(players.get(i).getY() - coord[1],
+									+ Math.pow(
+											players.get(i).getY() - coord[1],
 											2));
 					double displaceDist = players.get(i).hit.getR()
 							- centerDistance;
@@ -785,23 +824,61 @@ public class Client
 				{
 					data = input.readLine();
 					System.out.println(data);
-					if (!data.toLowerCase().equals("starting"))
-					{
-						data = null;
-					}
-					else
+					if (data.toLowerCase().equals("starting"))
 					{
 						display.append("\n Starting");
 						try
 						{
-							Thread.sleep(1000);
+							playerLocations[7][2] = -1;
+							for (int i = 0; i < 8; i++)
+							{
+								double xPos = 0;
+								double yPos = 0;
+								double dir = 0;
+								if (input.ready())
+								{
+									data = input.readLine();
+									data = data
+											.substring(data.indexOf(" ") + 1);
+									xPos = Double.parseDouble(data.substring(0,
+											data.indexOf(" ")));
+									if (data.indexOf(" ") != -1)
+									{
+										System.out.println("yep 2");
+										data = data
+												.substring(data.indexOf(" ") + 1);
+										yPos = Double.parseDouble(data
+												.substring(0,
+														data.indexOf(" ")));
+										if (data.indexOf(" ") != -1)
+										{
+											System.out.println("yep 3");
+											data = data
+													.substring(data
+															.indexOf(" ") + 1);
+											dir = Double.parseDouble(data);
+										}
+										playerLocations[i][0] = xPos;
+										playerLocations[i][1] = yPos;
+										playerLocations[i][2] = dir;
+										if (xPos != 0 && yPos != 0)
+											players.add(new Player(xPos, yPos,
+													dir));
+									}
+								}
+							}
 						}
 						catch (Exception e)
 						{
 
 						}
 					}
+					else
+					{
+						data = null;
+					}
 				}
+				
 			}
 			catch (Exception e)
 			{
@@ -894,17 +971,9 @@ public class Client
 									.substring(message.indexOf(" ") + 1);
 							double direction = Double
 									.parseDouble(message.substring(0));
-							if (playerNum != 0)
-							{
-								enemyLocations[playNum][0] = xPos;
-								enemyLocations[playNum][1] = yPos;
-								enemyLocations[playNum][2] = direction;
-								players.get(playNum).setX(xPos);
-								players.get(playNum).setY(yPos);
-								players.get(playNum).setDirection(direction);
-							}
 
-							System.out.println(playNum + " " + xPos + " " + yPos
+							System.out.println(playNum + " " + xPos + " "
+									+ yPos
 									+ " " + direction);
 						}
 					}
@@ -1153,7 +1222,8 @@ public class Client
 				// (int) (Math.random() * 256),
 				// (int) (Math.random() * 256));
 				g.setColor(color);
-				g.drawLine(sizex / 2 - i, (int) ((sizey / 2.0) - 225.0 / distA),
+				g.drawLine(sizex / 2 - i,
+						(int) ((sizey / 2.0) - 225.0 / distA),
 						sizex / 2 - i,
 						(int) ((sizey / 2.0) + 225.0 / distA));
 
@@ -1182,7 +1252,8 @@ public class Client
 				// (int) (Math.random() * 256),
 				// (int) (Math.random() * 256));
 				g.setColor(color);
-				g.drawLine(sizex / 2 + i, (int) ((sizey / 2.0) - 225.0 / distA),
+				g.drawLine(sizex / 2 + i,
+						(int) ((sizey / 2.0) - 225.0 / distA),
 						sizex / 2 + i,
 						(int) ((sizey / 2.0) + 225.0 / distA));
 
@@ -1237,12 +1308,12 @@ public class Client
 						(int) Math.round(
 								(players.get(i).hit.getX()
 										+ Math.cos(players.get(i).direction)
-												* 4)
+										* 4)
 										* drawScale),
 						(int) Math.round(
 								(players.get(i).hit.getY()
 										+ Math.sin(players.get(i).direction)
-												* 4)
+										* 4)
 										* drawScale));
 			}
 
@@ -1250,8 +1321,9 @@ public class Client
 			g.setColor(new Color(255, 100, 0));
 			for (int i = 0; i < hitscans.size(); i++)
 			{
-				g.drawLine((int) Math
-						.round(hitscans.get(i).hit.getX1() * drawScale),
+				g.drawLine(
+						(int) Math
+								.round(hitscans.get(i).hit.getX1() * drawScale),
 						(int) Math
 								.round(hitscans.get(i).hit.getY1() * drawScale),
 						(int) Math
@@ -1274,44 +1346,44 @@ public class Client
 			 * (int)Math.round(lastCollisionY*drawScale), 1, 1);
 			 */
 
-			for (int k = 0; k < enemyLocations.length; k++)
+			for (int k = 0; k < playerLocations.length; k++)
 			{
-				double[] fat = { enemyLocations[k][0], enemyLocations[k][1] };
+				double[] fat = { playerLocations[k][0], playerLocations[k][1] };
 				double dist = distance(fat);
 				double theta;
-				if (enemyLocations[k][0] < players.get(0).getX())
+				if (playerLocations[k][0] < players.get(0).getX())
 				{
-					if (enemyLocations[k][1] < players.get(0).getY())
+					if (playerLocations[k][1] < players.get(0).getY())
 					{
 						theta = Math.PI
 								- Math.acos(dist / (players.get(0).getX()
-										- enemyLocations[k][0]));
+										- playerLocations[k][0]));
 					}
 					else
 					{
 						theta = Math.PI
 								+ Math.acos(dist / (players.get(0).getX()
-										- enemyLocations[k][0]));
+										- playerLocations[k][0]));
 					}
 				}
 				else
 				{
-					if (enemyLocations[k][1] < players.get(0).getY())
+					if (playerLocations[k][1] < players.get(0).getY())
 					{
-						theta = Math.acos(dist / (enemyLocations[k][0]
+						theta = Math.acos(dist / (playerLocations[k][0]
 								- players.get(0).getX()));
 					}
 					else
 					{
 						theta = 2 * Math.PI
-								- Math.acos(dist / (enemyLocations[k][0]
+								- Math.acos(dist / (playerLocations[k][0]
 										- players.get(0).getX()));
 					}
 				}
 				boolean objectHit = false;
 				int p = 0;
 				if (Math.abs(theta - players.get(0).getDirection()) < 5
-						* Math.PI / 18)
+				* Math.PI / 18)
 				{
 					while (!objectHit)
 					{
@@ -1344,7 +1416,7 @@ public class Client
 							tempx = players.get(0).getX() + p * 0.01;
 							tempy = players.get(0).getY()
 									+ (Math.tan(2 * Math.PI - theta) * p
-											* 0.01);
+									* 0.01);
 						}
 						else if (theta == 0)
 						{
@@ -1398,9 +1470,9 @@ public class Client
 		@Override
 		public void run()
 		{
-			playerx = 2;
-			playery = 2;
-			direction = 0;
+			// playerx = 2;
+			// playery = 2;
+			// direction = 0;
 
 			try
 			{
@@ -1412,8 +1484,7 @@ public class Client
 				e1.printStackTrace();
 			}
 
-			players.add(new Player(playerx, playery, direction));
-			players.add(new Player(3, 3, 0));
+			// players.add(new Player(3, 3, 0));
 			JFrame window = new JFrame("MOOD");
 			JPanel bananarama = new GameDisp();
 			// URL url = getClass().getResource("boots.gif");
