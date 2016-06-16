@@ -503,17 +503,10 @@ public class Serverito
 			System.out.println("starting");
 			output.println("starting");
 			output.flush();
-
+			(new Thread(new updateLocations())).start();
 			while (running)
-			{ // loop until a server is closed
-				// try
-				// {
-				// Thread.sleep(1000);
-				// }
-				// catch (Exception e)
-				// {
-				// System.out.println("");
-				// }
+			{
+				
 
 				try
 				{
@@ -537,6 +530,7 @@ public class Serverito
 						}
 						if (data.indexOf("cp")!= -1);
 						{
+							System.out.println(data);
 							data = data.substring(data.indexOf(" ") + 1);
 							xLocation = Double.parseDouble(data.substring(0,data.indexOf(" ")));
 							data = data.substring(data.indexOf(" ") + 1);
