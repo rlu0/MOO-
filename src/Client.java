@@ -31,7 +31,8 @@ public class Client
 	PrintWriter output; // printwriter for network output
 	boolean running = true; // thread status via boolean
 
-	int[][] enemyLocations = new int[8][2];
+	// [x][0] is x position [x][1] is y position [x][2] is direction
+	int[][] enemyLocations = new int[8][3];
 
 	String[][] riddleList = {
 			{ "What has a foot but no legs?",
@@ -702,6 +703,25 @@ public class Client
 					if (message.toLowerCase().equals("quit"))
 					{
 						running = false;
+					}
+					if (message.substring(0, message.indexOf(" ")).equals("pl"))
+					{
+						// formatted pl player# xPos yPos direction
+						int playNum = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						int xPos = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						int yPos = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						int direction = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						enemyLocations[playNum][0] = xPos;
+						enemyLocations[playNum][1] = xPos;
+						enemyLocations[playNum][2] = xPos;
 					}
 				}
 			}
