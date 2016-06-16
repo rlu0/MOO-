@@ -76,7 +76,7 @@ public class Client
 	Image uzisG= new ImageIcon("uzi.gif").getImage();
 	Image shottyG= new ImageIcon("shotty.gif").getImage();
 	Image plasmaG= new ImageIcon("plasma.gif").getImage();	
-		
+	int currentGun =7;
 	
 	
 AudioClip	doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
@@ -972,6 +972,9 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 
 		public void paintComponent(Graphics g)
 		{
+			
+			Image[] guns= {boots,shotty,handgun,uzis,plasma,bootsG,shottyG,handgunG,uzisG,plasmaG};
+			
 			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
@@ -1137,7 +1140,7 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 			g.setColor(Color.WHITE);
 			g.drawString(players.get(0).getX() + " " + players.get(0).getY()
 					+ " " + players.get(0).isMoveForward, 10, 10);
-
+			g.drawImage(guns[currentGun], 51, 50, this);
 		}
 
 		@Override
