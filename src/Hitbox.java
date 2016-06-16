@@ -1,4 +1,8 @@
-
+/**
+ * Hitbox class containing collision methods
+ * @author Tony
+ * @version 2016-06-15
+ */
 public class Hitbox {
 
 

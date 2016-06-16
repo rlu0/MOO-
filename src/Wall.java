@@ -1,4 +1,8 @@
-
+/**
+ * Wall class, includes hitbox
+ * @author Tony
+ * @version 2016-06-15
+ */
 public class Wall extends Thing{
 
 	private double x;
@@ -15,6 +19,7 @@ public class Wall extends Thing{
 		this.setHeight(height);
 		this.hit = hit;
 	}
+	
 	Wall (double x, double y, double width, double height){
 		super(1);
 		this.setX(x);
