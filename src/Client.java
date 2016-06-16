@@ -341,15 +341,15 @@ public class Client
 			}
 			if (players.get(i).isTurnLeft)
 			{
-				players.get(i).direction -= 0.1;
+				players.get(i).setDirection(players.get(i).getDirection() - 0.1);
 			}
 			if (players.get(i).isTurnRight)
 			{
-				players.get(i).direction += 0.1;
+				players.get(i).setDirection(players.get(i).getDirection() + 0.1);
 			}
 
 			// mouse turning
-			players.get(i).direction += turnAmount;
+			players.get(i).setDirection(players.get(i).getDirection() + turnAmount);
 			turnAmount = 0;
 
 			// set movement vector to acceleration
