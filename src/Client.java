@@ -32,7 +32,7 @@ public class Client
 	boolean running = true; // thread status via boolean
 
 	// [x][0] is x position [x][1] is y position [x][2] is direction
-	int[][] enemyLocations = new int[8][3];
+	double[][] enemyLocations = new double[8][3];
 
 	String[][] riddleList = {
 			{ "What has a foot but no legs?",
@@ -700,7 +700,7 @@ public class Client
 			// System.out.println("made it 3");
 			// Every 10 milliseconds the client returns the player's position
 			output.println("cp " + players.get(0).getX() + " "
-					+ players.get(0).getY());
+					+ players.get(0).getY()+" " + players.get(0).getDirection());
 			output.flush();
 		}
 
@@ -728,18 +728,18 @@ public class Client
 						int playNum = Integer.parseInt(
 								message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
-						int xPos = Integer.parseInt(
+						double xPos = Double.parseDouble(
 								message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
-						int yPos = Integer.parseInt(
+						double yPos = Double.parseDouble(
 								message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
-						int direction = Integer.parseInt(
+						double direction = Double.parseDouble(
 								message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
 						enemyLocations[playNum][0] = xPos;
-						enemyLocations[playNum][1] = xPos;
-						enemyLocations[playNum][2] = xPos;
+						enemyLocations[playNum][1] = yPos;
+						enemyLocations[playNum][2] = direction;
 					}
 				}
 			}
