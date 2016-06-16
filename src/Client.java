@@ -235,10 +235,8 @@ public class Client
 					counter ++;
 				}
 
-				System.out.println(i + " " + j);
 			}
 		}
-		System.out.println("doneWalls1");
 		
 	}
 
@@ -371,7 +369,7 @@ public class Client
 	{
 		if (players.get(0).isShoot && players.get(0).canShoot)
 		{
-			hitscans.add(new Hitscan(players.get(0), 5, 1));
+			hitscans.add(new Hitscan(players.get(0), 20, 1));
 			System.out.println("new shot");
 			players.get(0).canShoot = false;
 		}
@@ -1050,22 +1048,22 @@ public class Client
 			for (int i = 0; i < players.size(); i++)
 			{
 				g.fillOval((int) Math.round((players.get(i).hit.getX()
-						- players.get(i).hit.getR() * 2) * drawScale),
+						- players.get(i).hit.getR() * 3) * drawScale),
 						(int) Math.round((players.get(i).hit.getY()
-								- players.get(i).hit.getR() * 2) * drawScale),
+								- players.get(i).hit.getR() * 3) * drawScale),
 						(int) Math.round(
-								players.get(i).hit.getR() * 4 * drawScale),
+								players.get(i).hit.getR() * 6 * drawScale),
 						(int) Math.round(
-								players.get(i).hit.getR() * 4 * drawScale));
+								players.get(i).hit.getR() * 6 * drawScale));
 
 				g.drawLine(
 						(int) Math.round(players.get(i).hit.getX() * drawScale),
 						(int) Math.round(players.get(i).hit.getY() * drawScale),
 						(int) Math.round((players.get(i).hit.getX()
-								+ Math.cos(players.get(i).direction) * 2.5)
+								+ Math.cos(players.get(i).direction) * 4)
 								* drawScale),
 						(int) Math.round((players.get(i).hit.getY()
-								+ Math.sin(players.get(i).direction) * 2.5)
+								+ Math.sin(players.get(i).direction) * 4)
 								* drawScale));
 			}
 
@@ -1144,9 +1142,11 @@ public class Client
 				long startTime = System.currentTimeMillis();
 
 				movePlayers();
+				
+				generateShots();
+				calcShots();
 
-				System.out.println(
-						players.get(0).getX() + " " + players.get(0).getY());
+				//System.out.println(players.get(0).getX() + " " + players.get(0).getY());
 
 				window.repaint();
 
@@ -1376,6 +1376,7 @@ public class Client
 			// TODO Auto-generated method stub
 			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot)
 			{
+				System.out.println("clicked");
 				players.get(0).isShoot = true;
 			}
 		}
