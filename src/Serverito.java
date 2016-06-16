@@ -26,6 +26,7 @@ public class Serverito
 	int gameType;
 	int mapNum = 0;
 	static boolean gameStart = false;
+	// Loads map
 	static int[][] mapNeg1 = new int[45][44];
 	static int[][] map0 = new int[45][45];
 	static int[][] map1 = new int[45][44];
@@ -46,18 +47,21 @@ public class Serverito
 	{
 		for (int k = 0; k < 11; k++)
 		{
-			// System.out.println("");
+			// Attempts to load all the maps into the array from the text file
 			try
 			{
+				// Textfile names increment upwards
 				String filename = "";
 				if (k == 10)
 					filename = "mapNeg1";
 				else
 					filename = "map" + k;
-				// System.out.println(filename);
+
 				File f = new File(filename);
 				Scanner inFile = new Scanner(f);
 				int j = 0;
+				
+				// Keeps loading lines to put the maps in line by line
 				while (inFile.hasNext())
 				{
 					String currentLine = inFile.nextLine();
@@ -67,7 +71,6 @@ public class Serverito
 					{
 						int currentInt = Integer.valueOf(split[i]);
 						allMaps[k][j][i] = currentInt;
-						// System.out.print(allMaps[k][j][i]);
 					}
 					j++;
 					// System.out.println("");
@@ -81,21 +84,31 @@ public class Serverito
 		new Serverito().go(); // start the server
 	}
 
+	// Determines whether any functions are running
 	boolean doingStuff;
 
+	/*
+	 * Runs the main body of the program and starts the first window to introduce people
+	 */
 	public void go()
 	{
+		/**
+		 * Determines whether the server start is ready
+		 * @author Michael 
+		 */
 		class buttonListener implements ActionListener
 		{
-			@Override
+			/*
+			 * Proceeds to start a function if the button is pressed
+			 */
 			public void actionPerformed(ActionEvent arg0)
 			{
 				doingStuff = true;
-				System.out.println(doingStuff);
 			}
 
 		}
 
+		// Various aspects of the second window (which loads players into a lobby)
 		boolean ready = false;
 		JFrame window = new JFrame("MOOD");
 		JPanel menuThing = new JPanel();
@@ -127,6 +140,8 @@ public class Serverito
 		window.setVisible(true);
 		window.setSize(300, 175);
 		int port = -1;
+		
+		// Attempts to load the player's information into the server buffer
 		while (ready != true)
 		{
 			try
@@ -135,15 +150,15 @@ public class Serverito
 			}
 			catch (InterruptedException ex)
 			{
-				// e.printStackTrace();
 
 			}
+			
+			// Interprets the prior window's information and parses it
 			if (doingStuff == true)
 			{
 				try
 				{
 					gameType = Integer.parseInt(IPF.getText());
-					// System.out.println("first");
 				}
 				catch (Exception e)
 				{
@@ -151,12 +166,12 @@ public class Serverito
 							"The GameType is not an integer!");
 					doingStuff = false;
 				}
+				// Lots of checks to determine whether the box was filled correctly
 				if (doingStuff == true)
 				{
 					try
 					{
 						port = Integer.parseInt(portF.getText());
-						// System.out.println("second");
 					}
 					catch (Exception e)
 					{
@@ -168,7 +183,7 @@ public class Serverito
 					{
 						try
 						{
-							// System.out.println("third");
+							// Loops back if things work
 							mapNum = Integer.parseInt(usernameF.getText());
 							System.out.println(mapNum);
 							if (mapNum > 10 || mapNum <= -1)
@@ -193,28 +208,30 @@ public class Serverito
 				}
 			}
 		}
+		
+		// Makes the window vanish and starts the lobby
 		window.setVisible(false);
 
 		doingStuff = false;
-		// System.out.println("Game started on port: " + port);
-		JFrame loadingFrame = new JFrame("MOOD - Lobby");
 
+		// Preps the second frame which is the lobby
+		JFrame loadingFrame = new JFrame("MOOD - Lobby");
 		JPanel information = new JPanel();
 		JTextArea display = new JTextArea("Game started on port: " + port);
 		JButton startG = new JButton("Begin Game");
 		buttonListener butt = new buttonListener();
 		startG.addActionListener(butt);
-
 		loadingFrame.add(information);
 		loadingFrame.add(startG);
 		GridLayout lay2 = new GridLayout(2, 1, 2, 2);
 		loadingFrame.setLayout(lay2);
 		loadingFrame.setSize(300, 300);
 		loadingFrame.setVisible(true);
-
 		information.add(display);
 		Socket client = null;// hold the client connection
 		Boolean isSpace = false;
+		
+		// Loads the port based on the prior entered information and displays an error message if something goes wrong
 		try
 		{
 			serverSock = new ServerSocket(port);
@@ -224,6 +241,8 @@ public class Serverito
 			System.out.println("YOU FORGOT TO CLOSE IT DAMMIT");
 		}
 		int i = 0;
+		
+		// The near eternal loop that continues to load up new players until the limit (8) is reached or the button is pressed
 		while (running && gameStart == false)
 		{
 			try
@@ -236,19 +255,15 @@ public class Serverito
 			}
 			try
 			{
+				// Accepts a new client as a new player
 				client = serverSock.accept();
 				display.append("\n Client connected");
 
 				ConnectionHandler clientHandler = new ConnectionHandler(client, i);
 				clientList.add(clientHandler);
 				(new Thread(clientHandler)).start();
-				// for (int i = 0; i < clientList.size(); i++)
-				// {
-				// clientList.get(i).setPlayerList(clientList);
-				// }
 				display.append(
 						"\n Number of Players in Lobby: " + clientList.size());
-				// }
 
 			}
 			catch (Exception e)
@@ -262,14 +277,19 @@ public class Serverito
 					System.out.println("Failed to close socket");
 				}
 			}
-
 		}
+		
+		// Hides frame afterwards
 		loadingFrame.setVisible(false);
 		gameStart = true;
 
 	}
 
-	// ***** Inner class - thread for client connection
+	/**
+	 * handles the connection with individual peoples as separate threads
+	 * @author Michael
+	 *
+	 */
 	class ConnectionHandler implements Runnable
 	{
 
@@ -283,6 +303,9 @@ public class Serverito
 		private double yLocation = 0;
 		private double dir = 0;
 
+		/*
+		 *  Loops through and updates where the players are located
+		 */
 		void updateLocations()
 		{
 			int i = 0;
@@ -299,10 +322,6 @@ public class Serverito
 						// TODO Auto-generated catch block
 						System.out.println("Ray's computer is satan incarnate");
 					}
-					// output.println("1 0 3");
-					// output.println(playerPositions[i][0] + " "
-					// + playerPositions[i][1] + " " + i);
-					// output.flush();
 					i++;
 				}
 				i = 0;
@@ -310,11 +329,17 @@ public class Serverito
 			}
 		}
 
+		/*
+		 * Gets the output scream of the specific client
+		 */
 		PrintWriter getOutput()
 		{
 			return output;
 		}
 
+		/*
+		 * Updates a specific player position
+		 */
 		void playerUpdate(double x, double y, int i)
 		{
 
@@ -323,6 +348,9 @@ public class Serverito
 
 		}
 
+		/*
+		 * Assigns a new ID to the designated client
+		 */
 		void giveID()
 		{
 			int i = 0;
@@ -350,17 +378,21 @@ public class Serverito
 		 */
 		ConnectionHandler(Socket s, int i)
 		{
+			// Finds random positions
 			do
 			{
 				xLocation = Math.random() * currentMap[1].length;
 				yLocation = Math.random() * currentMap.length;
 			}
 			while (currentMap[(int) (yLocation)][(int) (xLocation)] == 1);
+			
+			// Assigns the data points to the player's index
 			dir = Math.random()*2*Math.PI;
 			playerPositions[i][0] = xLocation;
 			playerPositions[i][1] = yLocation;
 			playerPositions[i][2] = dir;
 			this.client = s; // constructor assigns client to this
+			
 			try
 			{ // assign all connections to client
 				this.output = new PrintWriter(client.getOutputStream());
@@ -396,12 +428,11 @@ public class Serverito
 					e.printStackTrace();
 				}
 			}
-			// output.println(clientList.indexOf(client) + mapNum +
-			// clientList.size());
 			output.println("1 " + mapNum + " 6");
 			output.flush();
 			data = null;
 
+			// Temporary game loop that repeats until the game is started
 			while (gameStart == false)
 			{
 				try
@@ -414,6 +445,7 @@ public class Serverito
 				}
 				try
 				{
+					// Waits to receive usernames
 					if (input.ready())
 					{
 						username = input.readLine();
@@ -429,12 +461,18 @@ public class Serverito
 					gameStart = true;
 				}
 			}
+			
+			// send out to players that the game is starting
 			System.out.println("starting");
 			output.println("starting");
 			output.flush();
+			
+			//For each player send out the positions of all the other players
 			for (int i = 0; i < 8; i++)
 				output.println(i+" " + playerPositions[i][0] + " " + playerPositions[i][1] + " " + playerPositions[i][2]);
 			(new Thread(new updateLocations())).start();
+			
+			//While game is running
 			while (running)
 			{
 				// System.out.println("farts");
@@ -445,6 +483,7 @@ public class Serverito
 					{ // check for an incoming message
 						try
 						{
+							//Delay to prevent issues when the program tries to run too fast
 							Thread.sleep(30);
 						}
 						catch (Exception e)
@@ -453,6 +492,7 @@ public class Serverito
 						}
 						data = input.readLine();
 
+						//Quitting
 						if (data.toLowerCase().equals("quit"))
 						{
 							running = false;
@@ -469,10 +509,13 @@ public class Serverito
 								// }
 							}
 						}
+						
+						//Takes in the info from the client and if it contains player position update ( cp= client position)
 						if (data.indexOf("cp") != -1)
 						{
 							// System.out.println(data);
 							data = data.substring(data.indexOf(" ") + 1);
+							//Check to see that its in the right format and updates the server info
 							if (data.indexOf(" ") != -1)
 							{
 								xLocation = Double.parseDouble(
@@ -523,6 +566,7 @@ public class Serverito
 
 		}
 
+		//Returns the username
 		String getUsername()
 		{
 			return username;
@@ -535,6 +579,8 @@ public class Serverito
 		// // + clientList.size());
 		// }
 
+		
+		//Getters and setters for the X and Y of the player and direction they are facing
 		double getX()
 		{
 			return xLocation;
@@ -550,6 +596,7 @@ public class Serverito
 			return dir;
 		}
 
+		//Update locations class
 		class updateLocations implements Runnable
 		{
 
@@ -566,6 +613,9 @@ public class Serverito
 					{
 
 					}
+					
+					//If there are clients send out to each player
+					// the location of the other players ( including the current player)
 					if (clientList != null)
 					{
 						for (int i = 0; i < clientList.size(); i++)
@@ -580,6 +630,7 @@ public class Serverito
 										.println("Sending " + poo.getUsername()
 												+ "'s info to " + username);
 								output.println(message);
+								//Remeber to flush ;)
 								output.flush();
 							}
 						}
