@@ -75,7 +75,40 @@ public class Client
 	Image shottyG = new ImageIcon("shotty.gif").getImage();
 	Image plasmaG = new ImageIcon("plasma.gif").getImage();
 
-	int currentGun = 5;
+	
+	
+
+	public void soundFire(){
+		if (currentGun==0){
+			
+		}
+		else if ( currentGun==1 )
+		{
+			hg.play(); 
+		}
+		else if (currentGun==2)
+		{
+			sg.play();
+		}
+		
+		else if (currentGun==3)
+		{
+			sg.play();
+		}
+		else if (currentGun==4)
+		{
+			uzi.play();
+		}
+		else if (currentGun==5)
+		{
+			pls.play();
+		}
+
+		
+	}
+	
+	
+	int currentGun = 0;
 	
 	
 	AudioClip doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
@@ -1424,6 +1457,7 @@ public class Client
 			{
 				System.out.println("clicked");
 				players.get(0).isShoot = true;
+				currentGun+=5;
 			}
 		}
 
@@ -1435,6 +1469,7 @@ public class Client
 			{
 				players.get(0).isShoot = false;
 				players.get(0).canShoot = true;
+				currentGun-=5;
 			}
 		}
 
