@@ -1,10 +1,20 @@
-
+/**
+ * Circle hitbox containing location and radius
+ * @author Tony
+ * @version 2016-06-12
+ */
 public class CircleHit extends Hitbox{
 
 	private double x;
 	private double y;
 	private double r;
 	
+	/**
+	 * Constructor including location and radius
+	 * @param x x coord
+	 * @param y y coord
+	 * @param r radius
+	 */
 	CircleHit(double x, double y, double r) {
 		super();
 		this.x = x;

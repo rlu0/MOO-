@@ -5,7 +5,6 @@
  */
 public class Hitbox {
 
-
 	Hitbox() {
 	}
 	
