@@ -64,28 +64,24 @@ public class Client
 					"A: A hole", "A: fires", "A: Alexander Hamilton",
 					"Really its true!", "I don't know what else to say" } };
 
-	
-	
-	Image handgun= new ImageIcon("handgun.png").getImage();
-	Image boots= new ImageIcon("boots.png").getImage();
-	Image uzis= new ImageIcon("uzi.png").getImage();
-	Image shotty= new ImageIcon("shotty.png").getImage();
-	Image plasma= new ImageIcon("plasma.png").getImage();
-	Image handgunG= new ImageIcon("handgun.gif").getImage();
-	Image bootsG= new ImageIcon("boots.gif").getImage();
-	Image uzisG= new ImageIcon("uzis.gif").getImage();
-	Image shottyG= new ImageIcon("shotty.gif").getImage();
-	Image plasmaG= new ImageIcon("plasma.gif").getImage();	
-	int currentGun =7;
-	
-	
-AudioClip	doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
-AudioClip	hg = Applet.newAudioClip(getCompleteURL("dspistol.wav"));
-AudioClip	sg = Applet.newAudioClip(getCompleteURL("dsshotgun.wav"));
-AudioClip	uzi = Applet.newAudioClip(getCompleteURL("OST.wav"));
-AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
-	
-//Gets the URL needed for newAudioClip
+	Image handgun = new ImageIcon("handgun.png").getImage();
+	Image boots = new ImageIcon("boots.png").getImage();
+	Image uzis = new ImageIcon("uzi.png").getImage();
+	Image shotty = new ImageIcon("shotty.png").getImage();
+	Image plasma = new ImageIcon("plasma.png").getImage();
+	Image handgunG = new ImageIcon("handgun.gif").getImage();
+	Image bootsG = new ImageIcon("boots.gif").getImage();
+	Image uzisG = new ImageIcon("uzi.gif").getImage();
+	Image shottyG = new ImageIcon("shotty.gif").getImage();
+	Image plasmaG = new ImageIcon("plasma.gif").getImage();
+
+	AudioClip doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
+	AudioClip hg = Applet.newAudioClip(getCompleteURL("dspistol.wav"));
+	AudioClip sg = Applet.newAudioClip(getCompleteURL("dsshotgun.wav"));
+	AudioClip uzi = Applet.newAudioClip(getCompleteURL("OST.wav"));
+	AudioClip pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
+
+	// Gets the URL needed for newAudioClip
 	public URL getCompleteURL(String fileName)
 	{
 		try
@@ -99,7 +95,7 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 		}
 		return null;
 	}
-	
+
 	// Various maps will be designed and put into here
 	static int[][] mapNeg1 = new int[45][44];
 	static int[][] map0 = new int[45][45];
@@ -163,7 +159,7 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 
 	// List of things:
 	ArrayList<Player> players = new ArrayList<Player>();
-	Wall [] walls;
+	Wall[] walls;
 	ArrayList<Hitscan> hitscans = new ArrayList<Hitscan>();
 
 	/**
@@ -247,7 +243,7 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 
 	void setWallArray()
 	{
-		
+
 		int noOfWalls = 0;
 		for (int i = 0; i < currentMap.length; i++)
 		{
@@ -259,8 +255,8 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 				}
 			}
 		}
-		walls = new Wall [noOfWalls];
-		
+		walls = new Wall[noOfWalls];
+
 		int counter = 0;
 		for (int i = 0; i < currentMap.length; i++)
 		{
@@ -268,14 +264,14 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 			{
 				if (currentMap[i][j] == 1)
 				{
-					walls[counter] = new Wall(j,i,1,1);
+					walls[counter] = new Wall(j, i, 1, 1);
 					System.out.println("generating walls");
-					counter ++;
+					counter++;
 				}
 
 			}
 		}
-		
+
 	}
 
 	void movePlayers()
@@ -440,14 +436,17 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 			shortestCoord[0] = hitscans.get(i).hit.getX2();
 			shortestCoord[1] = hitscans.get(i).hit.getY2();
 
-			
-			for (int j=0; j<walls.length; j++){
-				
-				//System.out.println("hit");
-				
-				double [] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit, hitscans.get(i).hit);
-				
-				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+			for (int j = 0; j < walls.length; j++)
+			{
+
+				// System.out.println("hit");
+
+				double[] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit,
+						hitscans.get(i).hit);
+
+				if (coord[0] != Double.MAX_VALUE
+						&& coord[1] != Double.MAX_VALUE)
+				{
 
 					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
 
@@ -739,7 +738,8 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 			// System.out.println("made it 3");
 			// Every 10 milliseconds the client returns the player's position
 			output.println("cp " + players.get(0).getX() + " "
-					+ players.get(0).getY()+" " + players.get(0).getDirection());
+					+ players.get(0).getY() + " "
+					+ players.get(0).getDirection());
 			output.flush();
 		}
 
@@ -972,9 +972,6 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 
 		public void paintComponent(Graphics g)
 		{
-			
-			Image[] guns= {boots,shotty,handgun,uzis,plasma,bootsG,shottyG,handgunG,uzisG,plasmaG};
-			
 			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
@@ -1140,7 +1137,7 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 			g.setColor(Color.WHITE);
 			g.drawString(players.get(0).getX() + " " + players.get(0).getY()
 					+ " " + players.get(0).isMoveForward, 10, 10);
-			g.drawImage(guns[currentGun], 51, 50, this);
+
 		}
 
 		@Override
@@ -1184,25 +1181,27 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 				long startTime = System.currentTimeMillis();
 
 				movePlayers();
-				
+
 				generateShots();
 				calcShots();
 
-				//System.out.println(players.get(0).getX() + " " + players.get(0).getY());
+				// System.out.println(players.get(0).getX() + " " +
+				// players.get(0).getY());
 
 				window.repaint();
 
 				long endTime = System.currentTimeMillis();
-				long currentDelay = frameTime - (endTime - startTime);
 
-				try
-				{
-					Thread.sleep(currentDelay);
-				}
-				catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
+				long currentDelay = frameTime - (endTime - startTime);
+				if (currentDelay > 0)
+					try
+					{
+						Thread.sleep(currentDelay);
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
 			}
 			window.setVisible(false);
 
@@ -1240,10 +1239,12 @@ AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
 
 		public void keyTyped(KeyEvent e)
 		{
-			// if (KeyEvent.getKeyText(e.getKeyCode()).equals("Enter"))
-			// {
-			//
-			// }
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape"))
+			{
+				output.println("quit");
+				output.flush();
+				running = false;
+			}
 		}
 
 		public void keyPressed(KeyEvent e)
