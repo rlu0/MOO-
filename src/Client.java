@@ -776,7 +776,6 @@ public class Client
 							+ " " + players.get(0).getDirection());
 			output.flush();
 		}
-
 	}
 
 	public class recieveInfo implements Runnable
@@ -795,9 +794,11 @@ public class Client
 					{
 						running = false;
 					}
-					if (message.substring(0, message.indexOf(" ")).equals("pl"))
+					if (message.indexOf("pl")!=-1)
 					{
 						// formatted pl player# xPos yPos direction
+						System.out.println(message);
+						message = message.substring(message.indexOf(" ") + 1);
 						int playNum = Integer.parseInt(
 								message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
@@ -808,8 +809,7 @@ public class Client
 								message.substring(0, message.indexOf(" ")));
 						message = message.substring(message.indexOf(" ") + 1);
 						double direction = Double.parseDouble(
-								message.substring(0, message.indexOf(" ")));
-						message = message.substring(message.indexOf(" ") + 1);
+								message.substring(0));
 						enemyLocations[playNum][0] = xPos;
 						enemyLocations[playNum][1] = yPos;
 						enemyLocations[playNum][2] = direction;
@@ -1328,7 +1328,7 @@ public class Client
 			// KeyListener keyList = new MyKeyListener();
 			// MouseMotionListener motionListener = new MouseMovementListener();
 			window.addKeyListener(new MyKeyListener());
-			window.addMouseMotionListener(new MouseMovementListener());
+			//window.addMouseMotionListener(new MouseMovementListener());
 			window.addMouseListener(new MouseClickListener());
 			window.setLocationRelativeTo(null);
 
@@ -1457,6 +1457,17 @@ public class Client
 				output.flush();
 				running = false;
 			}
+			if(KeyEvent.getKeyText(e.getKeyCode()).equals("Space"))
+			{
+				if (!players.get(0).isShoot)
+				{
+					System.out.println("clicked");
+					players.get(0).isShoot = true;
+					soundFire();
+					currentGun += 5;
+
+				}
+			}
 		}
 
 		public void keyReleased(KeyEvent e)
@@ -1498,6 +1509,13 @@ public class Client
 				raPressed = false;
 				players.get(0).isTurnRight = false;
 				// direction -= 0.01;
+			}
+			
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Space") && players.get(0).isShoot)
+			{
+				players.get(0).isShoot = false;
+				players.get(0).canShoot = true;
+				currentGun -= 5;
 			}
 
 		}
