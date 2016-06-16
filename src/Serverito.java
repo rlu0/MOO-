@@ -14,7 +14,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
+/**
+ * Sever class that hosts the game and communicates with players 
+ * @author Michael, Ray, Tony
+ * @version June 16, 2016
+ *
+ */
 public class Serverito
 {
 	ServerSocket serverSock;// server socket for connection
