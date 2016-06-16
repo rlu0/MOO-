@@ -124,7 +124,7 @@ public class Client
 
 	// List of things:
 	ArrayList<Player> players = new ArrayList<Player>();
-	ArrayList<Wall> walls = new ArrayList<Wall>();
+	Wall [] walls;
 
 	ArrayList<Hitscan> hitscans = new ArrayList<Hitscan>();
 	
@@ -208,18 +208,39 @@ public class Client
 
 	boolean doingStuff = false;
 
-	void setWallArrayList()
+	void setWallArray()
 	{
+		
+		int noOfWalls = 0;
 		for (int i = 0; i < currentMap.length; i++)
 		{
 			for (int j = 0; j < currentMap[i].length; j++)
 			{
 				if (currentMap[i][j] == 1)
 				{
-					walls.add(new Wall(j, i, 1, 1));
+					noOfWalls++;
 				}
 			}
 		}
+		walls = new Wall [noOfWalls];
+		
+		int counter = 0;
+		for (int i = 0; i < currentMap.length; i++)
+		{
+			for (int j = 0; j < currentMap[i].length; j++)
+			{
+				if (currentMap[i][j] == 1)
+				{
+					walls[counter] = new Wall(j,i,1,1);
+					System.out.println("generating walls");
+					counter ++;
+				}
+
+				System.out.println(i + " " + j);
+			}
+		}
+		System.out.println("doneWalls1");
+		
 	}
 
 	void movePlayers()
@@ -305,10 +326,10 @@ public class Client
 
 			// wall collisions
 
-			for (int j = 0; j < walls.size(); j++)
+			for (int j = 0; j < walls.length; j++)
 			{
 				double[] coord = players.get(i).hit
-						.RCIntersect(walls.get(j).hit, players.get(i).hit);
+						.RCIntersect(walls[j].hit, players.get(i).hit);
 				if (coord[0] != Double.MAX_VALUE
 						&& coord[1] != Double.MAX_VALUE)
 				{
@@ -380,11 +401,11 @@ public class Client
 			shortestCoord[0] = hitscans.get(i).hit.getX2();
 			shortestCoord[1] = hitscans.get(i).hit.getY2();
 			
-			for (int j=0; j<walls.size(); j++){
+			for (int j=0; j<walls.length; j++){
 				
 				//System.out.println("hit");
 				
-				double [] coord = hitscans.get(i).hit.RLIntersect(walls.get(j).hit, hitscans.get(i).hit);
+				double [] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit, hitscans.get(i).hit);
 				
 				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
 					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
@@ -557,9 +578,11 @@ public class Client
 					System.out.println("Map Num:" + mapNum);
 					message = message.substring(message.indexOf(" ") + 1);
 					currentMap = allMaps[mapNum];
-					setWallArrayList();
+					setWallArray();
+					System.out.println("done array");
 					numPlayers = Integer.parseInt(message) + 1;
 					loadingConf = true;
+
 				}
 			}
 			catch (IOException e)
@@ -982,15 +1005,15 @@ public class Client
 
 			// Draw Walls
 			g.setColor(new Color(40, 40, 40));
-			for (int i = 0; i < walls.size(); i++)
+			for (int i = 0; i < walls.length; i++)
 			{
 				g.fillRect(
-						(int) Math.round(walls.get(i).hit.getX1() * drawScale),
-						(int) Math.round(walls.get(i).hit.getY1() * drawScale),
-						(int) Math.round((walls.get(i).hit.getX2()
-								- walls.get(i).hit.getX1()) * drawScale),
-						(int) Math.round((walls.get(i).hit.getY2()
-								- walls.get(i).hit.getY1()) * drawScale));
+						(int) Math.round(walls[i].hit.getX1() * drawScale),
+						(int) Math.round(walls[i].hit.getY1() * drawScale),
+						(int) Math.round((walls[i].hit.getX2()
+								- walls[i].hit.getX1()) * drawScale),
+						(int) Math.round((walls[i].hit.getY2()
+								- walls[i].hit.getY1()) * drawScale));
 			}
 
 			// Draw Player
