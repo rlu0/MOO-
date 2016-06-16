@@ -108,7 +108,7 @@ public class Client
 	}
 	
 	
-	int currentGun = 0;
+	int currentGun = 1;
 	
 	
 	AudioClip doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
