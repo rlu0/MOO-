@@ -365,9 +365,9 @@ public class Serverito
 		private boolean running;
 		String username = "-";
 		ArrayList<ConnectionHandler> clientList = null;
-		private double xLocation=0;
-		private double yLocation=0;
-		private double dir=0;
+		private double xLocation = 0;
+		private double yLocation = 0;
+		private double dir = 0;
 
 		void updateLocations()
 		{
@@ -506,14 +506,22 @@ public class Serverito
 			(new Thread(new updateLocations())).start();
 			while (running)
 			{
-				
+				//System.out.println("farts");
 
 				try
 				{
 					if (input.ready())
 					{ // check for an incoming message
+						try
+						{
+							Thread.sleep(30);
+						}
+						catch(Exception e)
+						{
+							
+						}
 						data = input.readLine();
-						System.out.println(data);
+						System.out.println(username + ": " +data);
 						if (data.toLowerCase().equals("quit"))
 						{
 							running = false;
@@ -528,15 +536,25 @@ public class Serverito
 								}
 							}
 						}
-						if (data.indexOf("cp")!= -1);
+						if (data.indexOf("cp") != -1)
 						{
 							System.out.println(data);
 							data = data.substring(data.indexOf(" ") + 1);
-							xLocation = Double.parseDouble(data.substring(0,data.indexOf(" ")));
-							data = data.substring(data.indexOf(" ") + 1);
-							yLocation = Double.parseDouble(data.substring(0,data.indexOf(" ")));
-							data = data.substring(data.indexOf(" ") + 1);
-							dir = Double.parseDouble(data);
+							if (data.indexOf(" ") != -1)
+							{
+								xLocation = Double.parseDouble(
+										data.substring(0, data.indexOf(" ")));
+								data = data.substring(data.indexOf(" ") + 1);
+								if (data.indexOf(" ") != -1)
+								{
+									yLocation = Double.parseDouble(
+											data.substring(0,
+													data.indexOf(" ")));
+									data = data
+											.substring(data.indexOf(" ") + 1);
+									dir = Double.parseDouble(data);
+								}
+							}
 						}
 					}
 				}
@@ -581,23 +599,22 @@ public class Serverito
 			// output.println("01 " + clientList.indexOf(client)
 			// + clientList.size());
 		}
-		
+
 		double getX()
 		{
 			return xLocation;
 		}
-		
+
 		double getY()
 		{
 			return yLocation;
 		}
-		
+
 		double getDir()
 		{
 			return dir;
 		}
 
-		
 		class updateLocations implements Runnable
 		{
 
@@ -607,20 +624,21 @@ public class Serverito
 				while (running)
 				{
 					for (int i = 0; i < clientList.size(); i++)
-					{ 
+					{
 						ConnectionHandler poo = clientList.get(i);
 						if (poo != null)
 						{
 							String message = "pl ";
-							message = message + i + " " + poo.getX() + " " + poo.getY() + " " + poo.getDir();
+							message = message + i + " " + poo.getX() + " "
+									+ poo.getY() + " " + poo.getDir();
 							output.println(message);
 							output.flush();
 						}
 					}
 				}
-				
+
 			}
-			
+
 		}
 
 		// end of inner class
