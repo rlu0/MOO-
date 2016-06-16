@@ -80,7 +80,7 @@ public class Vector {
 	}
 	
 	/**
-	 * Calculate x and y components
+	 * Calculate x and y components given length and angle
 	 */
 	void calcComponents(){
 		x = Math.cos(angle) * length;
@@ -113,15 +113,15 @@ public class Vector {
 		}
 	}
 	
+	
+	/**
+	 * Adds given vector to self
+	 * @param a the vector
+	 */
 	void addComponents(Vector a){
 		setX(getX() + a.x);
 		setY(getY() + a.y);
 		calcLengthAngle();
 	}
 	
-	//void addLengthAngle(){
-	//	setLength();
-	//}
-	
-
 }
