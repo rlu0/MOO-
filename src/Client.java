@@ -1061,7 +1061,7 @@ public class Client
 				// if (direction <= Math.PI / 4
 				// || direction > Math.PI * 2 - Math.PI / 4) {
 				// angle = findAngle(i * viewInc, dTM);
-				newPt = locatePoint(-angle);
+				newPt = locatePoint(Math.PI*2-angle);
 				// System.out.println("RS:" + newPt[0] + "," + newPt[1]);
 				// distA = distance(newPt);
 				distA = distance(newPt);
