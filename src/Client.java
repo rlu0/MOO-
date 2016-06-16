@@ -618,7 +618,7 @@ public class Client {
 		// + " " + players.get(0).getDirection());
 		while (running) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(30);
 			} catch (Exception e) {
 				System.out.println("why is this happening");
 			}

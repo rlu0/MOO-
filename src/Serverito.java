@@ -506,7 +506,7 @@ public class Serverito
 			(new Thread(new updateLocations())).start();
 			while (running)
 			{
-				System.out.println("farts");
+				//System.out.println("farts");
 
 				try
 				{
@@ -514,14 +514,14 @@ public class Serverito
 					{ // check for an incoming message
 						try
 						{
-							Thread.sleep(10);
+							Thread.sleep(30);
 						}
 						catch(Exception e)
 						{
 							
 						}
 						data = input.readLine();
-						System.out.println(data);
+						System.out.println(username + ": " +data);
 						if (data.toLowerCase().equals("quit"))
 						{
 							running = false;
