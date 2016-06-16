@@ -1458,6 +1458,7 @@ public class Client
 				System.out.println("clicked");
 				players.get(0).isShoot = true;
 				currentGun+=5;
+				soundFire();
 			}
 		}
 
