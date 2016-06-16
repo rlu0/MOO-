@@ -1,4 +1,8 @@
-
+/**
+ * Line hitbox class
+ * @author Tony
+ * @version 2016-06-14
+ */
 public class Line extends Hitbox{
 	
 	private double x1;
@@ -8,6 +12,13 @@ public class Line extends Hitbox{
 	private double angle;
 	private double length;
 	
+	/**
+	 * Constructor
+	 * @param x1
+	 * @param y1 
+	 * @param x2 
+	 * @param y2 
+	 */
 	Line (double x1, double y1, double x2, double y2){
 		this.setX1(x1);
 		this.setY1(y1);
@@ -73,8 +84,5 @@ public class Line extends Hitbox{
 	void setLength(double length) {
 		this.length = length;
 	}
-	
-	
-	
 	
 }

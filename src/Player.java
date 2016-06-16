@@ -1,11 +1,13 @@
-
+/**
+ * 
+ * @author Tony, Michael, Ray
+ * @version 2016-06-15
+ */
 public class Player extends Thing {
 	private double x;
 	private double y;
-	private double RADIUS = 2.5;
 	private int hp;
 
-	private int id;
 	final double START_DIRECTION = 0;
 	Weapon[] weapons = new Weapon[10];
 	Vector velocity;
@@ -24,6 +26,12 @@ public class Player extends Thing {
 
 	final int START_HP = 100;
 
+	/**
+	 * constructor given x, y, and circle hitbox
+	 * @param x x coord
+	 * @param y y coord
+	 * @param hit circle hitbox
+	 */
 	Player(double x, double y, CircleHit hit) {
 		super(100);
 		hp = START_HP;
@@ -34,6 +42,12 @@ public class Player extends Thing {
 		velocity = new Vector(0,0,true);
 	}
 
+	/**
+	 * Constructor given x, y, and initial direction
+	 * @param x x coord
+	 * @param y y coord
+	 * @param d inital direction
+	 */
 	Player(double x, double y, double d) {
 		super(100);
 		hp = START_HP;
