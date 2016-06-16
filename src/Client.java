@@ -790,7 +790,7 @@ public class Client
 				if (input.ready())
 				{
 					String message = input.readLine();
-					msgArea.append("\n" + message);
+					//msgArea.append("\n" + message);
 					if (message.toLowerCase().equals("quit"))
 					{
 						running = false;
