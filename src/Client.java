@@ -1007,7 +1007,7 @@ public class Client
 
 		public void paintComponent(Graphics g)
 		{
-			Image[] guns= {boots,shotty,handgun,uzis,plasma,bootsG,shottyG,handgunG,uzisG,plasmaG};
+			Image[] guns= {boots,handgun,shotty,uzis,plasma,bootsG,handgunG, shottyG,uzisG,plasmaG};
 			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
 			// int gridPlayerx = (int) (playerx / 10);
