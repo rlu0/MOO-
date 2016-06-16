@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,6 +64,42 @@ public class Client
 					"A: A hole", "A: fires", "A: Alexander Hamilton",
 					"Really its true!", "I don't know what else to say" } };
 
+	
+	
+	Image handgun= new ImageIcon("handgun.png").getImage();
+	Image boots= new ImageIcon("boots.png").getImage();
+	Image uzis= new ImageIcon("uzi.png").getImage();
+	Image shotty= new ImageIcon("shotty.png").getImage();
+	Image plasma= new ImageIcon("plasma.png").getImage();
+	Image handgunG= new ImageIcon("handgun.gif").getImage();
+	Image bootsG= new ImageIcon("boots.gif").getImage();
+	Image uzisG= new ImageIcon("uzi.gif").getImage();
+	Image shottyG= new ImageIcon("shotty.gif").getImage();
+	Image plasmaG= new ImageIcon("plasma.gif").getImage();	
+		
+	
+	
+AudioClip	doot = Applet.newAudioClip(getCompleteURL("OST.wav"));
+AudioClip	hg = Applet.newAudioClip(getCompleteURL("dspistol.wav"));
+AudioClip	sg = Applet.newAudioClip(getCompleteURL("dsshotgun.wav"));
+AudioClip	uzi = Applet.newAudioClip(getCompleteURL("OST.wav"));
+AudioClip	pls = Applet.newAudioClip(getCompleteURL("dsrlaunc.wav"));
+	
+//Gets the URL needed for newAudioClip
+	public URL getCompleteURL(String fileName)
+	{
+		try
+		{
+			return new URL("file:" + System.getProperty("user.dir") + "/"
+					+ fileName);
+		}
+		catch (MalformedURLException e)
+		{
+			System.err.println(e.getMessage());
+		}
+		return null;
+	}
+	
 	// Various maps will be designed and put into here
 	static int[][] mapNeg1 = new int[45][44];
 	static int[][] map0 = new int[45][45];
@@ -441,6 +479,7 @@ public class Client
 
 	public void go()
 	{
+		doot.loop();
 
 		class buttonListener implements ActionListener
 		{
