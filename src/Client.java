@@ -31,7 +31,8 @@ public class Client
 	PrintWriter output; // printwriter for network output
 	boolean running = true; // thread status via boolean
 
-	int[][] enemyLocations = new int[8][2];
+	// [x][0] is x position [x][1] is y position [x][2] is direction
+	int[][] enemyLocations = new int[8][3];
 
 	String[][] riddleList = {
 			{ "What has a foot but no legs?",
@@ -125,10 +126,7 @@ public class Client
 	// List of things:
 	ArrayList<Player> players = new ArrayList<Player>();
 	Wall [] walls;
-
 	ArrayList<Hitscan> hitscans = new ArrayList<Hitscan>();
-	
-
 
 	/**
 	 * Main
@@ -140,19 +138,20 @@ public class Client
 
 		for (int k = 0; k < 11; k++)
 		{
+			System.out.println("");
 			try
 			{
 				String filename = "";
-				if (k < 10)
-					filename = "map" + k;
-				else
+				if (k == 10)
 					filename = "mapNeg1";
+				else
+					filename = "map" + k;
+				System.out.println(filename);
 				File f = new File(filename);
 				Scanner inFile = new Scanner(f);
 				int j = 0;
 				while (inFile.hasNext())
 				{
-
 					String currentLine = inFile.nextLine();
 					String[] split = currentLine.split(" ");
 
@@ -160,10 +159,10 @@ public class Client
 					{
 						int currentInt = Integer.valueOf(split[i]);
 						allMaps[k][j][i] = currentInt;
-						// System.out.print(map2[j][i]);
+						System.out.print(allMaps[k][j][i]);
 					}
 					j++;
-					// System.out.println("");
+					System.out.println("");
 				}
 			}
 			catch (Exception e)
@@ -364,42 +363,47 @@ public class Client
 
 				}
 			}
-			
+
 		}
 	}
-	
-	void generateShots() {
-		if (players.get(0).isShoot && players.get(0).canShoot){
+
+	void generateShots()
+	{
+		if (players.get(0).isShoot && players.get(0).canShoot)
+		{
 			hitscans.add(new Hitscan(players.get(0), 5, 1));
 			System.out.println("new shot");
 			players.get(0).canShoot = false;
 		}
-		
+
 	}
-	
-	//ADD TO CLIENT
-	void calcShots () {
-		
-		for (int i=0; i<hitscans.size(); i++){
-			
+
+	// ADD TO CLIENT
+	void calcShots()
+	{
+
+		for (int i = 0; i < hitscans.size(); i++)
+		{
+
 			System.out.println(hitscans.get(i).framesLeft);
-			
-			if (hitscans.get(i).framesLeft == 0){
+
+			if (hitscans.get(i).framesLeft == 0)
+			{
 				hitscans.remove(i);
 				i--;
 				continue;
 			}
 
-			
 			hitscans.get(i).update();
-			
-			System.out.println(": " + hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
-			
-			
+
+			System.out.println(": " + hitscans.get(i).hit.getX2() + " "
+					+ hitscans.get(i).hit.getY2());
+
 			double shortestLength = hitscans.get(i).vector.length;
-			double [] shortestCoord = new double[2];
+			double[] shortestCoord = new double[2];
 			shortestCoord[0] = hitscans.get(i).hit.getX2();
 			shortestCoord[1] = hitscans.get(i).hit.getY2();
+
 			
 			for (int j=0; j<walls.length; j++){
 				
@@ -408,26 +412,32 @@ public class Client
 				double [] coord = hitscans.get(i).hit.RLIntersect(walls[j].hit, hitscans.get(i).hit);
 				
 				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+
 					System.out.printf("hit: .4%f .4%f%n", coord[0], coord[1]);
-					
-					double currentLength = Math.sqrt(Math.pow(hitscans.get(i).hit.getX1()-coord[0], 2)  + 
-							Math.pow(hitscans.get(i).hit.getY1() - coord[1], 2));
-					
-					if (currentLength < shortestLength){
+
+					double currentLength = Math.sqrt(
+							Math.pow(hitscans.get(i).hit.getX1() - coord[0], 2)
+									+
+									Math.pow(hitscans.get(i).hit.getY1()
+											- coord[1], 2));
+
+					if (currentLength < shortestLength)
+					{
 						shortestLength = currentLength;
 						shortestCoord = coord;
 					}
-					
+
 				}
 			}
-			
-			hitscans.get(i).hit = new Line (hitscans.get(i).shooter.getX(), hitscans.get(i).shooter.getY(),
+
+			hitscans.get(i).hit = new Line(hitscans.get(i).shooter.getX(),
+					hitscans.get(i).shooter.getY(),
 					shortestCoord[0], shortestCoord[1]);
-			
-			//System.out.println(hitscans.get(i).hit.getX2() + " " + hitscans.get(i).hit.getY2());
-			hitscans.get(i).framesLeft --;
-			
-			
+
+			// System.out.println(hitscans.get(i).hit.getX2() + " " +
+			// hitscans.get(i).hit.getY2());
+			hitscans.get(i).framesLeft--;
+
 		}
 	}
 
@@ -713,6 +723,25 @@ public class Client
 					if (message.toLowerCase().equals("quit"))
 					{
 						running = false;
+					}
+					if (message.substring(0, message.indexOf(" ")).equals("pl"))
+					{
+						// formatted pl player# xPos yPos direction
+						int playNum = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						int xPos = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						int yPos = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						int direction = Integer.parseInt(
+								message.substring(0, message.indexOf(" ")));
+						message = message.substring(message.indexOf(" ") + 1);
+						enemyLocations[playNum][0] = xPos;
+						enemyLocations[playNum][1] = xPos;
+						enemyLocations[playNum][2] = xPos;
 					}
 				}
 			}
@@ -1042,15 +1071,17 @@ public class Client
 
 			// Draw Shots
 			g.setColor(new Color(255, 100, 0));
-			for (int i=0; i<hitscans.size(); i++){
-				g.drawLine((int)Math.round(hitscans.get(i).hit.getX1() * drawScale),
-						(int)Math.round(hitscans.get(i).hit.getY1() * drawScale),
-						(int)Math.round(hitscans.get(i).hit.getX2() * drawScale),
-						(int)Math.round(hitscans.get(i).hit.getY2() * drawScale));
+			for (int i = 0; i < hitscans.size(); i++)
+			{
+				g.drawLine((int) Math
+						.round(hitscans.get(i).hit.getX1() * drawScale),
+						(int) Math
+								.round(hitscans.get(i).hit.getY1() * drawScale),
+						(int) Math
+								.round(hitscans.get(i).hit.getX2() * drawScale),
+						(int) Math.round(
+								hitscans.get(i).hit.getY2() * drawScale));
 			}
-			
-			
-			
 
 			/*
 			 * g.setColor(new Color(255, 100, 0)); for (int i=0;
@@ -1281,17 +1312,18 @@ public class Client
 		{
 			// TODO Auto-generated method stub
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			
-			
+
 			mouseX = MouseInfo.getPointerInfo().getLocation().x;
-			//if (lastMouseX == 0) lastMouseX = mouseX;
-			turnAmount += (mouseX - (int)screenSize.getWidth()/2.0) * mouseSens;
-			
+			// if (lastMouseX == 0) lastMouseX = mouseX;
+			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0)
+					* mouseSens;
+
 			System.out.println(turnAmount);
-			//lastMouseX = mouseX;
-			
-			robot.mouseMove((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
-			
+			// lastMouseX = mouseX;
+
+			robot.mouseMove((int) screenSize.getWidth() / 2,
+					(int) screenSize.getHeight() / 2);
+
 		}
 
 		@Override
@@ -1313,44 +1345,52 @@ public class Client
 		}
 
 	}
-	
-	public class MouseClickListener implements MouseListener {
+
+	public class MouseClickListener implements MouseListener
+	{
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e)
+		{
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
+		public void mouseEntered(MouseEvent e)
+		{
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
+		public void mouseExited(MouseEvent e)
+		{
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
+		public void mousePressed(MouseEvent e)
+		{
 			// TODO Auto-generated method stub
-			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot){
+			if (SwingUtilities.isLeftMouseButton(e) && !players.get(0).isShoot)
+			{
 				players.get(0).isShoot = true;
 			}
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {
+		public void mouseReleased(MouseEvent e)
+		{
 			// TODO Auto-generated method stub
-			if (SwingUtilities.isLeftMouseButton(e) && players.get(0).isShoot){
+			if (SwingUtilities.isLeftMouseButton(e) && players.get(0).isShoot)
+			{
 				players.get(0).isShoot = false;
 				players.get(0).canShoot = true;
 			}
 		}
-		
+
 	}
 
 }
