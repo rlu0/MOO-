@@ -1379,25 +1379,15 @@ public class Client
 								hitscans.get(i).hit.getY2() * drawScale));
 			}
 
-			/*
-			 * g.setColor(new Color(255, 100, 0)); for (int i=0;
-			 * i<hitscans.size(); i++){
-			 * g.drawLine((int)Math.round(hitscans.get(i).hit.getX1() *
-			 * drawScale), (int)Math.round(hitscans.get(i).hit.getY1() *
-			 * drawScale), (int)Math.round(hitscans.get(i).hit.getX2() *
-			 * drawScale), (int)Math.round(hitscans.get(i).hit.getY2() *
-			 * drawScale)); }
-			 * 
-			 * g.setColor(Color.RED);
-			 * g.drawRect((int)Math.round(lastCollisionX*drawScale),
-			 * (int)Math.round(lastCollisionY*drawScale), 1, 1);
-			 */
-
+			// Loops through and ideally displays the players based on how far they are from the individual
 			for (int k = 0; k < playerLocations.length; k++)
 			{
+				// Determines an angle
 				double[] fat = { playerLocations[k][0], playerLocations[k][1] };
 				double dist = distance(fat);
 				double theta;
+				
+				// Finds whether there is a wall between the player and the enemy
 				if (playerLocations[k][0] < players.get(0).getX())
 				{
 					if (playerLocations[k][1] < players.get(0).getY())
@@ -1429,9 +1419,11 @@ public class Client
 				}
 				boolean objectHit = false;
 				int p = 0;
+				// Determines if the player even needs to be checked
 				if (Math.abs(theta - players.get(0).getDirection()) < 5
 				* Math.PI / 18)
 				{
+					// Loops through to find where the collision occurs (the enemy or the wall)
 					while (!objectHit)
 					{
 						p++;
@@ -1489,6 +1481,8 @@ public class Client
 							tempx = players.get(0).getX();
 							tempy = players.get(0).getY() + p * 0.01;
 						}
+						
+						// Determines whether the wall is hit first, or the enemy is hit first
 						if (currentMap[(int) tempy][(int) tempx] == 1)
 						{
 							objectHit = true;
@@ -1507,6 +1501,7 @@ public class Client
 				}
 			}
 
+			// Draws stuff
 			g.setColor(Color.WHITE);
 			g.drawString(players.get(0).getX() + " " + players.get(0).getY()
 					+ " " + players.get(0).isMoveForward, 10,
@@ -1514,12 +1509,12 @@ public class Client
 			g.drawImage(guns[currentGun], 150, 400, this);
 		}
 
-		@Override
+		/*
+		 * Main body of the client, loops in the game window
+		 * @see java.lang.Runnable#run()
+		 */
 		public void run()
 		{
-			// playerx = 2;
-			// playery = 2;
-			// direction = 0;
 
 			// moves cursor to middle
 			try
@@ -1528,22 +1523,16 @@ public class Client
 			}
 			catch (AWTException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				
 			}
 
-			// players.add(new Player(3, 3, 0));
+			// Displays the game window
 			JFrame window = new JFrame("MOOD");
 			JPanel bananarama = new GameDisp();
-			// URL url = getClass().getResource("boots.gif");
-			// Icon icon = new ImageIcon(url);
-			// JLabel yomamma = new JLabel(icon);
 			window.add(bananarama);
 			window.setResizable(false);
 			window.setVisible(true);
 			window.setSize(455, 475);
-			// window.getContentPane().add(yomamma);
-			// Transparent 16 x 16 pixel cursor image.
 			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 
 			// Create a new blank cursor.
@@ -1553,27 +1542,24 @@ public class Client
 			// Set the blank cursor to the JFrame.
 			window.getContentPane().setCursor(blankCursor);
 
+			// Adds listeners to determine whether things are pressed
 			window.addKeyListener(new MyKeyListener());
 			//window.addMouseMotionListener(new MouseMovementListener());
 			window.addMouseListener(new MouseClickListener());
 			window.setLocationRelativeTo(null);
 
+			// Loops until the game ends (running is set to false) and calculates various aspects of the game
 			while (running)
 			{
+				// Cheks when the projectiles and people have moved
 				long startTime = System.currentTimeMillis();
-
 				movePlayers();
-
 				generateShots();
 				calcShots();
-
-				// System.out.println(players.get(0).getX() + " " +
-				// players.get(0).getY());
-
 				window.repaint();
-
 				long endTime = System.currentTimeMillis();
 
+				//delays the game, caps it to 30 fps
 				long currentDelay = frameTime - (endTime - startTime);
 				if (currentDelay > 0)
 					try
@@ -1591,31 +1577,9 @@ public class Client
 
 	}
 
-	public class TypeKeyListener implements KeyListener
-	{
-
-		@Override
-		public void keyPressed(KeyEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void keyReleased(KeyEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void keyTyped(KeyEvent arg0)
-		{
-
-		}
-
-	}
-
+	/*
+	 * KeyListener specifically to listen whether escape is pressed on any of the loading pages
+	 */
 	public class MyKeyListener implements KeyListener
 	{
 
@@ -1629,60 +1593,59 @@ public class Client
 			}
 		}
 
+		// Determines whether the key has been pressed to move around the map
 		public void keyPressed(KeyEvent e)
 		{
-
-			// System.out.println("keyPressed="
-			// + KeyEvent.getKeyText(e.getKeyCode()));
-
+			// Forwards movement
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")
 					&& !players.get(0).isMoveForward)
 			{
 				wPressed = true;
 				players.get(0).isMoveForward = true;
-				// System.out.println("w");
 			}
+			// Left movement
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")
 					&& !players.get(0).isMoveLeft)
 			{
 				aPressed = true;
 				players.get(0).isMoveLeft = true;
-				// System.out.println("a");
 			}
+			// Backwards movement
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")
 					&& !players.get(0).isMoveBack)
 			{
 				sPressed = true;
 				players.get(0).isMoveBack = true;
-				// System.out.println("s");
 			}
+			// Rightwards movement
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")
 					&& !players.get(0).isMoveRight)
 			{
 				dPressed = true;
 				players.get(0).isMoveRight = true;
-				// System.out.println("d");
 			}
+			// Turning left
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Left")
 					&& !players.get(0).isTurnLeft)
 			{
 				laPressed = true;
 				players.get(0).isTurnLeft = true;
-				// System.out.println("Set true");
 			}
+			// Turns right
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Right")
 					&& !players.get(0).isTurnRight)
 			{
 				raPressed = true;
 				players.get(0).isTurnRight = true;
-				// System.out.println("Set true");
 			}
+			// Closes window if the game is done
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Escape"))
 			{
 				output.println("quit");
 				output.flush();
 				running = false;
 			}
+			// ALt shoot button 
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Space"))
 			{
 				if (!players.get(0).isShoot)
@@ -1696,6 +1659,9 @@ public class Client
 			}
 		}
 
+		/**
+		 * Determines what keys have been released (again part of movement)
+		 */
 		public void keyReleased(KeyEvent e)
 		{
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")
@@ -1762,10 +1728,16 @@ public class Client
 		}
 	}
 
+/*
+ * ACTIVATES MOUSE CONTROLS
+ */
 	public class MouseMovementListener implements MouseMotionListener
 	{
 
-		@Override
+		/*
+		 * Moves about all cool like whilst hiding the cursor
+		 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+		 */
 		public void mouseDragged(MouseEvent e)
 		{
 			// TODO Auto-generated method stub
@@ -1784,26 +1756,27 @@ public class Client
 
 		}
 
-		@Override
+		/*
+		 * Determines how the mouse has been moved
+		 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+		 */
 		public void mouseMoved(MouseEvent e)
 		{
-
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
 			mouseX = MouseInfo.getPointerInfo().getLocation().x;
-			// if (lastMouseX == 0) lastMouseX = mouseX;
 			turnAmount += (mouseX - (int) screenSize.getWidth() / 2.0)
 					* mouseSens;
-
-			// System.out.println(turnAmount);
-			// lastMouseX = mouseX;
-
 			robot.mouseMove((int) screenSize.getWidth() / 2,
 					(int) screenSize.getHeight() / 2);
 		}
 
 	}
 
+	/**
+	 * 
+	 * @author Michael
+	 *
+	 */
 	public class MouseClickListener implements MouseListener
 	{
 
