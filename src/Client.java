@@ -347,6 +347,34 @@ public class Client {
 
 				}
 			}
+			
+			// player collisions
+			
+			for (int j = 1; j<players.size(); j++){
+				if(i==j){
+					continue;
+				}
+				double [] coord = players.get(i).hit.CCIntersect(players.get(j).hit, players.get(i).hit);
+				if (coord[0] != Double.MAX_VALUE && coord[1] != Double.MAX_VALUE){
+					double xDisplace = players.get(i).getX()-coord[0];
+					double yDisplace = players.get(i).getY()-coord[1];
+					
+					double centerDistance = Math.sqrt(Math.pow(players.get(i).getX()-coord[0],2)
+							+ Math.pow(players.get(i).getY()-coord[1], 2));
+					double displaceDist = players.get(i).hit.getR() - centerDistance;
+					
+					Vector displace = new Vector(xDisplace, yDisplace, true);
+					displace.length = displaceDist;
+					displace.calcComponents();
+					
+					//Vector bounceVelocity = new Vector(xDisplace, yDisplace, true);
+					//players[i].velocity.addComponents(bounceVelocity);
+					
+					players.get(i).setX(players.get(i).getX()+displace.getX());
+					players.get(i).setY(players.get(i).getY()+displace.getY());
+					
+				}
+			}
 
 		}
 	}
@@ -410,6 +438,20 @@ public class Client {
 			// hitscans.get(i).hit.getY2());
 			hitscans.get(i).framesLeft--;
 
+		}
+	}
+	
+	void checkHits(){
+		for (int i=0; i<hitscans.size(); i++){
+			for (int j=0; j<players.size(); j++){
+				if (players.get(j).equals(hitscans.get(i).shooter)){
+					continue;
+				}
+				if (hitscans.get(i).hit.CLIntersect(players.get(j).hit, hitscans.get(i).hit)){
+					players.get(j).setHP(players.get(j).getHP() - 30);
+					System.out.println("PLAYER "+j+" HIT");
+				}
+			}
 		}
 	}
 
@@ -796,6 +838,11 @@ public class Client {
 		}
 
 		public void paintComponent(Graphics g) {
+			
+			Graphics2D graphics2D = (Graphics2D) g;
+
+			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			
 			Image[] guns = { boots, handgun, shotty, uzis, plasma, bootsG, handgunG, shottyG, uzisG, plasmaG };
 			uberDirection = -players.get(0).direction;
 			g.fillRect(0, 0, sizex, sizey);
@@ -877,9 +924,7 @@ public class Client {
 			double drawScale = 2;
 
 			// Top down view
-			Graphics2D graphics2D = (Graphics2D) g;
 
-			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 			// Draw Floor
 			// g.setColor(new Color(200,200,200));
@@ -897,10 +942,10 @@ public class Client {
 			// Draw Player
 			g.setColor(new Color(10, 84, 173));
 			for (int i = 0; i < players.size(); i++) {
-				g.fillOval((int) Math.round((players.get(i).hit.getX() - players.get(i).hit.getR() * 3) * drawScale),
-						(int) Math.round((players.get(i).hit.getY() - players.get(i).hit.getR() * 3) * drawScale),
-						(int) Math.round(players.get(i).hit.getR() * 6 * drawScale),
-						(int) Math.round(players.get(i).hit.getR() * 6 * drawScale));
+				g.fillOval((int) Math.round((players.get(i).hit.getX() - players.get(i).hit.getR() * 4) * drawScale),
+						(int) Math.round((players.get(i).hit.getY() - players.get(i).hit.getR() * 4) * drawScale),
+						(int) Math.round(players.get(i).hit.getR() * 8 * drawScale),
+						(int) Math.round(players.get(i).hit.getR() * 8 * drawScale));
 
 				g.drawLine((int) Math.round(players.get(i).hit.getX() * drawScale),
 						(int) Math.round(players.get(i).hit.getY() * drawScale),
@@ -1022,6 +1067,7 @@ public class Client {
 			}
 
 			players.add(new Player(playerx, playery, direction));
+			players.add(new Player(3,3,0));
 			JFrame window = new JFrame("MOOD");
 			JPanel bananarama = new GameDisp();
 			// URL url = getClass().getResource("boots.gif");

@@ -40,7 +40,7 @@ public class Player extends Thing {
 		this.x = x;
 		this.y = y;
 		direction = d;
-		this.hit = new CircleHit(x, y, 0.5);
+		this.hit = new CircleHit(x, y, 0.3);
 		acceleration = new Vector(0,0,true);
 		velocity = new Vector(0,0,true);
 	}
