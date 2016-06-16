@@ -1184,7 +1184,19 @@ public class Client {
 				players.get(0).canShoot = true;
 				currentGun -= 5;
 			}
-
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("Q")) {
+			if (currentGun!=0)
+				currentGun--;
+			else
+				currentGun=5;
+			
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("E")) {
+				if (currentGun!=5)
+					currentGun++;
+				else
+					currentGun=0;
+			}
 		}
 	}
 
